@@ -1,0 +1,222 @@
+<!--index.html-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+    <title>Stock Market</title>
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="row">
+        <div class="navbar col-xs-1 col-sm-1 col-md-1">
+
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="media/filledHome.svg" />
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="media/star.svg" />
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="media/settings.svg" />
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="media/command.svg" />
+                    </a>
+                </li>
+                <li class="nav-item" id="download">
+                    <a class="nav-link" href="#">
+                        <img src="media/download.svg" />
+                        <p>Download</p>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="col-xs-11 col-sm-11 col-md-11">
+            <div class="row">
+                <div class="col-sm-8 col-md-4 col-lg-3">
+                    <img src="media/logo.svg" />
+                </div>
+                <div class="col-sm-2 col-md-4 col-lg-6"></div>
+                <div class="col-sm-8 col-md-4 col-lg-3">
+                    <input id="search-bar" type="text" placeholder="Search For Stocks" />
+                    <img id="search-icon" src="media/search.svg" />
+                </div>
+            </div>
+            <div class="scrollable-x row">
+                <table class="data-index">
+                    <tr>
+                        <td width="20%">
+                            <img src="media/down.svg" />
+                        </td>
+                        <td width="50%">
+                            <h6>NSE</h6>28,874.89
+                        </td>
+                        <td class="text-red" width="30%">
+                            -0.032%<br />
+                            -9.24
+                        </td>
+                    </tr>
+                </table>
+                <table class="data-index">
+                    <tr>
+                        <td width="20%">
+                            <img src="media/down.svg" />
+                        </td>
+                        <td width="50%">
+                            <h6>NSE</h6>28,874.89
+                        </td>
+                        <td class="text-red" width="30%">
+                            -0.032%<br />
+                            -9.24
+                        </td>
+                    </tr>
+                </table>
+                <table class="data-index">
+                    <tr>
+                        <td width="20%">
+                            <img src="media/up.svg" />
+                        </td>
+                        <td width="50%">
+                            <h6>NSE</h6>28,874.89
+                        </td>
+                        <td class="text-green" width="30%">
+                            -0.032%<br />
+                            -9.24
+                        </td>
+                    </tr>
+                </table>
+                <table class="data-index">
+                    <tr>
+                        <td width="20%">
+                            <img src="media/down.svg" />
+                        </td>
+                        <td width="50%">
+                            <h6>NSE</h6>28,874.89
+                        </td>
+                        <td class="text-red" width="30%">
+                            -0.032%<br />
+                            -9.24
+                        </td>
+                    </tr>
+                </table>
+                <table class="data-index">
+                    <tr>
+                        <td width="20%">
+                            <img src="media/up.svg" />
+                        </td>
+                        <td width="50%">
+                            <h6>NSE</h6>28,874.89
+                        </td>
+                        <td class="text-green" width="30%">
+                            -0.032%<br />
+                            -9.24
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="button-row">
+                <img src="media/view_detail.svg" />
+                <img id="view-graph" src="media/view_graph.svg" />
+                <img src="media/sort.svg" />
+                <img src="media/filter.svg" />
+            </div>
+            <div class="tab-bar row">
+                <div class="custom-tabs active-tabs  col-sm-4 col-md-3 col-lg-2">
+                    <div class="row">
+                        <a class="tab-name" href="#">Trendings</a>
+                        <a href="#" class="close_button">X</a>
+                    </div>
+                </div>
+                <div class="custom-tabs inactive-tabs col-sm-4 col-md-3 col-lg-2">
+                    <div class="row">
+                        <a class="tab-name" href="#">RELIANCE</a>
+                        <a href="#" class="close_button">X</a>
+                    </div>
+                </div>
+                <div class="custom-tabs inactive-tabs col-sm-4 col-md-3 col-lg-2">
+                    <div class="row">
+                        <a class="tab-name" href="#">ACC</a>
+                        <a href="#" class="close_button">X</a>
+                    </div>
+                </div>
+            </div>
+                <table class="data-table">
+                    <thead>
+                    <tr class="head-tr">
+                        <th>Date</th>
+                        <th>Close</th>
+                        <th>Open</th>
+                        <th>Prev. Close</th>
+                        <th>High</th>
+                        <th>Low</th>
+                        <th>Volume</th>
+                        <th>LTP</th>
+                        <th>Value</th>
+                        <th>Average Price</th>
+                    </tr>
+                    </thead>
+                    <tbody id="data_body">
+                    <tr>
+                        <td>RELIANCE</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <td>RELIANCE</td>
+                        <td>1.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>4.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <td>RELIANCE</td>
+                        <td>0.00</td>
+                        <td>1.00</td>
+                        <td>0.00</td>
+                        <td>6.00</td>
+                        <td>0.00</td>
+                        <td>0.00</td>
+                        <td>5.00</td>
+                        <td>0.00</td>
+                        <td>5.00</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

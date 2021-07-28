@@ -1,0 +1,207 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph</title>
+    <script src="../script/graph.js"></script>
+    <link rel="stylesheet" href="../css/graph.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<body>
+    <div class="row topBar">
+        <div class="col-xs-3 col-md-2 col-lg-2">
+            <span id="companyName">Chart - TCS </span>
+        </div>
+        <div class="col-xs-4 col-md-5 col-lg-5"></div>
+        <div class="col-xs-5 col-md-5 col-lg-5">
+            <input id="searchBar" type="text" placeholder="Search For Stocks" />
+            <img id="search-icon" src="../media/search.svg" />
+        </div>
+    </div>
+    <div class="row mainMenu">
+        <div class="col-xs-4 col-md-4 col-lg-4">
+            <a href="#">
+               <object data="../media/icons/candle.svg" type="text/svg"></object>
+            </a>
+            <a href="#">
+                <object data="../media/icons/baseline.svg" type="text/svg"></object>
+            </a>
+            <a href="#">
+                <object data="../media/icons/area.svg" type="text/svg"></object>
+            </a>
+            <a href="#">
+                <div id="dropDownGraphs" class="dropDownGraph">
+                <object data="../media/icons/bar_.svg" type="text/svg"></object>
+                <img id="collapseGraphType" src="../media/icons/dropdown.svg" >
+                <div id="dropGraphType" class="dropGraphType">
+                    <a href="#">
+                        <object data="../media/icons/candle_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/baseline_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/hollow_candle_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/heikin_ashi_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/line_break_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/renko_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/kagi_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/area_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/line_.svg" type="text/svg"></object>
+                    </a>
+                    <a href="#">
+                        <object data="../media/icons/point_figure_.svg" type="text/svg"></object>
+                    </a>
+                </div>
+            </div>
+            </a>
+        </div>
+        <div class="col-xs-3 col-md-3 col-lg-3">
+             <a href="#">
+                 <object data="../media/icons/1D.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                 <object data="../media/icons/1W.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                 <object data="../media/icons/1M.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <div id="dropDownInterval" class="dropDownGraph">
+                    <object data="../media/icons/1hour.svg" type="text/svg"></object>
+                    <img id="collapseIntervalType" src="../media/icons/dropdown.svg" >
+                    <div id="dropIntervalType" class="dropGraphType">
+                        <a href="#">
+                            <object data="../media/icons/1day.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/1Week.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/1Month.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/6month.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/1year.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/6year.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/alltime.svg" type="text/svg"></object>
+                        </a>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xs-3 col-md-3 col-lg-3">
+            <a href="#">
+                <object data="../media/icons/vol.svg" type="text/svg"></object>
+            </a>
+            <a href="#">
+                <img src="../media/icons/indicators.svg" id="toggleIndicator"></img>
+            </a>
+        </div>
+        <div class="col-xs-2 col-md-2 col-lg-2">
+            <a href="#">
+                <object data="../media/icons/settings.svg" type="text/svg"></object>
+            </a>
+            <a href="#">
+                <img id="starredBtn" src="../media/icons/starred.svg" type="text/svg"></img>
+            </a>
+        </div>
+    </div>
+    <div class="row mainContent">
+        <div class="col graphContent">
+        </div>
+        <div id="StarredList" class="col-lg-3">
+            <table class="starredTable">
+                <tr>
+                    <th>Name</th>
+                </tr>
+                <tr>
+                    <td><a href="#">Tata Consultancy Service</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="optionsMenu" class="legendContent">
+        <div id="optionsMenuheader">Tools <img id="collapseThreeFourth" src="../media/icons/dropdown_dark.svg" ></img></div>
+        <div id="legendView">
+            <a href="#">
+                <object data="../media/icons/Pen.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <object data="../media/icons/line.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <object data="../media/icons/ellipse.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <object data="../media/icons/color.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <object data="../media/icons/eraser.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <object data="../media/icons/screen shot.svg" type="text/svg"></object>
+             </a>
+             <a href="#">
+                <div id="dropDownLayout" class="dropDownGraph">
+                    <img id="changeLayoutBtn" src="../media/icons/single full.svg"></img>
+                    <div id="dropLayoutType" class="dropGraphType">
+                        <a href="#">
+                            <object data="../media/icons/single full.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/sidebysideH.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/sidebysideV.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/3layout.svg" type="text/svg"></object>
+                        </a>
+                        <a href="#">
+                            <object data="../media/icons/4 layout.svg" type="text/svg"></object>
+                        </a>
+                    </div>
+                </div>
+             </a>
+
+        </div> 
+    </div>
+    <div class="infoBar">
+        | Tata Consulatancy Service | 
+        Date : 12/01/2021 | 
+        Open : 74656 | 
+        Close : 45949 | 
+        High : 94895 | 
+        Low : 85747 | 
+        Vol : 84859 | 
+    </div>
+    <div id="indicatorDialog" class="indicatorDialog">
+        <div id="indicatorDialogheader" class="indicatorDialogheader">3 Indicators Visible
+            <img id="closeIndicator" src="../media/icons/close_icon.svg"  class="closeBtn">
+        </div>
+        <div class="indicatorContent"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "stockui",
+  "version": "1.0.0",
+  "description": "stock ui app",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^13.1.5"
+  },
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
