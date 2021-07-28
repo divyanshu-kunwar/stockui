@@ -6,9 +6,11 @@
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph</title>
+    <script src="../script/graphPlot.js"></script>
     <script src="../script/graph.js"></script>
     <link rel="stylesheet" href="../css/graph.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    
 </head>
 <body>
     <div class="row topBar">
@@ -130,6 +132,7 @@
     </div>
     <div class="row mainContent">
         <div class="col graphContent">
+            <object id="graph_object" height="95%" data="../graph/demo.svg" type=""></object>
         </div>
         <div id="StarredList" class="col-lg-3">
             <table class="starredTable">
@@ -203,5 +206,6 @@
         </div>
         <div class="indicatorContent"></div>
     </div>
+    
 </body>
 </html>
