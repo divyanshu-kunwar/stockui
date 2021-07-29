@@ -19,8 +19,8 @@ window.addEventListener('DOMContentLoaded', () => {
         calculatedY = ((e.offsetY)/boxHeight*svgHeight);
 
         console.log("x:"+calculatedX+"y:"+calculatedY);
-        crosslineX.setAttribute("d","M 0 "+calculatedY+"  L 864 "+calculatedY);
-        crosslineY.setAttribute("d","M "+calculatedX+" 576  L "+calculatedX+" 0");
+        crosslineX.setAttribute("d","M 100 "+calculatedY+"  L 1200 "+calculatedY);
+        crosslineY.setAttribute("d","M "+calculatedX+" 550  L "+calculatedX+" 50");
     });
     },3000);
     

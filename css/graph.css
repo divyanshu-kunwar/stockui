@@ -132,10 +132,5 @@ body{
 .starredTable{
     margin-top: 20px;
     width: 100%;
-    font-size: small;
-    
-}
-.graphContent{
-    position: relative;
-    display: inline-block;
+    font-size: small;  
 }

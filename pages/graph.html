@@ -5,7 +5,10 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Graph</title>
+    
+    <!-- local script files and styles -->
     <script src="../script/graphPlot.js"></script>
     <script src="../script/graph.js"></script>
     <link rel="stylesheet" href="../css/graph.css">
@@ -13,6 +16,8 @@
     
 </head>
 <body>
+
+    <!-- top bar here  -->
     <div class="row topBar">
         <div class="col-xs-3 col-md-2 col-lg-2">
             <span id="companyName">Chart - TCS </span>
@@ -23,6 +28,8 @@
             <img id="search-icon" src="../media/search.svg" />
         </div>
     </div>
+
+    <!-- main menu here -->
     <div class="row mainMenu">
         <div class="col-xs-4 col-md-4 col-lg-4">
             <a href="#">
@@ -130,9 +137,11 @@
             </a>
         </div>
     </div>
+
+    <!-- main content including graph and table for company list -->
     <div class="row mainContent">
-        <div class="graphContent">
-            <object id="graph_object" data="../graph/demo.svg" type=""></object>
+        <div class="col-sm-9 col-md-9 col-lg-9 graphContent" id="graphContents">
+            <object id="graph_object" width="100%" data="../graph/demo.svg" type=""></object>
         </div>
         <div id="StarredList" class="col-md-3 col-sm-3 col-lg-3">
             <table class="starredTable">
@@ -145,6 +154,8 @@
             </table>
         </div>
     </div>
+
+    <!-- draggable menu with drawing tools -->
     <div id="optionsMenu" class="legendContent">
         <div id="optionsMenuheader">Tools <img id="collapseThreeFourth" src="../media/icons/dropdown_dark.svg" ></img></div>
         <div id="legendView">
@@ -191,6 +202,8 @@
 
         </div> 
     </div>
+
+    <!-- bottom bar for showing data on mouse move -->
     <div class="infoBar">
         | Tata Consulatancy Service | 
         Date : 12/01/2021 | 
@@ -200,6 +213,8 @@
         Low : 85747 | 
         Vol : 84859 | 
     </div>
+
+    <!-- indicator dialog box -->
     <div id="indicatorDialog" class="indicatorDialog">
         <div id="indicatorDialogheader" class="indicatorDialogheader">3 Indicators Visible
             <img id="closeIndicator" src="../media/icons/close_icon.svg"  class="closeBtn">

@@ -63,6 +63,15 @@ toggleDropDown(collapseBtn5,element4);
 toggleDropDown(collapseBtn4,element4);
 toggleDropDown(collapseBtn6,element6);
 toggleDropDown(collapseBtn7,element7);
+element6.style.display="block";
+var graphBox = document.getElementById("graphContents");
+collapseBtn6.addEventListener("click",function(e){
+  if(element6.style.display=="block"){
+      graphBox.setAttribute("class", "col-sm-9 col-md-9 col-lg-9 graphContent")
+  }else{
+      graphBox.setAttribute("class","col-sm-12 col-md-12 col-lg-12 graphContent");
+  }
+})
 
 function toggleDropDown(btn , elementToCollapse){
     btn.addEventListener("click",function(e){
