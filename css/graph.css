@@ -125,9 +125,17 @@ body{
 #StarredList{
     background-color:rgb(255, 255, 250);
     border-left: 1px dashed rgb(216, 216, 216);
+    z-index: 12;
+    position:absolute;
+    right: 0px;
 }
 .starredTable{
     margin-top: 20px;
     width: 100%;
     font-size: small;
+    
+}
+.graphContent{
+    position: relative;
+    display: inline-block;
 }
