@@ -4,6 +4,7 @@
 const { app, BrowserWindow ,ipcMain } = require('electron')
 const path = require('path')
 
+
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -51,6 +52,7 @@ ipcMain.on('main:graph', event => {
   graphWindow = new BrowserWindow({
     width: 1000, height: 600, frame:false,
     webPreferences: {
+      preload: path.join(__dirname, '/script/changeGraph.js'),
       nodeIntegration: true,
       enableRemoteModule: true
     }

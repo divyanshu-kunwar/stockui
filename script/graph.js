@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
+  
 dragElement(document.getElementById("optionsMenu"));
 dragElement(document.getElementById("indicatorDialog"));
 

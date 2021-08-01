@@ -17,9 +17,6 @@
     cursor:-webkit-grab;
     max-height: 48px;
 }
-.mainMenu img{
-    margin-top: -45px;
-}
 .mainMenu object:hover{
     margin-top: -1%;
     max-height: 50px;
@@ -71,8 +68,7 @@ body{
     z-index: 11;
 }
 #collapseGraphType{
-    margin-left: -40px;
-    margin-top: -50px;
+    margin-left: -40px; 
 }
 .dropDownGraph{
     position: relative;

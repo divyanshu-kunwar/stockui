@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded', () => {
-    console.log("a");
     setTimeout(function(){
         var graphObj = document.getElementById("graph_object").contentDocument;
         var mainGraphArea = graphObj.getElementById("patch_2");
@@ -11,6 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
         var boxWidth, boxHeight;
         box = document.getElementById("graph_object");
     mainGraphArea.addEventListener("mousemove",function(e){
+        crosslineX.style.display="block";
+        crosslineY.style.display="block";
         svgWidth = parseInt(graphObj.getElementsByTagName("svg")[0].getAttribute("width"),10);
         svgHeight = parseInt(graphObj.getElementsByTagName("svg")[0].getAttribute("height"),10);
         boxWidth = box.getBoundingClientRect().width;
