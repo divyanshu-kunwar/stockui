@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("baseline2GraphBtn","baseline");
   setGraph("heikinashiGraphBtn","heikinashi");
   setGraph("lineGraphBtn","line");
-  setGraph("barGraphBtn","bars");
+  // setGraph("barGraphBtn","bars");
   setGraph("renkoGraphBtn","renko");
   setGraph("hollowcandleGraphBtn","hollowcandle");
   setGraph("pnfGraphBtn","pnf");
@@ -19,7 +19,8 @@ window.addEventListener('DOMContentLoaded', () => {
 function setGraph(elementName,graphName){
     document.getElementById(elementName).addEventListener("click",function(e){
         console.log("clicked");
-        let pyshell = new PythonShell('C:/Users/91766/Desktop/Stock Analysis/graph/Final Graph Files/demoplot.py');
+
+        let pyshell = new PythonShell('graph/demoplot.py');
         pyshell.send(JSON.stringify(graphName));
         pyshell.on('message', function(message) {
             console.log(message);
@@ -29,7 +30,7 @@ function setGraph(elementName,graphName){
             throw err;
           };
           console.log('finished');
-          graph_object.setAttribute("data","C:/Users/91766/Desktop/Stock Analysis/graph/Final Graph Files/demo.svg")
+          graph_object.setAttribute("data","../graph/demo.svg")
         });
     });
 }

@@ -16,7 +16,7 @@ from sklearn.utils import resample
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 import renkolib 
-import talib
+# import talib
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 
@@ -168,55 +168,58 @@ class graph:
 
     def renko(self):
         # Get optimal brick size based
-        optimal_brick = renkolib.renko().set_brick_size(auto = True, HLC_history = df[["High Price", "Low Price", "Close Price"]])
+        optimal_brick = renkolib.renko().set_brick_size(auto = True, HLC_history = self.df[["h", "l", "c"]])
         print(optimal_brick)
         # Build Renko chart
-        data = df.loc[::-1]
+        data = self.df.loc[::-1]
         renko_obj_atr = renkolib.renko()
         renko_obj_atr.set_brick_size(auto = False, brick_size = optimal_brick)
-        renko_obj_atr.build_history(prices = df["Close Price"], dates = df["Date"])
+        renko_obj_atr.build_history(prices = data["c"], dates = data["d"])
         if len(renko_obj_atr.get_renko_prices()) > 1:
             renko_obj_atr.plot_renko()
+            self.labels_plot()
 
 
 
     def labels_plot(self):
-        self.ax.autoscale_view()
+        if(self.type_ != "renko"):
+            self.ax.autoscale_view()
 
-         # ticks top plot
-        self.ax.set_xticks(self.x[::5])
-        self.ax.set_xticklabels(self.df.d.dt.date[::5])
-        self.ax.invert_xaxis()
-        self.ax.yaxis.tick_right()
-
-        #line pointer
-        crosslineX = Line2D((0,1),(0.5,0.5),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
-        crosslineY = Line2D((0.5,0.5),(0,1),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
-        self.fig.add_artist(crosslineX)
-        self.fig.add_artist(crosslineY)
-        crosslineX.set_gid('crosslineX')
-        crosslineY.set_gid('crosslineY')
-
-        # labels
-        self.ax.yaxis.set_label_position("right")
-        self.ax.set_ylabel('Price\n (rupees)',color='k',fontsize=10)
-        self.ax.set_xlabel('Date',color='k',fontsize=10)
-
-        # grid
-
-        self.ax.xaxis.grid(color='g',  alpha=0.15)
-        self.ax.yaxis.grid(color='g',  alpha=0.15)
+            # ticks top plot
+            self.ax.set_xticks(self.x[::5])
+            self.ax.set_xticklabels(self.df.d.dt.date[::5])
+            self.ax.invert_xaxis()
+            self.ax.yaxis.tick_right()
         
-        # remove spines
-        self.ax.spines['left'].set_visible(False)
-        self.ax.spines['top'].set_visible(False)
 
-        # title
-        self.ax.set_title('ACC Stock Price\n', loc='center', fontsize=20)
+            #line pointer
+            crosslineX = Line2D((0,1),(0.5,0.5),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
+            crosslineY = Line2D((0.5,0.5),(0,1),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
+            self.fig.add_artist(crosslineX)
+            self.fig.add_artist(crosslineY)
+            crosslineX.set_gid('crosslineX')
+            crosslineY.set_gid('crosslineY')
+
+            # labels
+            self.ax.yaxis.set_label_position("right")
+            self.ax.set_ylabel('Price\n (rupees)',color='k',fontsize=10)
+            self.ax.set_xlabel('Date',color='k',fontsize=10)
+
+            # grid
+
+            self.ax.xaxis.grid(color='g',  alpha=0.15)
+            self.ax.yaxis.grid(color='g',  alpha=0.15)
+            
+            # remove spines
+            self.ax.spines['left'].set_visible(False)
+            self.ax.spines['top'].set_visible(False)
+
+            # title
+            self.ax.set_title('ACC Stock Price\n', loc='center', fontsize=20)
         f = BytesIO()
         plt.savefig(f,format="svg")
         tree , xmlid = ET.XMLID(f.getvalue())
-        ET.ElementTree(tree).write('C:/Users/91766/Desktop/Stock Analysis/graph/Final Graph Files/demo.svg')
+        ET.ElementTree(tree).write('graph/demo.svg')
         # plt.show()
 
         
