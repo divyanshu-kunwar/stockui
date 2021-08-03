@@ -183,7 +183,7 @@ class graph:
             self.labels_plot()
 
     def linebreak(self):
-        data_ = linebreaklib.linebreak(self.df)
+        data_ = self.df = linebreaklib.linebreak(self.df)
         self.x= np.arange(0,len(data_))
 
         for i in self.x:
@@ -197,6 +197,7 @@ class graph:
                 height=data_['lbo'][i]-data_['lbc'][i]
 
             self.ax.add_patch(Rectangle((i-0.5,lower),width=1.0,height=height,facecolor=color))
+            self.labels_plot()
 
     def labels_plot(self):
         if(self.type_ != "renko"):
