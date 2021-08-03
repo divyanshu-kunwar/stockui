@@ -16,6 +16,7 @@ from sklearn.utils import resample
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 import renkolib 
+import linebreaklib
 # import talib
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
@@ -48,6 +49,8 @@ class graph:
             self.baseline()
         elif(self.type_=="renko"):
             self.renko()
+        elif(self.type_=="linebreak"):
+            self.linebreak()
 
 
     def candlestick(self):
@@ -179,7 +182,21 @@ class graph:
             renko_obj_atr.plot_renko()
             self.labels_plot()
 
+    def linebreak(self):
+        data_ = linebreaklib.linebreak(self.df)
+        self.x= np.arange(0,len(data_))
 
+        for i in self.x:
+            if(data_['lbc'][i]>data_['lbo'][i]):
+                color='g'
+                lower=data_['lbo'][i]
+                height=data_['lbc'][i]-data_['lbo'][i]
+            else:
+                color='r'
+                lower=data_['lbc'][i]
+                height=data_['lbo'][i]-data_['lbc'][i]
+
+            self.ax.add_patch(Rectangle((i-0.5,lower),width=1.0,height=height,facecolor=color))
 
     def labels_plot(self):
         if(self.type_ != "renko"):
