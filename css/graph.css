@@ -12,10 +12,12 @@
 .mainMenu{
     padding-left: 2%;
     margin-top: -1.5%;
+    
 }
 .mainMenu object , .mainMenu img{
     cursor:-webkit-grab;
     max-height: 48px;
+    z-index: 8;
 }
 .mainMenu object:hover{
     margin-top: -1%;
@@ -28,7 +30,7 @@
 }
 .legendContent{
     position: absolute;
-    z-index: 9;
+    z-index: 5;
     width: 75px;
     height: auto;
     top : 150px;
@@ -37,7 +39,7 @@
 #optionsMenuheader {
     text-align: end;
     cursor: move;
-    z-index: 10;
+    z-index: 5;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 3px;
@@ -78,11 +80,10 @@ body{
     display: none;
     position: absolute;
     width: 200px;
-    z-index: 1;
+    z-index: 6;
 }
 #collapseIntervalType{
     margin-left: -25px;
-    margin-top: -50px;
 }
 .indicatorDialog{
     display: none;
@@ -120,13 +121,22 @@ body{
 }
 #StarredList{
     background-color:rgb(255, 255, 250);
-    border-left: 1px dashed rgb(216, 216, 216);
+    border-left: 1px dashed rgb(209, 200, 200);
     z-index: 12;
     position:absolute;
     right: 0px;
+    height: calc(100% - 140px);
 }
 .starredTable{
     margin-top: 20px;
     width: 100%;
     font-size: small;  
+}
+.starredTable td{
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.upGrowth{
+    color: rgb(140, 214, 28);
+    font-weight: bold;
 }
