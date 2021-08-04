@@ -140,3 +140,7 @@ body{
     color: rgb(140, 214, 28);
     font-weight: bold;
 }
+#close_btn{
+    position: absolute;
+    right: 20px;
+}
