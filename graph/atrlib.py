@@ -1,8 +1,7 @@
 import numpy as np
-import datetime as dt
 import pandas as pd
 
-def ATR(high,low,close,timeperiod):
+def ATR(high,low,close):
     df = pd.DataFrame(high,columns=['h'])
     df['l'] = pd.DataFrame(low)
     df['c'] = pd.DataFrame(close)

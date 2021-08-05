@@ -17,7 +17,6 @@ import datetime as dt
 from dateutil.relativedelta import relativedelta
 import renkolib 
 import linebreaklib
-# import talib
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 

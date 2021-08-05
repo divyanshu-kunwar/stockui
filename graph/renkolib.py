@@ -91,7 +91,7 @@ class renko:
             brick_size = np.median(atrlib.ATR(high = np.double(HLC_history.iloc[:, 0]), 
                                              low = np.double(HLC_history.iloc[:, 1]), 
                                              close = np.double(HLC_history.iloc[:, 2]), 
-                                             timeperiod = atr_timeperiod)[atr_timeperiod:])
+                                             )[atr_timeperiod:])
         
         return brick_size
 
