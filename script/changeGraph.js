@@ -3,11 +3,11 @@ const {PythonShell} = require('python-shell');
 window.addEventListener('DOMContentLoaded', () => {
   var graph_object = document.getElementById("graph_object");
   setGraph("areaGraphBtn","area");
-  // setGraph("candleGraphBtn","candle");
+  setGraph("candleGraphBtn","candle");
   setGraph("baselineGraphBtn","baseline");
   setGraph("heikinashiGraphBtn","heikinashi");
   setGraph("lineGraphBtn","line");
-  setGraph("barGraphBtn","bars");
+  // setGraph("barGraphBtn","bars");
   setGraph("renkoGraphBtn","renko");
   setGraph("hollowcandleGraphBtn","hollowcandle");
   setGraph("pnfGraphBtn","pnf");
