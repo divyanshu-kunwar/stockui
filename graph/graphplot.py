@@ -289,7 +289,7 @@ class graph:
         self.df = pd.DataFrame(pf.d,columns=["date"])
         self.labels_plot()
 
-
+   
     def labels_plot(self):
         if(self.type_ != "renko"):
             self.ax.autoscale_view()

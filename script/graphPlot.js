@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(function(){
+/*    setTimeout(function(){
         var graphObj = document.getElementById("graph_object").contentDocument;
         var mainGraphArea = graphObj.getElementById("patch_2");
         var crosslineX = graphObj.getElementById("crosslineX").getElementsByTagName("path")[0];
@@ -24,7 +24,6 @@ window.addEventListener('DOMContentLoaded', () => {
         crosslineY.setAttribute("d","M "+calculatedX+" 550  L "+calculatedX+" 50");
     });
     },3000);
-    
-
+*/
 
 });
