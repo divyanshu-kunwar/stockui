@@ -3,16 +3,16 @@ const {PythonShell} = require('python-shell');
 window.addEventListener('DOMContentLoaded', () => {
   var graph_object = document.getElementById("graph_object");
   setGraph("areaGraphBtn","area");
-  setGraph("candleGraphBtn","candle");
+  // setGraph("candleGraphBtn","candle");
   setGraph("baselineGraphBtn","baseline");
   setGraph("heikinashiGraphBtn","heikinashi");
   setGraph("lineGraphBtn","line");
-  // setGraph("barGraphBtn","bars");
+  setGraph("barGraphBtn","bars");
   setGraph("renkoGraphBtn","renko");
   setGraph("hollowcandleGraphBtn","hollowcandle");
   setGraph("pnfGraphBtn","pnf");
   setGraph("kagiGraphBtn","kagi");
-  setGraph("linebreakGraphBtn","linebreakcandle");
+  setGraph("linebreakGraphBtn","linebreak");
 function setGraph(elementName,graphName){
     document.getElementById(elementName).addEventListener("click",function(e){
         console.log("clicked");
