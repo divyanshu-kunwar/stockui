@@ -198,6 +198,7 @@ class graph:
         self.labels_plot()
     
     def kagi():
+    
         
 
     def labels_plot(self):

@@ -1,6 +1,8 @@
 const {PythonShell} = require('python-shell');
+// const remote = require('electron').remote;
 
 window.addEventListener('DOMContentLoaded', () => {
+
   var graph_object = document.getElementById("graph_object");
   setGraph("areaGraphBtn","area");
   // setGraph("candleGraphBtn","candle");
@@ -31,4 +33,9 @@ function setGraph(elementName,graphName){
         });
     });
 }
+
+
+
+
+
 })

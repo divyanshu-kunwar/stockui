@@ -4,7 +4,7 @@ import pandas as pd
 
 data = sys.stdin.readlines()
 data = json.loads(data[0])
-df =pd.read_csv('C:/Users/91766/Desktop/stockui/graph/ACC.csv')
+df =pd.read_csv('graph/ACC.csv')
 df['Date']=pd.to_datetime(df['Date'])
 df=df.head(200).loc[::-1].reset_index()
 df=df.drop(columns=['index'])
