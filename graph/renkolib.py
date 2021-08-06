@@ -125,37 +125,3 @@ class renko:
     
     def get_renko_directions(self):
         return self.renko_directions
-    
-    def plot_renko(self, col_up = 'g', col_down = 'r'):
-        self.fig, self.ax = plt.subplots(1, figsize=(20, 10))
-
-        # Calculate the limits of axes
-        self.ax.set_xlim(0.0, 
-                    len(self.renko_prices) + 1.0)
-        self.ax.set_ylim(np.min(self.renko_prices) - 3.0 * self.brick_size, 
-                    np.max(self.renko_prices) + 3.0 * self.brick_size)
-
-        self.ax.set_xticks(range(1, len(self.renko_prices))[::50])
-        self.ax.set_xticklabels(self.dates[::50])
-        
-        # Plot each renko bar
-        for i in range(1, len(self.renko_prices)):
-            # Set basic params for patch rectangle
-            col = col_up if self.renko_directions[i] == 1 else col_down
-            x = i
-            y = self.renko_prices[i] - self.brick_size if self.renko_directions[i] == 1 else self.renko_prices[i]
-            height = self.brick_size
-            # Draw bar with params
-            self.ax.add_patch(
-                patches.Rectangle(
-                    (x, y),   # (x,y)
-                    1.0,     # width
-                    self.brick_size, # height
-                    facecolor = col
-                )
-            )
-        # title
-        self.ax.set_title('ACC Stock Price\n', loc='center', fontsize=20)
-
-        # CORRECT VIEW OF AXIS IN GRAPH
-        self.ax.yaxis.tick_right()

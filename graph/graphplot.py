@@ -36,7 +36,7 @@ class graph:
         self.drawGraph()
                    
     def drawGraph(self):
-        self.fig, self.ax = plt.subplots(1, figsize=(18,8))
+        self.fig, self.ax = plt.subplots(1, figsize=(25,8))
         self.x=np.arange(0,len(self.df))
         if(self.type_=="candle"):
             self.candlestick()
@@ -68,6 +68,8 @@ class graph:
     def candlestick(self):
         lines = []
         patches = []
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         for i in self.x:
             if self.df['close'][i] >=self.df['open'][i]:
                 color = 'g'
@@ -80,7 +82,7 @@ class graph:
 
             vline = Line2D(xdata=(i, i), ydata=(self.df['low'][i],self.df['high'][i]),color=color)
 
-            rect = Rectangle(xy=(i-0.3,lower),width=0.6,height=height,facecolor=color,edgecolor='k')
+            rect = Rectangle(xy=(i-0.3,lower),width=0.6,height=height,facecolor=color,edgecolor=color)
             rect.set_alpha(alpha=1.0)
 
             lines.append(vline)
@@ -93,6 +95,8 @@ class graph:
 
     def hollowcandle(self):
         self.x=np.arange(1,len(self.df))
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         for i in self.x:
             if(self.df['close'][i]>self.df['open'][i]):
                 if(self.df['close'][i]>self.df['close'][i-1]):
@@ -115,7 +119,7 @@ class graph:
 
             
             vline = Line2D(xdata=(i, i), ydata=(self.df['low'][i],self.df['high'][i]),color=edgecolor,zorder=1)
-            rect = Rectangle(xy=(i-0.4,lower),width=0.8,height=height,facecolor=color,edgecolor=edgecolor,alpha=1,zorder=3)
+            rect = Rectangle(xy=(i-0.3,lower),width=0.6,height=height,facecolor=color,edgecolor=edgecolor,alpha=1,zorder=3)
             self.ax.add_line(vline)
             self.ax.add_patch(rect)
         self.labels_plot()
@@ -142,6 +146,8 @@ class graph:
         lines = []
         patches = []
 
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         for i in self.x:
             if self.df['ha_close'][i] >= self.df['ha_open'][i]:
                 color = 'g'
@@ -154,7 +160,7 @@ class graph:
 
             vline = Line2D(xdata=(i, i), ydata=(self.df['low'][i],self.df['high'][i]),color=color)
 
-            rect = Rectangle(xy=(i-0.3,lower),width=0.6,height=height,facecolor=color,edgecolor='k')
+            rect = Rectangle(xy=(i-0.3,lower),width=0.6,height=height,facecolor=color,edgecolor=color)
             rect.set_alpha(alpha=1.0)
 
             lines.append(vline)
@@ -166,6 +172,8 @@ class graph:
 
     def bars(self):
         lines = []
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         for i in self.x:
             if self.df['close'][i] >=self.df['open'][i]:
                 color = 'g'
@@ -184,22 +192,28 @@ class graph:
         self.labels_plot()
 
     def line(self):
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         plt.plot(self.x,self.df['close'])
         self.labels_plot()
 
     def area(self):
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         plt.plot(self.x,self.df['close'])
         y_min, y_max = self.ax.get_ylim()
         self.ax.fill_between(self.x,self.df['close'],y_min,alpha=0.2)
         self.labels_plot()
 
     def baseline(self):
+        width = int(len(self.x)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         plt.plot(self.x,self.df['close'])
         y_min, y_max = self.ax.get_ylim()
         x_min, x_max = self.ax.get_xlim()
         baseline = (y_min+y_max)/2
-        baselineX = Line2D((x_min,x_max),(baseline,baseline))   
-        self.ax.add_line(baselineX)
+        # baselineX = Line2D((x_min,x_max),(baseline,baseline))   
+        # self.ax.add_line(baselineX)
         self.labels_plot()
 
     def renko(self):
@@ -211,14 +225,49 @@ class graph:
         renko_obj_atr = renkolib.renko()
         renko_obj_atr.set_brick_size(auto = False, brick_size = optimal_brick)
         renko_obj_atr.build_history(prices = self.df["close"], dates = self.df["date"])
-        if len(renko_obj_atr.get_renko_prices()) > 1:
-            renko_obj_atr.plot_renko()
-            self.labels_plot()
+
+        # Calculate the limits of axes
+        # self.ax.set_xlim(0.0, 
+        #             len(self.renko_prices) + 1.0)
+        # self.ax.set_ylim(np.min(self.renko_prices) - 3.0 * self.brick_size, 
+        #             np.max(self.renko_prices) + 3.0 * self.brick_size)
+
+        # self.ax.set_xticks(range(1, len(self.renko_prices))[::50])
+        # self.ax.set_xticklabels(self.dates[::50])
+        self.x = range(1, len(renko_obj_atr.renko_prices))
+        self.df=pd.DataFrame(renko_obj_atr.dates,columns=['date'])
+        # Plot each renko bar
+        width = int(len(renko_obj_atr.renko_prices)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
+        col_up='g'
+        col_down='r'
+        for i in range(1, len(renko_obj_atr.renko_prices)):
+            # Set basic params for patch rectangle
+            col = col_up if renko_obj_atr.renko_directions[i] == 1 else col_down
+            x = i
+            y = renko_obj_atr.renko_prices[i] - renko_obj_atr.brick_size if renko_obj_atr.renko_directions[i] == 1 else renko_obj_atr.renko_prices[i]
+            height = renko_obj_atr.brick_size
+            # Draw bar with params
+            self.ax.add_patch(
+                Rectangle(
+                    (x, y),   # (x,y)
+                    0.6,     # width
+                    height, # height
+                    facecolor = col
+                )
+            )
+        # title
+        # self.ax.set_title('ACC Stock Price\n', loc='center', fontsize=20)
+
+        # CORRECT VIEW OF AXIS IN GRAPH
+        # self.ax.yaxis.tick_right()
+        self.labels_plot()
 
     def linebreak(self):
         data_ = self.df = linebreaklib.linebreak(self.df)
         self.x= np.arange(0,len(data_))
-
+        width = int(len(data_)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         for i in self.x:
             if(data_['lbclose'][i]>data_['lbopen'][i]):
                 color='g'
@@ -236,6 +285,8 @@ class graph:
         data = self.df = kagilib.kagi(self.df)
         self.x=np.arange(1,len(data))
         width = {"g":1.5,"r":1}
+        width_ = int(len(data)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width_,8))
         for i in self.x:
             if data['kc'][i] >data['ko'][i]:
                 lower = data['ko'][i]
@@ -267,6 +318,8 @@ class graph:
         pf.box_size = kagi_break
         pf.process(self.df['open'], self.df["high"], self.df["low"], self.df['close'],self.df['date'])
         pf.prepare_datasource()
+        width = int(len(pf.xticks)/4)
+        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         oval = parse_path("""M40 40C40 62.0914 31.0457 80 20 80C8.95431 80 0 62.0914 0 40C0 17.9086 8.95431 0 20 0C31.0457 0 40 17.9086 40 40Z""")
         cross = parse_path("""M1.58258 1L30.4174 48M1 47.0873L31 1.91272""")
         oval.vertices -= oval.vertices.mean(axis=0)
@@ -291,40 +344,45 @@ class graph:
 
    
     def labels_plot(self):
-        if(self.type_ != "renko"):
-            self.ax.autoscale_view()
+        self.ax.autoscale_view()
 
-            # ticks top plot
-            self.ax.set_xticks(self.x[::5])
-            self.ax.set_xticklabels(self.df['date'].dt.date[::5])
-            # self.ax.invert_xaxis()
-            self.ax.yaxis.tick_right()
+        # ticks top plot
+        self.ax.set_xticks(self.x[::5])
+        self.ax.set_xticklabels(self.df['date'][::5])
+        # self.ax.invert_xaxis()
+        # self.ax.yaxis.tick_right()
+    
+
+        # #line pointer
+        # crosslineX = Line2D((0,1),(0.5,0.5),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
+        # crosslineY = Line2D((0.5,0.5),(0,1),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
+        # self.fig.add_artist(crosslineX)
+        # self.fig.add_artist(crosslineY)
+        # crosslineX.set_gid('crosslineX')
+        # crosslineY.set_gid('crosslineY')
+
+        # labels
+        # self.ax.yaxis.set_label_position("right")
+        # self.ax.set_ylabel('Price\n (rupees)',color='k',fontsize=10)
+        self.ax.set_xlabel('Date',color='k',fontsize=10)
+        self.ax.get_yaxis().set_visible(False)
+
+        # grid
+
+        self.ax.xaxis.grid(color='g',  alpha=0.15)
+        self.ax.yaxis.grid(color='g',  alpha=0.15)
         
+        # remove spines
+        self.ax.spines['left'].set_visible(False)
+        self.ax.spines['top'].set_visible(False)
+        self.ax.spines['right'].set_visible(False)
+        self.ax.spines['bottom'].set_visible(False)
 
-            #line pointer
-            crosslineX = Line2D((0,1),(0.5,0.5),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
-            crosslineY = Line2D((0.5,0.5),(0,1),linestyle="--",color="k",alpha=0.5,linewidth=0.7)
-            self.fig.add_artist(crosslineX)
-            self.fig.add_artist(crosslineY)
-            crosslineX.set_gid('crosslineX')
-            crosslineY.set_gid('crosslineY')
+        self.fig.tight_layout()
 
-            # labels
-            self.ax.yaxis.set_label_position("right")
-            self.ax.set_ylabel('Price\n (rupees)',color='k',fontsize=10)
-            self.ax.set_xlabel('Date',color='k',fontsize=10)
-
-            # grid
-
-            self.ax.xaxis.grid(color='g',  alpha=0.15)
-            self.ax.yaxis.grid(color='g',  alpha=0.15)
-            
-            # remove spines
-            self.ax.spines['left'].set_visible(False)
-            self.ax.spines['top'].set_visible(False)
-
-            # title
-            self.ax.set_title('ACC Stock Price\n', loc='center', fontsize=20)
+        # title
+        # self.ax.set_title('ACC Stock Price\n', loc='center', fontsize=20)
+        
         f = BytesIO()
         plt.savefig(f,format="svg")
         tree , xmlid = ET.XMLID(f.getvalue())
