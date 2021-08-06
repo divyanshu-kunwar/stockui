@@ -15,8 +15,12 @@ import scipy.optimize as opt
 from sklearn.utils import resample
 import datetime as dt
 from dateutil.relativedelta import relativedelta
+from svg2mpl import parse_path
 import renkolib 
 import linebreaklib
+import kagilib
+import pnflib
+
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
 
@@ -85,6 +89,37 @@ class graph:
             self.ax.add_patch(rect)
 
         self.labels_plot()
+
+
+    def hollowcandle(self):
+        self.x=np.arange(1,len(self.df))
+        for i in self.x:
+            if(self.df['close'][i]>self.df['open'][i]):
+                if(self.df['close'][i]>self.df['close'][i-1]):
+                    color ="w"
+                    edgecolor="g"
+                else:
+                    color="w"
+                    edgecolor="r"
+                lower = self.df['open'][i]
+                height = self.df['close'][i] - self.df['open'][i]
+            else:
+                if(self.df['close'][i]>self.df['close'][i-1]):
+                    color="g"
+                    edgecolor="g"
+                else:
+                    color="r"
+                    edgecolor="r"
+                lower = self.df['close'][i]
+                height = self.df['open'][i] - self.df['close'][i]
+
+            
+            vline = Line2D(xdata=(i, i), ydata=(self.df['low'][i],self.df['high'][i]),color=edgecolor,zorder=1)
+            rect = Rectangle(xy=(i-0.4,lower),width=0.8,height=height,facecolor=color,edgecolor=edgecolor,alpha=1,zorder=3)
+            self.ax.add_line(vline)
+            self.ax.add_patch(rect)
+        self.labels_plot()
+           
 
     def hekinashi(self):
         self.df['ha_open'] = 0.0
@@ -197,10 +232,64 @@ class graph:
             self.ax.add_patch(Rectangle((i-0.5,lower),width=1.0,height=height,facecolor=color))
         self.labels_plot()
     
-    def kagi():
-    
-        
+    def kagi(self):
+        data = self.df = kagilib.kagi(self.df)
+        self.x=np.arange(1,len(data))
+        width = {"g":1.5,"r":1}
+        for i in self.x:
+            if data['kc'][i] >data['ko'][i]:
+                lower = data['ko'][i]
+            else:
+                lower = data['kc'][i]
+                
+            if((data['height'][i]>data['height'][i-1]) and data['kc'][i] >data['ko'][i-1]):
+                vline1 = Line2D(xdata=(i, i), ydata=(lower,(lower+data['height'][i-1])),color=data["color"][i-1],lw=width[data["color"][i-1]])
+                vline2 = Line2D(xdata=(i, i), ydata=((lower+data['height'][i-1]),(lower+data['height'][i])),color=data["color"][i],lw=width[data["color"][i]])
+                self.ax.add_line(vline1)
+                self.ax.add_line(vline2)
+            elif((data['height'][i]>data['height'][i-1]) and data['kc'][i] <data['ko'][i-1]):
+                vline1 = Line2D(xdata=(i, i), ydata=((lower+data['height'][i]-data['height'][i-1]),(lower+data['height'][i])),color=data["color"][i-1],lw=width[data["color"][i-1]])
+                vline2 = Line2D(xdata=(i, i), ydata=(lower,(lower+data['height'][i]-data['height'][i-1])),color=data["color"][i],lw=width[data["color"][i]])
+                self.ax.add_line(vline1)
+                self.ax.add_line(vline2)
+            else:
+                vline = Line2D(xdata=(i, i), ydata=(lower,(lower+data['height'][i])),color=data["color"][i-1],lw=width[data["color"][i-1]])
+                data["color"][i] = data["color"][i-1]
+                self.ax.add_line(vline)
+            hline = Line2D(xdata=((i-1), i), ydata=(data['kc'][i-1],data['ko'][i]),color=data["color"][i-1],lw=width[data["color"][i-1]])
+            self.ax.add_line(hline)
 
+        self.labels_plot()
+
+    def pnf(self):
+        kagi_break = renkolib.renko().set_brick_size(auto = True, HLC_history = self.df[["high", "low", "close"]])
+        pf = pnflib.Point_and_Figure()
+        pf.box_size = kagi_break
+        pf.process(self.df['open'], self.df["high"], self.df["low"], self.df['close'],self.df['date'])
+        pf.prepare_datasource()
+        oval = parse_path("""M40 40C40 62.0914 31.0457 80 20 80C8.95431 80 0 62.0914 0 40C0 17.9086 8.95431 0 20 0C31.0457 0 40 17.9086 40 40Z""")
+        cross = parse_path("""M1.58258 1L30.4174 48M1 47.0873L31 1.91272""")
+        oval.vertices -= oval.vertices.mean(axis=0)
+        cross.vertices -= cross.vertices.mean(axis=0)
+        self.ax = self.fig.add_axes([.15, .15, .7, .7])
+        self.ax.yaxis.get_major_formatter().set_useOffset(False)
+        plt.ticklabel_format(style='plain', axis='y')
+
+        symbol = {-1:oval,
+                   1:cross}
+        self.ax.scatter(pf.x_x, pf.x_y,
+                   marker=symbol[1],
+                   s=100,edgecolor='g')   #<----- control size of scatter symbol
+        self.ax.scatter(pf.o_x, pf.o_y,
+                   marker=symbol[-1],
+                   s=100,edgecolor='r',facecolor="w")   #<----- control size of scatter symbol
+
+        self.ax.set_xlim(0, len(pf.xticks)+1)
+        self.x = list(pf.xticks)
+        self.df = pd.DataFrame(pf.d,columns=["date"])
+        self.labels_plot()
+
+   
     def labels_plot(self):
         if(self.type_ != "renko"):
             self.ax.autoscale_view()
@@ -240,6 +329,6 @@ class graph:
         plt.savefig(f,format="svg")
         tree , xmlid = ET.XMLID(f.getvalue())
         ET.ElementTree(tree).write('graph/demo.svg')
-        plt.show()
+        # plt.show()
 
         
