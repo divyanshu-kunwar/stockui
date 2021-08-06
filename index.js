@@ -51,7 +51,7 @@ let graphWindow;
 
 ipcMain.on('main:graph', event => {
   graphWindow = new BrowserWindow({
-    width: 1000, height: 600, frame:false,
+    width: 1000, height: 600,
     webPreferences: {
       preload: path.join(__dirname, '/script/changeGraph.js'),
       nodeIntegration: true,

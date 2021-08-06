@@ -9,16 +9,17 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("baselineGraphBtn","baseline");
   setGraph("heikinashiGraphBtn","heikinashi");
   setGraph("lineGraphBtn","line");
-  // setGraph("barGraphBtn","bars");
+  setGraph("barGraphBtn","bars");
   setGraph("renkoGraphBtn","renko");
   setGraph("hollowcandleGraphBtn","hollowcandle");
   setGraph("pnfGraphBtn","pnf");
   setGraph("kagiGraphBtn","kagi");
   setGraph("linebreakGraphBtn","linebreak");
 function setGraph(elementName,graphName){
+    var graphSrc = graphName + "_.svg";
     document.getElementById(elementName).addEventListener("click",function(e){
-        console.log("clicked");
-
+        document.getElementById("dropGraphType").style.display="none";
+        document.getElementById("selectedGraphBtn").setAttribute("src","../media/icons/"+ graphSrc);
         let pyshell = new PythonShell('graph/demoplot.py');
         pyshell.send(JSON.stringify(graphName));
         pyshell.on('message', function(message) {

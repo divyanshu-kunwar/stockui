@@ -271,7 +271,7 @@ class graph:
         cross = parse_path("""M1.58258 1L30.4174 48M1 47.0873L31 1.91272""")
         oval.vertices -= oval.vertices.mean(axis=0)
         cross.vertices -= cross.vertices.mean(axis=0)
-        self.ax = self.fig.add_axes([.15, .15, .7, .7])
+        # self.ax = self.fig.add_axes([.15, .15, .7, .7])
         self.ax.yaxis.get_major_formatter().set_useOffset(False)
         plt.ticklabel_format(style='plain', axis='y')
 
