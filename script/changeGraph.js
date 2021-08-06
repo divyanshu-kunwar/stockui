@@ -1,5 +1,4 @@
 const {PythonShell} = require('python-shell');
-// const remote = require('electron').remote;
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -28,6 +27,7 @@ function setGraph(elementName,graphName){
           });
         pyshell.end(function (err) {
           if (err){
+            console.log(err)
             throw err;
           };
           console.log('finished');
@@ -66,7 +66,31 @@ function toggleDropDown(btn , elementToCollapse){
   })
 }
 
+minimize_btn = document.getElementById('minimize_btn');
+maximize_btn = document.getElementById('maximize_btn');
+close_btn = document.getElementById('close_btn');
 
+const electron = require('electron');
+const remote =  electron.remote;
 
+minimize_btn.addEventListener('click',function(e){
+  var window = remote.getCurrentWindow();
+  window.minimize(); 
+});
+maximize_btn.addEventListener('click',function(e){
+  var window = remote.getCurrentWindow();
+  if (!window.isMaximized()) {
+      window.maximize();
+      maximize_btn.setAttribute("src","../icon/restore.svg");     
+  } else {
+      window.unmaximize();
+      maximize_btn.setAttribute("src","../icon/maximize.svg");
+  }
+});
+close_btn.addEventListener('click',function(e){
+  var window = remote.getCurrentWindow();
+  window.close();
+});
 
-})
+});
+

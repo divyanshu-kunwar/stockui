@@ -72,7 +72,6 @@ body{
 
 #graph_menu img{
     height: 40px;
-    margin-left: -1px;
     border: 1px solid #eaeaea;
 }
 
@@ -89,15 +88,25 @@ body{
     overflow-x: scroll;
 }
 #graph{
-    height:100%;
+    height:98%;
     right: 0px;
 }
 #graph_area::-webkit-scrollbar {
     display: none;
 }
 #graph_area {
+border: #000;
 -ms-overflow-style: none;  /* IE and Edge */
 scrollbar-width: none;  /* Firefox */
+}
+#graph_area{
+    background-image:url('../icon/grid.svg');
+    background-repeat: repeat;
+}
+#grids{
+    position: fixed;
+    z-index: -1;
+    width: 100%;
 }
 
 #yaxis{
@@ -116,14 +125,37 @@ scrollbar-width: none;  /* Firefox */
     position: relative;
     display: inline-block;
 }
-.dropDown img{
+.drop_container img{
     border: none !important;
 }
 .drop_container img:hover{
-    box-shadow:2px 2px 8px #00ff9d;
+    border: 1px double #ddd !important;
     cursor:grab;
 }
 hr{
      height: 0.2px !important;
      margin: 0px !important;
+}
+#topbar{
+    background-color: black;
+    color: white;
+    padding:0.5% 1% 0.5% 0% !important;
+    /* -webkit-user-select: none;
+    -webkit-app-region: drag; */
+}
+#topOptions{
+    position: fixed;
+    right: 0px;
+    text-align: end;
+}
+#topOptions img{
+    margin-right: 10px;
+    opacity: 60%;
+}
+#topOptions img:hover{
+    opacity: 100%;
+}
+#topmore{
+    margin-left: 10px;
+    margin-right: 10px;
 }
