@@ -2,224 +2,124 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Graph</title>
-    
-    <!-- local script files and styles -->
-    <script src="../script/graphPlot.js"></script>
-    <script src="../script/graph.js"></script>
-    <link rel="stylesheet" href="../css/graph.css">
+
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="../css/graph.css">
+
+
 </head>
 <body>
+<div class="row">
+    <!-- left side list -->
+    <div class="col-md-3 col-lg-3 box">
+        
+        <!-- search bar here -->
+        <div id="search_box">
+            <img id="search_btn" src="../icon/SEARCH.svg" alt="search"/>
+            <input id="search_input" type="text" placeholder="search for stocks / indices"/>
+            <img id="filter_btn" src="../icon/filter.svg" alt="search"/>
+        </div>
 
-    <!-- top bar here  -->
-    <div class="row topBar">
-        <div class="col-xs-3 col-md-2 col-lg-2">
-            <span id="companyName">Chart - TCS </span>
+        <!-- table list here -->
+        <div id="company_list">
+        <table>
+            <tr>
+                <th>Stock / Index</th>
+                <th>%D</th>
+                <th>LTP</th>
+            </tr>
+        </table>
         </div>
-        <div class="col-xs-4 col-md-5 col-lg-5"></div>
-        <div class="col-xs-5 col-md-5 col-lg-5">
-            <input id="searchBar" type="text" placeholder="Search For Stocks" />
-            <img id="search-icon" src="../media/search.svg" />
-        </div>
-        <!-- <img id="close_btn" src="../media/icons/close_icon.svg" alt="close btn"/> -->
+
     </div>
 
-    <!-- main menu here -->
-    <div class="row mainMenu">
-        <!--Time Period or interval drop down list-->
-        <div class="col-xs-2 col-md-2 col-lg-2">
-            <a href="#">
-               <div id="dropDownInterval" class="dropDownGraph">
-                   <img src="../media/icons/1hour.svg" type="text/svg"></img>
-                   <img id="collapseIntervalType" src="../media/icons/dropdown.svg" >
-                   <div id="dropIntervalType" class="dropGraphType">
-                       <a href="#">
-                           <object data="../media/icons/1day.svg" type="text/svg"></object>
-                       </a>
-                       <a href="#">
-                           <object data="../media/icons/1Week.svg" type="text/svg"></object>
-                       </a>
-                       <a href="#">
-                           <object data="../media/icons/1Month.svg" type="text/svg"></object>
-                       </a>
-                       <a href="#">
-                           <object data="../media/icons/6month.svg" type="text/svg"></object>
-                       </a>
-                       <a href="#">
-                           <object data="../media/icons/1year.svg" type="text/svg"></object>
-                       </a>
-                       <a href="#">
-                           <object data="../media/icons/6year.svg" type="text/svg"></object>
-                       </a>
-                       <a href="#">
-                           <object data="../media/icons/alltime.svg" type="text/svg"></object>
-                       </a>
-                   </div>
-               </div>
-           </a>
-       </div>
-       <!-- graph drop down list -->
-        <div class="col-xs-2 col-md-2 col-lg-2">
-            <a href="#">
-                <div id="dropDownGraphs" class="dropDownGraph">
-                <img id="selectedGraphBtn" src="../media/icons/candle_.svg" ></img>
-                <img id="collapseGraphType" src="../media/icons/dropdown.svg"/>
-                </div>
-                <div id="dropGraphType" class="dropGraphType">
-                    <a href="#">
-                        <img id="barGraphBtn" src="../media/icons/bars_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="candleGraphBtn" src="../media/icons/candle_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="hollowcandleGraphBtn" src="../media/icons/hollowcandle_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="heikinashiGraphBtn" src="../media/icons/heikinashi_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="lineGraphBtn" src="../media/icons/line_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="areaGraphBtn" src="../media/icons/area_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="baselineGraphBtn" src="../media/icons/baseline_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="renkoGraphBtn" src="../media/icons/renko_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="linebreakGraphBtn" src="../media/icons/linebreak_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="kagiGraphBtn" src="../media/icons/kagi_.svg" ></img>
-                    </a>
-                    <a href="#">
-                        <img id="pnfGraphBtn" src="../media/icons/pnf_.svg" ></img>
-                    </a>
-                </div>
-            </a>
+    <!--Right side list-->
+    <div class="col-md-9 col-lg-9">
+        
+        <!-- graph all menu -->
+        <div id="graph_menu">
+            <div id="selected_company"><b>ACC</b></div>
+
+            <!-- interval change  -->
+        <div class="dropDown">
+            <img id="intervalchange" src="../icon/1d_.svg" alt="interval">
+            <div id="dropIntervalType" style="display: none;" class="drop_container">
+                <a href="#">
+                    <img src="../icon/1h.svg" type="text/svg"></img >
+                </a>
+                <a href="#">
+                    <img src="../icon/2h.svg" type="text/svg"></img >
+                </a>
+                <a href="#">
+                    <img src="../icon/3h.svg" type="text/svg"></img >
+                </a>
+                <a href="#">
+                    <img src="../icon/1d.svg" type="text/svg"></img >
+                </a>
+                <a href="#">
+                    <img src="../icon/1w.svg" type="text/svg"></img >
+                </a>
+                <a href="#">
+                    <img src="../icon/1m.svg" type="text/svg"></img >
+                </a>
+            </div>
         </div>
-        <!-- volume and indicator button -->
-        <div class="col-xs-4 col-md-4 col-lg-4">
-            <a href="#">
-                <img src="../media/icons/vol.svg" type="text/svg"></img>
-            </a>
-            <a href="#">
-                <img src="../media/icons/indicators.svg" id="toggleIndicator"></img>
-            </a>
+
+            <!-- graph change -->
+        <div class="dropDown">
+            <img id="graphchange" src="../icon/candle_.svg" alt="graph type">
+            <div id="dropGraphType" class="drop_container">
+                <a href="#">
+                    <img id="barsBtn" src="../icon/bars.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="candleBtn" src="../icon/candle.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="hollowcandleBtn" src="../icon/hollowcandle.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="heikinashiBtn" src="../icon/heikinashi.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="lineBtn" src="../icon/line.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="areaBtn" src="../icon/area.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="baselineBtn" src="../icon/baseline.svg" type="text/svg"></img>
+                </a>
+                <hr  color="#eaeaea">
+                <a href="#">
+                    <img id="renkoBtn" src="../icon/renko.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="linebreakBtn" src="../icon/linebreak.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="kagiBtn" src="../icon/kagi.svg" type="text/svg"></img>
+                </a>
+                <a href="#">
+                    <img id="pnfBtn" src="../icon/pnf.svg" type="text/svg"></img>
+                </a>
+            </div>
         </div>
-        <!-- settings and starred button -->
-        <div class="col-xs-2 col-md-2 col-lg-2">
-            <a href="#">
-                <img src="../media/icons/settings.svg" type="text/svg"></img>
-            </a>
-            <a href="#">
-                <img id="starredBtn" src="../media/icons/starred.svg" type="text/svg"></img>
-            </a>
+
+            <img id="compare" src="../icon/compare.svg" alt="compare">
+            <img id="indicator" src="../icon/indicator.svg" alt="indicators">
+            <img id="templates" src="../icon/template.svg" alt="templates">
+            <img id="layoutchange" src="../icon/layout1.svg" alt="layout">
+            <img id="screenshot" src="../icon/screenshot.svg" alt="interval">
+        </div>
+        
+        <div id="graph_area">
+            <img id="yaxis" src="../icon/yaxis.svg" />
+            <object id="graph" data="../graph/demo.svg" type="text/svg"></object>
         </div>
     </div>
-
-    <!-- main content including graph and table for company list -->
-    <div class="row mainContent">
-        <div id="StarredList" class="col-md-3 col-sm-3 col-lg-3">
-            <table class="starredTable">
-                <tr>
-                    <th>Name</th>
-                    <th>% Change</th>
-                    <th>Close Price</th>
-                </tr>
-                <tr>
-                    <td><a href="#">Tata Consultancy Service</a></td>
-                    <td class="upGrowth">-0.005</td>
-                    <td>2040</td>
-                </tr>
-                <tr>
-                    <td><a href="#">Tata Consultancy Service</a></td>
-                    <td class="upGrowth">-0.005</td>
-                    <td>2040</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-sm-9 col-md-9 col-lg-9 graphContent" id="graphContents">
-            <object id="graph_object" width="100%" data="../graph/demo.svg" type=""></object>
-        </div>
-    </div>
-
-    <!-- draggable menu with drawing tools -->
-    <div id="optionsMenu" class="legendContent">
-        <div id="optionsMenuheader">Tools <img id="collapseThreeFourth" src="../media/icons/dropdown_dark.svg" ></img></div>
-        <div id="legendView">
-            <a href="#">
-                <object data="../media/icons/Pen.svg" type="text/svg"></object>
-             </a>
-             <a href="#">
-                <object data="../media/icons/line.svg" type="text/svg"></object>
-             </a>
-             <a href="#">
-                <object data="../media/icons/ellipse.svg" type="text/svg"></object>
-             </a>
-             <a href="#">
-                <object data="../media/icons/color.svg" type="text/svg"></object>
-             </a>
-             <a href="#">
-                <object data="../media/icons/eraser.svg" type="text/svg"></object>
-             </a>
-             <a href="#">
-                <object data="../media/icons/screen shot.svg" type="text/svg"></object>
-             </a>
-             <a href="#">
-                <div id="dropDownLayout" class="dropDownGraph">
-                    <img id="changeLayoutBtn" src="../media/icons/single full.svg"></img>
-                    <div id="dropLayoutType" class="dropGraphType">
-                        <a href="#">
-                            <object data="../media/icons/single full.svg" type="text/svg"></object>
-                        </a>
-                        <a href="#">
-                            <object data="../media/icons/sidebysideH.svg" type="text/svg"></object>
-                        </a>
-                        <a href="#">
-                            <object data="../media/icons/sidebysideV.svg" type="text/svg"></object>
-                        </a>
-                        <a href="#">
-                            <object data="../media/icons/3layout.svg" type="text/svg"></object>
-                        </a>
-                        <a href="#">
-                            <object data="../media/icons/4 layout.svg" type="text/svg"></object>
-                        </a>
-                    </div>
-                </div>
-             </a>
-
-        </div> 
-    </div>
-
-    <!-- bottom bar for showing data on mouse move -->
-    <div class="infoBar">
-        | Tata Consulatancy Service | 
-        Date : 12/01/2021 | 
-        Open : 74656 | 
-        Close : 45949 | 
-        High : 94895 | 
-        Low : 85747 | 
-        Vol : 84859 | 
-    </div>
-
-    <!-- indicator dialog box -->
-    <div id="indicatorDialog" class="indicatorDialog">
-        <div id="indicatorDialogheader" class="indicatorDialogheader">3 Indicators Visible
-            <img id="closeIndicator" src="../media/icons/close_icon.svg"  class="closeBtn">
-        </div>
-        <div class="indicatorContent"></div>
-    </div>
-    
+</div>
 </body>
 </html>

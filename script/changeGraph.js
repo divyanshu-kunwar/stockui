@@ -4,17 +4,17 @@ const {PythonShell} = require('python-shell');
 window.addEventListener('DOMContentLoaded', () => {
 
   var graph_object = document.getElementById("graph_object");
-  setGraph("areaGraphBtn","area");
-  setGraph("candleGraphBtn","candle");
-  setGraph("baselineGraphBtn","baseline");
-  setGraph("heikinashiGraphBtn","heikinashi");
-  setGraph("lineGraphBtn","line");
-  setGraph("barGraphBtn","bars");
-  setGraph("renkoGraphBtn","renko");
-  setGraph("hollowcandleGraphBtn","hollowcandle");
-  setGraph("pnfGraphBtn","pnf");
-  setGraph("kagiGraphBtn","kagi");
-  setGraph("linebreakGraphBtn","linebreak");
+  setGraph("areaBtn","area");
+  setGraph("candleBtn","candle");
+  setGraph("baselineBtn","baseline");
+  setGraph("heikinashiBtn","heikinashi");
+  setGraph("lineBtn","line");
+  setGraph("barBtn","bars");
+  setGraph("renkoBtn","renko");
+  setGraph("hollowcandleBtn","hollowcandle");
+  setGraph("pnfBtn","pnf");
+  setGraph("kagiBtn","kagi");
+  setGraph("linebreakBtn","linebreak");
 function setGraph(elementName,graphName){
     var graphSrc = graphName + "_.svg";
     document.getElementById(elementName).addEventListener("click",function(e){
