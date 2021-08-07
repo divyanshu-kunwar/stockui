@@ -11,10 +11,10 @@ from matplotlib import colors as mcolors
 from matplotlib.collections import LineCollection, PolyCollection
 from matplotlib.transforms import Affine2D
 from six.moves import xrange, zip
-import scipy.optimize as opt
-from sklearn.utils import resample
+# import scipy.optimize as opt
+# from sklearn.utils import resample
 import datetime as dt
-from dateutil.relativedelta import relativedelta
+# from dateutil.relativedelta import relativedelta
 from svg2mpl import parse_path
 import renkolib 
 import linebreaklib
@@ -369,8 +369,8 @@ class graph:
 
         # grid
 
-        self.ax.xaxis.grid(color='g',  alpha=0.15)
-        self.ax.yaxis.grid(color='g',  alpha=0.15)
+        # self.ax.xaxis.grid(color='g',  alpha=0.15)
+        # self.ax.yaxis.grid(color='g',  alpha=0.15)
         
         # remove spines
         self.ax.spines['left'].set_visible(False)

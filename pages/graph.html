@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,118 +11,134 @@
 
 
 </head>
+
 <body>
-<div class="row">
-    <!-- left side list -->
-    <div class="col-md-3 col-lg-3 box">
-        
-        <!-- search bar here -->
-        <div id="search_box">
-            <img id="search_btn" src="../icon/SEARCH.svg" alt="search"/>
-            <input id="search_input" type="text" placeholder="search for stocks / indices"/>
-            <img id="filter_btn" src="../icon/filter.svg" alt="search"/>
-        </div>
 
-        <!-- table list here -->
-        <div id="company_list">
-        <table>
-            <tr>
-                <th>Stock / Index</th>
-                <th>%D</th>
-                <th>LTP</th>
-            </tr>
-        </table>
-        </div>
-
-    </div>
-
-    <!--Right side list-->
-    <div class="col-md-9 col-lg-9">
-        
-        <!-- graph all menu -->
-        <div id="graph_menu">
-            <div id="selected_company">
-                <b>ACC</b>
+        <!-- top bar here  -->
+        <div class="row" id="topBar">
+                <img id="topmore" src="../icon/topmore.svg" alt="close btn" />
+            <div class="col-xs-6 col-md-8 col-lg-9">
+                <span id="companyName">Chart - TCS </span>
             </div>
-
-            <!-- interval change  -->
-        <div class="dropDown">
-            <img id="intervalchange" src="../icon/1d_.svg" alt="interval">
-            <div id="dropIntervalType"  class="drop_container">
-                <a href="#">
-                    <img src="../icon/1h.svg" type="text/svg"></img >
-                </a>
-                <a href="#">
-                    <img src="../icon/2h.svg" type="text/svg"></img >
-                </a>
-                <a href="#">
-                    <img src="../icon/3h.svg" type="text/svg"></img >
-                </a>
-                <a href="#">
-                    <img src="../icon/1d.svg" type="text/svg"></img >
-                </a>
-                <a href="#">
-                    <img src="../icon/1w.svg" type="text/svg"></img >
-                </a>
-                <a href="#">
-                    <img src="../icon/1m.svg" type="text/svg"></img >
-                </a>
+            <div id="topOptions" class="col-xs-4 col-md-3 col-lg-2">
+            <img id="minimize_btn" src="../icon/minimize.svg" alt="close btn" />
+            <img id="maximize_btn" src="../icon/restore.svg" alt="close btn" />
+            <img id="close_btn" src="../icon/close.svg" alt="close btn" />
             </div>
         </div>
 
-            <!-- graph change -->
-        <div class="dropDown">
-            <img id="graphchange" src="../icon/candle_.svg" alt="graph type">
-            <div id="dropGraphType" class="drop_container">
-                <a href="#">
-                    <img id="barsBtn" src="../icon/bars.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="candleBtn" src="../icon/candle.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="hollowcandleBtn" src="../icon/hollowcandle.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="heikinashiBtn" src="../icon/heikinashi.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="lineBtn" src="../icon/line.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="areaBtn" src="../icon/area.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="baselineBtn" src="../icon/baseline.svg" type="text/svg"></img>
-                </a>
-                <hr  color="#eaeaea">
-                <a href="#">
-                    <img id="renkoBtn" src="../icon/renko.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="linebreakBtn" src="../icon/linebreak.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="kagiBtn" src="../icon/kagi.svg" type="text/svg"></img>
-                </a>
-                <a href="#">
-                    <img id="pnfBtn" src="../icon/pnf.svg" type="text/svg"></img>
-                </a>
-            </div>
-        </div>
+        <div class="row">
+            <!-- left side list -->
+            <div class="col-md-3 col-lg-3">
 
-            <img id="compare" src="../icon/compare.svg" alt="compare">
-            <img id="indicator" src="../icon/indicator.svg" alt="indicators">
-            <img id="templates" src="../icon/template.svg" alt="templates">
-            <img id="layoutchange" src="../icon/layout1.svg" alt="layout">
-            <img id="screenshot" src="../icon/screenshot.svg" alt="interval">
+                <!-- search bar here -->
+                <div id="search_box">
+                    <img id="search_btn" src="../icon/SEARCH.svg" alt="search" />
+                    <input id="search_input" type="text" placeholder="search for stocks / indices" />
+                    <img id="filter_btn" src="../icon/filter.svg" alt="search" />
+                </div>
+
+                <!-- table list here -->
+                <div id="company_list">
+                    <table>
+                        <tr>
+                            <th>Stock / Index</th>
+                            <th>%D</th>
+                            <th>LTP</th>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <!--Right side list-->
+            <div class="col-md-9 col-lg-9">
+
+                <!-- graph all menu -->
+                <div id="graph_menu">
+                    <div id="selected_company"><b>ACC</b></div>
+
+                    <!-- interval change  -->
+                    <div class="dropDown">
+                        <img id="intervalchange" src="../icon/1d_.svg" alt="interval">
+                        <div id="dropIntervalType" class="drop_container">
+                            <a href="#">
+                                <img src="../icon/1h.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icon/2h.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icon/3h.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icon/1d.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icon/1w.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img src="../icon/1m.svg" type="text/svg"></img>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- graph change -->
+                    <div class="dropDown">
+                        <img id="graphchange" src="../icon/candle_.svg" alt="graph type">
+                        <div id="dropGraphType" class="drop_container">
+                            <a href="#">
+                                <img id="barsBtn" src="../icon/bars.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="candleBtn" src="../icon/candle.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="hollowcandleBtn" src="../icon/hollowcandle.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="heikinashiBtn" src="../icon/heikinashi.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="lineBtn" src="../icon/line.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="areaBtn" src="../icon/area.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="baselineBtn" src="../icon/baseline.svg" type="text/svg"></img>
+                            </a>
+                            <hr color="#eaeaea">
+                            <a href="#">
+                                <img id="renkoBtn" src="../icon/renko.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="linebreakBtn" src="../icon/linebreak.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="kagiBtn" src="../icon/kagi.svg" type="text/svg"></img>
+                            </a>
+                            <a href="#">
+                                <img id="pnfBtn" src="../icon/pnf.svg" type="text/svg"></img>
+                            </a>
+                        </div>
+                    </div>
+
+                    <img id="compare" src="../icon/compare.svg" alt="compare">
+                    <img id="indicator" src="../icon/indicator.svg" alt="indicators">
+                    <img id="templates" src="../icon/template.svg" alt="templates">
+                    <img id="layoutchange" src="../icon/layout1.svg" alt="layout">
+                    <img id="screenshot" src="../icon/screenshot.svg" alt="interval">
+                </div>
+
+                <div id="graph_area">
+                    <img id="yaxis" src="../icon/yaxis.svg" />
+                    <!-- <img id="grids" src="../icon/grid.svg"/> -->
+                    <object id="graph" data="../graph/demo.svg" type="text/svg"></object>
+                </div>
+            </div>
+
         </div>
-        
-        <div id="graph_area">
-            <img id="yaxis" src="../icon/yaxis.svg" />
-            <object id="graph" data="../graph/demo.svg" type="text/svg"></object>
-        </div>
-    </div>
-</div>
 </body>
+
 </html>
