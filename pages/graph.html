@@ -8,9 +8,13 @@
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/graph.css">
+    <script src="../script/p5.min.js"></script>
+
+
 </head>
 
 <body>
+    <div id="hidden"></div>
 
         <!-- top bar here  -->
         <div class="row" id="topBar">
@@ -130,13 +134,12 @@
                 </div>
 
                 <div id="graph_area">
-                    <img id="yaxis" src="../icon/yaxis.svg" />
-                    <!-- <img id="grids" src="../icon/grid.svg"/> -->
-                    <object id="graph" data="../graph/demo.svg" type="text/svg"></object>
+                    <Main></Main>
                 </div>
             </div>
 
         </div>
+        <script src="../script/sketch.js"></script>
 </body>
 
 </html>

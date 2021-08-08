@@ -1,12 +1,12 @@
 const {PythonShell} = require('python-shell');
+const electron = require('electron');
+const remote =  electron.remote;
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  var graph_object = document.getElementById("graph");
-  var graphArea = document.getElementById("graph_area");
-  setGraph("areaBtn","area");
+  // setGraph("areaBtn","area");
   setGraph("candleBtn","candle");
-  setGraph("baselineBtn","baseline");
+  /*setGraph("baselineBtn","baseline");
   setGraph("heikinashiBtn","heikinashi");
   setGraph("lineBtn","line");
   setGraph("barsBtn","bars");
@@ -14,16 +14,16 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("hollowcandleBtn","hollowcandle");
   setGraph("pnfBtn","pnf");
   setGraph("kagiBtn","kagi");
-  setGraph("linebreakBtn","linebreak");
+  setGraph("linebreakBtn","linebreak"); */
 function setGraph(elementName,graphName){
     var graphSrc = graphName + "_.svg";
     document.getElementById(elementName).addEventListener("click",function(e){
         document.getElementById("dropGraphType").style.display="none";
         document.getElementById("graphchange").setAttribute("src","../icon/"+ graphSrc);
-        let pyshell = new PythonShell('graph/demoplot.py');
-        pyshell.send(JSON.stringify(graphName));
+        let pyshell = new PythonShell('graph/callData.py');
+        // pyshell.send(JSON.stringify(graphName));
         pyshell.on('message', function(message) {
-            console.log(message);
+            document.getElementById("hidden").innerHTML = message;
           });
         pyshell.end(function (err) {
           if (err){
@@ -31,17 +31,9 @@ function setGraph(elementName,graphName){
             throw err;
           };
           console.log('finished');
-          graph_object.setAttribute("data","../graph/demo.svg")
-          setTimeout(() => {
-            
-              graphArea.scrollTo(graph_object.scrollWidth, 0);
-          },100);
-        });
     });
+});
 }
-setTimeout(() => {
-    graphArea.scrollTo(graph_object.scrollWidth, 0);
-},100);
 
 btn = document.getElementById("intervalchange");
 btn2 = document.getElementById("graphchange");
@@ -70,8 +62,7 @@ minimize_btn = document.getElementById('minimize_btn');
 maximize_btn = document.getElementById('maximize_btn');
 close_btn = document.getElementById('close_btn');
 
-const electron = require('electron');
-const remote =  electron.remote;
+
 
 minimize_btn.addEventListener('click',function(e){
   var window = remote.getCurrentWindow();
@@ -91,6 +82,4 @@ close_btn.addEventListener('click',function(e){
   var window = remote.getCurrentWindow();
   window.close();
 });
-
 });
-

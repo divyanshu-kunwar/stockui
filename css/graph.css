@@ -99,20 +99,6 @@ border: #000;
 -ms-overflow-style: none;  /* IE and Edge */
 scrollbar-width: none;  /* Firefox */
 }
-#graph_area{
-    background-image:url('../icon/grid.svg');
-    background-repeat: repeat;
-}
-#grids{
-    position: fixed;
-    z-index: -1;
-    width: 100%;
-}
-
-#yaxis{
-    position: fixed;
-    right: 0px;
-}
 .drop_container {
     /* display: none; */
     position: absolute;
@@ -158,4 +144,7 @@ hr{
 #topmore{
     margin-left: 10px;
     margin-right: 10px;
+}
+#hidden{
+    display: none;
 }

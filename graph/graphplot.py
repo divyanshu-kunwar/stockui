@@ -2,6 +2,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 import numpy as np
 import matplotlib.pyplot as plt
+import mpld3
 from matplotlib.lines import TICKLEFT, TICKRIGHT, Line2D
 from matplotlib.patches import Rectangle
 import xml.etree.ElementTree as ET
@@ -11,6 +12,7 @@ from matplotlib import colors as mcolors
 from matplotlib.collections import LineCollection, PolyCollection
 from matplotlib.transforms import Affine2D
 from six.moves import xrange, zip
+from matplotlib.dates import date2num , num2date
 # import scipy.optimize as opt
 # from sklearn.utils import resample
 import datetime as dt
@@ -20,6 +22,7 @@ import renkolib
 import linebreaklib
 import kagilib
 import pnflib
+
 
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
@@ -36,7 +39,7 @@ class graph:
         self.drawGraph()
                    
     def drawGraph(self):
-        self.fig, self.ax = plt.subplots(1, figsize=(25,8))
+        self.fig, self.ax = plt.subplots(1, figsize=(10,8))
         self.x=np.arange(0,len(self.df))
         if(self.type_=="candle"):
             self.candlestick()
@@ -180,9 +183,9 @@ class graph:
             else:
                 color = 'r'
             
-            vline = Line2D(xdata=(i, i), ydata=(self.df['low'][i],self.df['high'][i]),color=color)
-            oline = Line2D(xdata=(i, i), ydata=(self.df['open'][i], self.df['open'][i]),color=color,marker=TICKLEFT,markersize=3)
-            cline = Line2D(xdata=(i, i), ydata=(self.df['close'][i], self.df['close'][i]),color=color,markersize=3,marker=TICKRIGHT)
+            vline = Line2D(xdata=(self.df["date"][i], self.df["date"][i]), ydata=(self.df['low'][i],self.df['high'][i]),color=color)
+            oline = Line2D(xdata=(self.df["date"][i], self.df["date"][i]), ydata=(self.df['open'][i], self.df['open'][i]),color=color,marker=TICKLEFT,markersize=3)
+            cline = Line2D(xdata=(self.df["date"][i], self.df["date"][i]), ydata=(self.df['close'][i], self.df['close'][i]),color=color,markersize=3,marker=TICKRIGHT)
 
             lines.extend((vline, oline, cline))
             self.ax.add_line(vline)
@@ -192,28 +195,28 @@ class graph:
         self.labels_plot()
 
     def line(self):
-        width = int(len(self.x)/4)
-        self.fig , self.ax = plt.subplots(1,figsize=(width,8))
-        plt.plot(self.x,self.df['close'])
+        # width = int(len(self.x)/4)
+        # self.fig , self.ax = plt.subplots(1,figsize=(width,8))
+        plt.plot(self.df["date"],self.df['close'])
         self.labels_plot()
 
     def area(self):
         width = int(len(self.x)/4)
         self.fig , self.ax = plt.subplots(1,figsize=(width,8))
-        plt.plot(self.x,self.df['close'])
+        plt.plot(self.df["date"],self.df['close'])
         y_min, y_max = self.ax.get_ylim()
-        self.ax.fill_between(self.x,self.df['close'],y_min,alpha=0.2)
+        self.ax.fill_between(self.df["date"],self.df['close'],y_min,alpha=0.2)
         self.labels_plot()
 
     def baseline(self):
         width = int(len(self.x)/4)
         self.fig , self.ax = plt.subplots(1,figsize=(width,8))
-        plt.plot(self.x,self.df['close'])
+        plt.plot(self.df["date"],self.df['close'])
         y_min, y_max = self.ax.get_ylim()
         x_min, x_max = self.ax.get_xlim()
         baseline = (y_min+y_max)/2
-        # baselineX = Line2D((x_min,x_max),(baseline,baseline))   
-        # self.ax.add_line(baselineX)
+        baselineX = Line2D((x_min,x_max),(baseline,baseline))   
+        self.ax.add_line(baselineX)
         self.labels_plot()
 
     def renko(self):
@@ -241,16 +244,15 @@ class graph:
         self.fig , self.ax = plt.subplots(1,figsize=(width,8))
         col_up='g'
         col_down='r'
-        for i in range(1, len(renko_obj_atr.renko_prices)):
+        for i in range(1, len(renko_obj_atr.renko_prices)-1):
             # Set basic params for patch rectangle
             col = col_up if renko_obj_atr.renko_directions[i] == 1 else col_down
-            x = i
             y = renko_obj_atr.renko_prices[i] - renko_obj_atr.brick_size if renko_obj_atr.renko_directions[i] == 1 else renko_obj_atr.renko_prices[i]
             height = renko_obj_atr.brick_size
             # Draw bar with params
             self.ax.add_patch(
                 Rectangle(
-                    (x, y),   # (x,y)
+                    (i, y),   # (x,y)
                     0.6,     # width
                     height, # height
                     facecolor = col
@@ -277,7 +279,6 @@ class graph:
                 color='r'
                 lower=data_['lbclose'][i]
                 height=data_['lbopen'][i]-data_['lbclose'][i]
-
             self.ax.add_patch(Rectangle((i-0.5,lower),width=1.0,height=height,facecolor=color))
         self.labels_plot()
     
@@ -292,22 +293,23 @@ class graph:
                 lower = data['ko'][i]
             else:
                 lower = data['kc'][i]
-                
+            preX = num2date(date2num(self.df["date"][i].to_pydatetime())-1)
+            x = self.df["date"][i].to_pydatetime()
             if((data['height'][i]>data['height'][i-1]) and data['kc'][i] >data['ko'][i-1]):
-                vline1 = Line2D(xdata=(i, i), ydata=(lower,(lower+data['height'][i-1])),color=data["color"][i-1],lw=width[data["color"][i-1]])
-                vline2 = Line2D(xdata=(i, i), ydata=((lower+data['height'][i-1]),(lower+data['height'][i])),color=data["color"][i],lw=width[data["color"][i]])
+                vline1 = Line2D(xdata=(x, x), ydata=(lower,(lower+data['height'][i-1])),color=data["color"][i-1],lw=width[data["color"][i-1]])
+                vline2 = Line2D(xdata=(x, x), ydata=((lower+data['height'][i-1]),(lower+data['height'][i])),color=data["color"][i],lw=width[data["color"][i]])
                 self.ax.add_line(vline1)
                 self.ax.add_line(vline2)
             elif((data['height'][i]>data['height'][i-1]) and data['kc'][i] <data['ko'][i-1]):
-                vline1 = Line2D(xdata=(i, i), ydata=((lower+data['height'][i]-data['height'][i-1]),(lower+data['height'][i])),color=data["color"][i-1],lw=width[data["color"][i-1]])
-                vline2 = Line2D(xdata=(i, i), ydata=(lower,(lower+data['height'][i]-data['height'][i-1])),color=data["color"][i],lw=width[data["color"][i]])
+                vline1 = Line2D(xdata=(x, x), ydata=((lower+data['height'][i]-data['height'][i-1]),(lower+data['height'][i])),color=data["color"][i-1],lw=width[data["color"][i-1]])
+                vline2 = Line2D(xdata=(x, x), ydata=(lower,(lower+data['height'][i]-data['height'][i-1])),color=data["color"][i],lw=width[data["color"][i]])
                 self.ax.add_line(vline1)
                 self.ax.add_line(vline2)
             else:
-                vline = Line2D(xdata=(i, i), ydata=(lower,(lower+data['height'][i])),color=data["color"][i-1],lw=width[data["color"][i-1]])
+                vline = Line2D(xdata=(x, x), ydata=(lower,(lower+data['height'][i])),color=data["color"][i-1],lw=width[data["color"][i-1]])
                 data["color"][i] = data["color"][i-1]
                 self.ax.add_line(vline)
-            hline = Line2D(xdata=((i-1), i), ydata=(data['kc'][i-1],data['ko'][i]),color=data["color"][i-1],lw=width[data["color"][i-1]])
+            hline = Line2D(xdata=((preX), x), ydata=(data['kc'][i-1],data['ko'][i]),color=data["color"][i-1],lw=width[data["color"][i-1]])
             self.ax.add_line(hline)
 
         self.labels_plot()
@@ -347,10 +349,10 @@ class graph:
         self.ax.autoscale_view()
 
         # ticks top plot
-        self.ax.set_xticks(self.x[::5])
-        self.ax.set_xticklabels(self.df['date'][::5])
+        # self.ax.set_xticks(self.x[::5])
+        # self.ax.set_xticklabels(self.df['date'][::5])
         # self.ax.invert_xaxis()
-        # self.ax.yaxis.tick_right()
+        self.ax.yaxis.tick_right()
     
 
         # #line pointer
@@ -362,10 +364,10 @@ class graph:
         # crosslineY.set_gid('crosslineY')
 
         # labels
-        # self.ax.yaxis.set_label_position("right")
-        # self.ax.set_ylabel('Price\n (rupees)',color='k',fontsize=10)
+        self.ax.yaxis.set_label_position("right")
+        self.ax.set_ylabel('Price\n (rupees)',color='k',fontsize=10)
         self.ax.set_xlabel('Date',color='k',fontsize=10)
-        self.ax.get_yaxis().set_visible(False)
+        # self.ax.get_yaxis().set_visible(False)
 
         # grid
 
@@ -387,6 +389,7 @@ class graph:
         plt.savefig(f,format="svg")
         tree , xmlid = ET.XMLID(f.getvalue())
         ET.ElementTree(tree).write('graph/demo.svg')
+        mpld3.save_html(self.fig,"graph/demo.html")
         # plt.show()
 
         
