@@ -4,7 +4,7 @@ import sys
 
 df =pd.read_csv('graph/ACC.csv')
 # df['Date']=pd.to_datetime(df['Date'])
-df=df.head(2000).loc[::-1].reset_index()
+df=df.loc[::-1].reset_index()
 df=df.drop(columns=['index'])
 df=df.rename(columns={'Date':'date','Open Price':'open',
                             'High Price':'high',

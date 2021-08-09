@@ -35,7 +35,7 @@ function draw() {
   drawGridY();
   translate(translateX,0);
   if(dataloaded){
-  for(var i = data_length - data_on_graph - dataMoved; i<data_length-dataMoved; i++){
+  for(var i = (data_length - data_on_graph - dataMoved); i<data_length-dataMoved; i++){
      d = new candle_cal(i,width,height);  
      drawScaleX(i);
      fill (d.color);
@@ -46,9 +46,18 @@ function draw() {
   }
   
   translate(-translateX,0)
+    stroke(0);
     line(0,height-50,width,height-50);
     drawScaleY()
     legend()
+    fill(0);
+    rect(width-102,mouseY-10,60,20);
+    rect(mouseX-35,height-40,70,20);
+    fill(255);
+    text(date[selectedI],mouseX-25,height-25)
+    //calculate value of current position
+    var ycurrent = map(mouseY,height-paddingY,paddingY/2,min_low,max_high).toFixed(2);
+    text(ycurrent,width-100,mouseY+5)
     strokeWeight(0.4);
     canvas.drawingContext.setLineDash([5, 5]);
     line(0,mouseY,width-paddingX,mouseY);
@@ -62,7 +71,7 @@ function draw() {
 //change min and maximum value of scales
 function calcScales(){
     //get no of graph elements moved
-    dataMoved = Math.round(translateX / data_on_graph);
+    dataMoved = Math.round((translateX * data_on_graph) / 900);
     // get low and high value for scale
     min_low = getMinOfArray(low.slice(data_length-data_on_graph-5-dataMoved,data_length-dataMoved));
     max_high = getMaxOfArray(high.slice(data_length-data_on_graph-5-dataMoved,data_length-dataMoved));
@@ -86,7 +95,7 @@ function drawScaleX(i){
     x = map(i,data_length-data_on_graph,data_length,0,this.width-paddingX);
     fill(0);
     stroke(0);
-    if(i%3==0){
+    if(i % Math.round(data_on_graph/10)==0){
     line(x,height-40,x,height-50);
     strokeWeight(0.2);
     canvas.drawingContext.setLineDash([2, 2]);
@@ -135,8 +144,7 @@ function legend(){
 }
 
 function mouseDragged(){
-    var scrollWidth = (data_length-data_on_graph-1)*((width-paddingX)/data_on_graph);
-    if(translateX + (mouseX - pmouseX)>0 && translateX + (mouseX - pmouseX)<scrollWidth-50) {
+    if(translateX + (mouseX - pmouseX)>0) {
         translateX += (mouseX - pmouseX);
     }
 }
@@ -199,8 +207,22 @@ class candle_cal{
     }
 }
 
-// window.addEventListener("wheel",function(e){
-//     e.preventDefault();
-//     scaleValue += Math.sign(e.deltaY)*0.1;
-//     data_on_graph = Math.round(30+scaleValue);
-// });
+window.addEventListener("wheel",function(e){
+    scaleValue += Math.sign(e.deltaY)*0.1;
+    if(scaleValue>1){
+        if(data_on_graph<200){
+        data_on_graph++;
+        }
+        scaleValue = 0;
+    }
+    else if(scaleValue<-1){
+        if(data_on_graph>10){
+        data_on_graph--;
+        }
+        scaleValue = 0;
+    }
+    translateValue = -Math.sign(e.deltaX)*5;
+    if(translateX + translateValue > 0) {
+        translateX += translateValue;
+    }
+});
