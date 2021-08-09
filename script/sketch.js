@@ -29,35 +29,63 @@ function setup() {
 }
 
 function draw() {
+
+//calculate scale value i.e minimum and maximum value and moved value of data
   calcScales();
   background(255);
+
   stroke(0);
+
+  //only horizontal grid 
   drawGridY();
+
+  push()
+  // move  data to left or right 
   translate(translateX,0);
+
+  //when data is loaded start drawing graph
   if(dataloaded){
+
+    // calculate number of candles to show on screen
   for(var i = (data_length - data_on_graph - dataMoved); i<data_length-dataMoved; i++){
-     d = new candle_cal(i,width,height);  
-     drawScaleX(i);
+    // draw grid and scale on x axis
+    drawScaleX(i);
+    // create a candle object and pass i , width and height for calculation
+    d = new candle_cal(i,width,height);
+    //set color of candles and position of rect and line on basis of calculation
      fill (d.color);
      stroke (d.color);
      rect(d.x1,d.y1,d.widthX,d.heightY);
      line(d.x2,d.y2,d.x2,d.y3);
+     //calculate selected candle
      d.isInBound(mouseX-translateX);
   }
-  
-  translate(-translateX,0)
+  pop()
+
     stroke(0);
+    //horizontal x line
     line(0,height-50,width,height-50);
+
+    //draw vertical value and ticks on x-axis
     drawScaleY()
+
+    //show the value of selected candle
     legend()
+
+    //ticks for selected position on graph as date on x-axis and price on y
     fill(0);
+    //price tick
     rect(width-102,mouseY-10,60,20);
+    //date tick
     rect(mouseX-35,height-40,70,20);
     fill(255);
-    text(date[selectedI],mouseX-25,height-25)
     //calculate value of current position
     var ycurrent = map(mouseY,height-paddingY,paddingY/2,min_low,max_high).toFixed(2);
+    //price
     text(ycurrent,width-100,mouseY+5)
+    //date
+    text(date[selectedI],mouseX-25,height-25)
+    // dotted cross line according to mouse coordinates
     strokeWeight(0.4);
     canvas.drawingContext.setLineDash([5, 5]);
     line(0,mouseY,width-paddingX,mouseY);
@@ -72,17 +100,22 @@ function draw() {
 function calcScales(){
     //get no of graph elements moved
     dataMoved = Math.round((translateX * data_on_graph) / 900);
-    // get low and high value for scale
+    // get low price and high price value for scale
     min_low = getMinOfArray(low.slice(data_length-data_on_graph-5-dataMoved,data_length-dataMoved));
     max_high = getMaxOfArray(high.slice(data_length-data_on_graph-5-dataMoved,data_length-dataMoved));
 }
 
 // draw y grids 
 function drawGridY(){
-    var y1 = map(-min_low,-max_high,-min_low,height-paddingY,paddingY);
-    var y2 = map(-max_high,-max_high,-min_low,height-paddingY,0);
-    for(var i=0; i<9; i++){
-        y = map(i,0,6,y2,y1);
+    
+    //mapping of value between min price and max price to canvas height
+    //coordinate of min price tick and max price tick
+    var y1 = map(-min_low,-max_high,-min_low,height-paddingY,paddingY/2);
+    var y2 = map(-max_high,-max_high,-min_low,height-paddingY,paddingY/2);
+    
+    //draw 7 grids
+    for(var i=0; i<8; i++){
+        y = map(i,0,7,y2,y1);
         canvas.drawingContext.setLineDash([2, 2]);
         strokeWeight(0.1);
         line(0,y,width-102,y);
@@ -91,19 +124,27 @@ function drawGridY(){
     }
 }
 
+// draw ticks and grid for every i candle
 function drawScaleX(i){
-    x = map(i,data_length-data_on_graph,data_length,0,this.width-paddingX);
+    //calculate position for all x ticks on basis of position
+    // of first 30 candles 
+    x = map(i,data_length-data_on_graph,data_length,0,width-paddingX);
     fill(0);
     stroke(0);
     if(i % Math.round(data_on_graph/10)==0){
+        //small dark tick lines on x axis 
     line(x,height-40,x,height-50);
+
+    //date on x-axis
+    strokeWeight(0);
+    text(date[i],x-20,height-30);
+
     strokeWeight(0.1);
     canvas.drawingContext.setLineDash([2, 2]);
     line(x,0,x,height-50);
     strokeWeight(1);
     canvas.drawingContext.setLineDash([0, 0]);
-     strokeWeight(0);
-    text(date[i],x-20,height-30);
+
     strokeWeight(1);
     }
     
