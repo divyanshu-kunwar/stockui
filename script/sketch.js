@@ -35,8 +35,9 @@ function draw() {
      drawScaleX(i);
      fill (d.color);
      stroke (d.color);
-     rect(d.x1,d.y1,d.widthX,d.heightY)
+     rect(d.x1,d.y1,d.widthX,d.heightY);
      line(d.x2,d.y2,d.x2,d.y3);
+     rect(d.x1,d.y4,d.widthX,50);
      
      d.isInBound(mouseX-translateX);
   }
@@ -64,7 +65,7 @@ function drawGridY(){
     for(var i=0; i<9; i++){
         y = map(i,0,6,y2,y1);
         canvas.drawingContext.setLineDash([2, 2]);
-        strokeWeight(0.2);
+        strokeWeight(0.1);
         line(0,y,width-102,y);
         canvas.drawingContext.setLineDash([0, 0]);
         strokeWeight(1);
@@ -79,7 +80,7 @@ function drawScaleX(i){
     if(i%3==0){
     line(x,height-50,x_next,height-50);
     line(x,height-40,x,height-50);
-    strokeWeight(0.2);
+    strokeWeight(0.1);
     canvas.drawingContext.setLineDash([2, 2]);
     line(x,0,x,height-50);
     strokeWeight(1);
@@ -93,6 +94,7 @@ function drawScaleX(i){
 function drawScaleY(){
     var y1 = map(-min_low,-max_high,-min_low,height-paddingY,paddingY/2);
     var y2 = map(-max_high,-max_high,-min_low,height-paddingY,paddingY/2);
+    stroke(0);
     line(width-102,20,width-102,height-50);  
     stroke(255);
     fill(255);
