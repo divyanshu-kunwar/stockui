@@ -43,8 +43,17 @@ body{
     padding-left: 20px;
     display: block;
 }
+#search_list{
+    position: relative;
+    top:50px;
+    padding-left: 20px;
+    display: none;
+}
 
 #company_list table{
+    width: 100%;
+}
+#search_list table{
     width: 100%;
 }
 
@@ -145,6 +154,6 @@ hr{
     margin-left: 10px;
     margin-right: 10px;
 }
-#hidden{
+#hiddenData , #hiddenGraphType{
     display: none;
 }

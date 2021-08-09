@@ -4,6 +4,7 @@ var paddingY = 100;
 var paddingX = 100;
 var data;
 var dataloaded = false;
+var graph_type = "candle";
 var date = [];
 var open_ = [];
 var close_ = [];
@@ -30,7 +31,98 @@ function setup() {
 
 // all drawing goes inside i.e the main graph plotting function
 function draw() {
+    //update the type of graph
+    graph_type = document.getElementById("hiddenGraphType").innerHTML;
+    
+    switch(graph_type){
+        case "bars":
+            drawbars();
+            break;
+        case "candle":
+            drawcandle();
+            break;
+        default:
+            drawcandle();
+            break;
+    }
+}
 
+//function for bars graph
+function drawbars(){
+
+    //calculate scale value i.e minimum and maximum value and moved value of data
+    calcScales();
+    background(255);
+
+    stroke(0);
+    //only horizontal grid 
+    drawGridY();
+
+    //when data is loaded start drawing graph
+    if (dataloaded) {
+        push()
+        // move  data to left or right 
+        translate(translateX, 0);
+        // calculate number of candles to show on screen
+        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+            // draw grid and scale on x axis
+            drawScaleX(i);
+            // create a candle object and pass i , width and height for calculation
+            d = new bars_cal(i, width, height);
+            //set color of candles and position of rect and line on basis of calculation
+            fill(d.color);
+            stroke(d.color);
+            strokeWeight(2);
+            //vertical lines
+            line(d.x1, d.y1, d.x1, d.y2);
+
+            //horizontal small lines
+            line(d.x1, d.y3, d.x1-d.widthX/2, d.y3); //open
+            line(d.x1, d.y4, d.x1+d.widthX/2, d.y4); //close
+            
+            strokeWeight(1);
+            //calculate selected candle
+            d.isInBound(mouseX - translateX);
+        }
+        pop()
+
+        stroke(0);
+        //horizontal x line
+        line(0, height - 50, width, height - 50);
+
+        //draw vertical value and ticks on x-axis
+        drawScaleY()
+
+        //show the value of selected candle
+        legend()
+
+        //ticks for selected position on graph as date on x-axis and price on y
+        fill(0);
+        //price tick
+        rect(width - 102, mouseY - 10, 60, 20);
+        //date tick
+        rect(mouseX - 35, height - 40, 80, 20);
+        fill(255);
+        //calculate value of current position
+        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
+        //price
+        text(ycurrent, width - 100, mouseY + 5)
+        //date
+        text(date[selectedI], mouseX - 25, height - 25)
+        // dotted cross line according to mouse coordinates
+        strokeWeight(0.4);
+        canvas.drawingContext.setLineDash([5, 5]);
+        line(0, mouseY, width - paddingX, mouseY);
+        line(mouseX, 0, mouseX, height - 50);
+        canvas.drawingContext.setLineDash([0, 0]);
+        strokeWeight(1);
+}
+
+}
+
+// function for candle graph
+function drawcandle(){
+    
     //calculate scale value i.e minimum and maximum value and moved value of data
     calcScales();
     background(255);
@@ -75,7 +167,7 @@ function draw() {
         //price tick
         rect(width - 102, mouseY - 10, 60, 20);
         //date tick
-        rect(mouseX - 35, height - 40, 70, 20);
+        rect(mouseX - 35, height - 40, 80, 20);
         fill(255);
         //calculate value of current position
         var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
@@ -90,9 +182,9 @@ function draw() {
         line(mouseX, 0, mouseX, height - 50);
         canvas.drawingContext.setLineDash([0, 0]);
         strokeWeight(1);
-
-    }
 }
+}
+
 
 //change min and maximum value of scales
 function calcScales() {
@@ -229,8 +321,46 @@ window.addEventListener("wheel", function (e) {
 });
 
 
+// a class for calculating values and behaviour of bars i.e 2h and 1v line
+class bars_cal{
+    constructor(i, width, height) {
+        this.i = i;                     // index of data
+        this.width = width;             //width of canvas
+        this.height = height;           //height of canvas
+        this.widthX = 0;                //width of line
+        this.x1 = 0;                    //position
+        this.y1 = 0;                    //vertical line low
+        this.y2 = 0;                    //vertical line high
+        this.y3 = 0;                    //horizontal line open
+        this.y4 = 0;                    //horizontal line close
+        this.color = 0;                 //color of candle 
+        this.calc();                    //perform calculation
+    }
+    calc() {
+        let i = this.i;
+        //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
+        this.x1 = map(i, data_length - data_on_graph, data_length, 0, width - paddingX)
+        //y1 value for visible candles on basis of close price mapped to height
+        this.y1 = map(-low[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y2 = map(-high[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y3 = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y4 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+        // width of candle is half the regular width
+        this.widthX = map(0.5, 0, data_on_graph, 0, this.width - paddingX);
+
+        this.color = color_[i]              //color of bar
+    }
+    //check if mouseX is on the bar area anywhere between bar width
+    isInBound(mouseX) {
+        //mousex is in  bound (X)
+        if (mouseX > this.x1-this.widthX && mouseX < this.x1 + this.widthX) {
+            selectedI = this.i;
+        }
+    }
+}
+
 // a class for calculating values and behaviour of candle stick rect and line
-class candle_cal {
+class candle_cal{
     constructor(i, width, height) {
         this.i = i;                     // index of data
         this.width = width;             //width of canvas
@@ -285,9 +415,11 @@ function getMinOfArray(numArray) {
 //getting data from the hidden div element and adding it back to arrays
 setInterval(function () {
     // whenever there is value in hidden element and data is not loaded then load the data
-    if (document.getElementById("hidden").innerHTML != "" && dataloaded == false) {
+    if (document.getElementById("hiddenData").innerHTML != "" && dataloaded == false) {
         // get data and change to json object
-        data = JSON.parse(document.getElementById("hidden").innerHTML);
+        data = JSON.parse(document.getElementById("hiddenData").innerHTML);
+        //get the type of graph
+        graph_type = document.getElementById("hiddenGraphType").innerHTML;
         //calculate length of data by date length
         data_length = Object.keys(data["date"]).length;
         console.log(data_length);

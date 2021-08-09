@@ -18,9 +18,9 @@ class Data:
         x = len(self.df)
         for i in range(0,x):
             if self.df['close'][i] >=self.df['open'][i]:
-                self.df['color'][i] = 'g' 
+                self.df['color'][i] = '#00ca73'     #green
             else:
-                self.df['color'][i] = 'r'
+                self.df['color'][i] = '#ff6960'     #red
         self.send_data()
    
     def candle(self):
@@ -33,5 +33,6 @@ class Data:
                 self.df['color'][i] = '#ff6960'  #red
         self.send_data()
     
+    #tranfer data as json to changeGraph.js file
     def send_data(self):
         print(self.df.to_json())

@@ -1,15 +1,18 @@
 const {PythonShell} = require('python-shell');
 const electron = require('electron');
 const remote =  electron.remote;
+const mysql = require('mysql');
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  // setGraph("areaBtn","area");
+  
+  setGraph("barsBtn","bars");
   setGraph("candleBtn","candle");
+  // setGraph("areaBtn","area");
   /*setGraph("baselineBtn","baseline");
   setGraph("heikinashiBtn","heikinashi");
   setGraph("lineBtn","line");
-  setGraph("barsBtn","bars");
+  
   setGraph("renkoBtn","renko");
   setGraph("hollowcandleBtn","hollowcandle");
   setGraph("pnfBtn","pnf");
@@ -21,9 +24,14 @@ function setGraph(elementName,graphName){
         document.getElementById("dropGraphType").style.display="none";
         document.getElementById("graphchange").setAttribute("src","../icon/"+ graphSrc);
         let pyshell = new PythonShell('graph/callData.py');
-        // pyshell.send(JSON.stringify(graphName));
+
+        // send name of the graph
+        pyshell.send(JSON.stringify(graphName));
+
+        //receieve data from python
         pyshell.on('message', function(message) {
-            document.getElementById("hidden").innerHTML = message;
+            document.getElementById("hiddenGraphType").innerHTML = graphName;
+            document.getElementById("hiddenData").innerHTML = message;
           });
         pyshell.end(function (err) {
           if (err){
@@ -57,6 +65,41 @@ function toggleDropDown(btn , elementToCollapse){
       }
   })
 }
+
+// make search list visible on input focus (searching)
+var search_list = document.getElementById("search_list");
+var company_list = document.getElementById("company_list");
+var search_box = document.getElementById("search_input");
+
+search_box.addEventListener("focus",function(e){
+    var input_text = search_box.value;
+    search_list.style.display="block";
+    company_list.style.display="none";
+    setInterval(function(e){
+    var query = "SHOW FULL TABLES IN company WHERE (TABLE_TYPE LIKE 'VIEW') and `Tables_in_company` LIKE '%"+input_text+"%';"
+    con.query(query, function (err, result) {
+      if (err) throw err;
+      console.log("Result: " + result);
+    });
+    },100);
+},true);
+
+search_box.addEventListener("blur",function(e){
+    search_list.style.display="none";
+    company_list.style.display="block";
+},true);
+
+// connect to my sql database for company data
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "vishal"
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 minimize_btn = document.getElementById('minimize_btn');
 maximize_btn = document.getElementById('maximize_btn');
