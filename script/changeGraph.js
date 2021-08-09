@@ -72,15 +72,24 @@ var company_list = document.getElementById("company_list");
 var search_box = document.getElementById("search_input");
 
 search_box.addEventListener("focus",function(e){
-    var input_text = search_box.value;
+    var input_text = "";
     search_list.style.display="block";
     company_list.style.display="none";
     setInterval(function(e){
-    var query = "SHOW FULL TABLES IN company WHERE (TABLE_TYPE LIKE 'VIEW') and `Tables_in_company` LIKE '%"+input_text+"%';"
+  if(search_box.value != input_text){
+    input_text = search_box.value;
+    var query = "SELECT Table_name as stock from information_schema.tables where (table_schema = 'company') and (TABLE_TYPE LIKE 'VIEW') and (table_name Like '%"+input_text+"%');"
     con.query(query, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      var names =""
+        for(var i=0; i<5 ; i++){
+          try{
+            names += result[i]['stock']
+          }catch{}
+        }
+        console.log(names);
     });
+  }
     },100);
 },true);
 
