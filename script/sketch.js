@@ -16,6 +16,11 @@ var max_high = 0;
 var translateX = 0;
 var data_length = 0;
 var selectedI = 0;
+var dataMoved = 0;
+var scaleValue = 1;
+var data_on_graph = 30;
+
+//get width and height of parents
 var parents = document.getElementById("graph_area");
 var parentWidth = parents.getBoundingClientRect().width;
 var parentHeight = parents.getBoundingClientRect().height;
@@ -30,35 +35,49 @@ function draw() {
   drawGridY();
   translate(translateX,0);
   if(dataloaded){
-  for(var i = 0; i<data_length; i++){
-     d = new candle_cal(i,width,height);
+  for(var i = (data_length - data_on_graph - dataMoved); i<data_length-dataMoved; i++){
+     d = new candle_cal(i,width,height);  
      drawScaleX(i);
      fill (d.color);
      stroke (d.color);
      rect(d.x1,d.y1,d.widthX,d.heightY);
      line(d.x2,d.y2,d.x2,d.y3);
-     rect(d.x1,d.y4,d.widthX,50);
-     
      d.isInBound(mouseX-translateX);
   }
+  
   translate(-translateX,0)
+    stroke(0);
+    line(0,height-50,width,height-50);
     drawScaleY()
     legend()
+    fill(0);
+    rect(width-102,mouseY-10,60,20);
+    rect(mouseX-35,height-40,70,20);
+    fill(255);
+    text(date[selectedI],mouseX-25,height-25)
+    //calculate value of current position
+    var ycurrent = map(mouseY,height-paddingY,paddingY/2,min_low,max_high).toFixed(2);
+    text(ycurrent,width-100,mouseY+5)
     strokeWeight(0.4);
     canvas.drawingContext.setLineDash([5, 5]);
     line(0,mouseY,width-paddingX,mouseY);
     line(mouseX,0,mouseX,height-50);
     canvas.drawingContext.setLineDash([0, 0]);
     strokeWeight(1);
+    
 }
 }
 
+//change min and maximum value of scales
 function calcScales(){
-    var dataMoved = Math.round(translateX / 30);
-    min_low = getMinOfArray(low.slice(data_length-31-dataMoved,data_length-dataMoved));
-    max_high = getMaxOfArray(high.slice(data_length-31-dataMoved,data_length-dataMoved));
+    //get no of graph elements moved
+    dataMoved = Math.round((translateX * data_on_graph) / 900);
+    // get low and high value for scale
+    min_low = getMinOfArray(low.slice(data_length-data_on_graph-5-dataMoved,data_length-dataMoved));
+    max_high = getMaxOfArray(high.slice(data_length-data_on_graph-5-dataMoved,data_length-dataMoved));
 }
 
+// draw y grids 
 function drawGridY(){
     var y1 = map(-min_low,-max_high,-min_low,height-paddingY,paddingY);
     var y2 = map(-max_high,-max_high,-min_low,height-paddingY,0);
@@ -73,12 +92,10 @@ function drawGridY(){
 }
 
 function drawScaleX(i){
-    x = map(i,data_length-30,data_length,0,this.width-paddingX);
-    x_next = map(i+3,data_length-30,data_length,0,this.width-paddingX);
+    x = map(i,data_length-data_on_graph,data_length,0,this.width-paddingX);
     fill(0);
     stroke(0);
-    if(i%3==0){
-    line(x,height-50,x_next,height-50);
+    if(i % Math.round(data_on_graph/10)==0){
     line(x,height-40,x,height-50);
     strokeWeight(0.1);
     canvas.drawingContext.setLineDash([2, 2]);
@@ -95,7 +112,7 @@ function drawScaleY(){
     var y1 = map(-min_low,-max_high,-min_low,height-paddingY,paddingY/2);
     var y2 = map(-max_high,-max_high,-min_low,height-paddingY,paddingY/2);
     stroke(0);
-    line(width-102,20,width-102,height-50);  
+    line(width-102,20,width-102,height-50);
     stroke(255);
     fill(255);
     rect(width-100,0,100,height-20);
@@ -114,7 +131,6 @@ function drawScaleY(){
 function legend(){
     fill(255);
     rect(8,10,380,30);
-    console.log(color_[selectedI]);
     fill(color_[selectedI]);
     text("O :",10,30);
     text(open_[selectedI],30,30);
@@ -128,8 +144,7 @@ function legend(){
 }
 
 function mouseDragged(){
-    var scrollWidth = (data_length-29)*((width-paddingX)/30);
-    if(translateX + (mouseX - pmouseX)>0 && translateX + (mouseX - pmouseX)<scrollWidth-50) {
+    if(translateX + (mouseX - pmouseX)>0) {
         translateX += (mouseX - pmouseX);
     }
 }
@@ -176,12 +191,12 @@ class candle_cal{
     }
     calc(){
         let i = this.i;
-        this.x1 = map(i-0.25 , data_length-30,data_length,0,width-paddingX)
+        this.x1 = map(i-0.25 , data_length-data_on_graph,data_length,0,width-paddingX)
         this.y1 = map(-close_[i],-min_low,-max_high,height-paddingY,paddingY/2)
-        this.x2 = map(i,data_length-30,data_length,0,this.width-paddingX);
+        this.x2 = map(i,data_length-data_on_graph,data_length,0,this.width-paddingX);
         this.y2 = map(-high[i],-min_low,-max_high,height-paddingY,paddingY/2);
         this.y3 = map(-low[i],-min_low,-max_high,height-paddingY,paddingY/2)
-        this.widthX = map(0.5 ,0,30,0,this.width-paddingX);
+        this.widthX = map(0.5 ,0,data_on_graph,0,this.width-paddingX);
         this.heightY = map(-open_[i],-min_low,-max_high,height-paddingY,paddingY/2)-this.y1;
         this.color = color_[i]
     }
@@ -191,3 +206,23 @@ class candle_cal{
         }
     }
 }
+
+window.addEventListener("wheel",function(e){
+    scaleValue += Math.sign(e.deltaY)*0.1;
+    if(scaleValue>1){
+        if(data_on_graph<200){
+        data_on_graph++;
+        }
+        scaleValue = 0;
+    }
+    else if(scaleValue<-1){
+        if(data_on_graph>10){
+        data_on_graph--;
+        }
+        scaleValue = 0;
+    }
+    translateValue = -Math.sign(e.deltaX)*5;
+    if(translateX + translateValue > 0) {
+        translateX += translateValue;
+    }
+});
