@@ -12,6 +12,7 @@
     "electron": "^13.1.5"
   },
   "dependencies": {
+    "jquery": "^3.6.0",
     "mysql": "^2.18.1",
     "python-shell": "^3.0.0"
   }

@@ -157,3 +157,10 @@ hr{
 #hiddenData , #hiddenGraphType{
     display: none;
 }
+.show_graph{
+    display: none;
+}
+.add_company{
+    display: none;
+}
+
