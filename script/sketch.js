@@ -21,7 +21,8 @@ var selectedI = 0;
 var dataMoved = 0;
 var scaleValue = 1;
 var data_on_graph = 30;
-var y3 ;
+var yb ;
+var xb;
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -29,11 +30,12 @@ var parentWidth = parents.getBoundingClientRect().width;
 var parentHeight = parents.getBoundingClientRect().height;
 function setup() {
     canvas = createCanvas(parentWidth, parentHeight - 30);
-    y3 = height/2;
+    yb = height/2;
 }
 
 // all drawing goes inside i.e the main graph plotting function
 function draw() {
+    
     //update the type of graph
 
     switch (graph_type) {
@@ -408,7 +410,6 @@ function drawarea() {
 }
 
 function drawbaseline() {
-
     //calculate scale value i.e minimum and maximum value and moved value of data
     calcScales();
     background(255);
@@ -429,59 +430,82 @@ function drawbaseline() {
             // create a candle object and pass i , width and height for calculation
             d = new line_cal(i, width, height);
             //set color of candles and position of rect and line on basis of calculation
-            stroke("#0044ff66");
-            strokeWeight(1);
-            // line 
-            line(d.x1, d.y1, d.x2, d.y2);
-             
-            //area 
-            strokeWeight(0);
             
-            if(d.y1 < y3 && d.y2< y3){
-                fill("#00ff00")
+            if(d.y1 < yb && d.y2< yb){
+                stroke("#00ff00");
+                strokeWeight(1);
+                // line 
+                line(d.x1, d.y1, d.x2, d.y2);
+                //area 
+                strokeWeight(0);
+                fill("#00ff0010")
                 beginShape();
                 vertex(d.x1,d.y1);
                 vertex(d.x2,d.y2);
-                vertex(d.x2,y3);
-                vertex(d.x1,y3);
+                vertex(d.x2,yb);
+                vertex(d.x1,yb);
                 endShape();
-            }else if(d.y1> y3 && d.y2>y3){
-                fill("#ff0000");
+            }else if(d.y1> yb && d.y2>yb){
+                stroke("#ff0000");
+                strokeWeight(1);
+                // line 
+                line(d.x1, d.y1, d.x2, d.y2);
+                //area 
+                strokeWeight(0);
+                fill("#ff000010");
                 beginShape();
                 vertex(d.x1,d.y1);
                 vertex(d.x2,d.y2);
-                vertex(d.x2,y3);
-                vertex(d.x1,y3);
+                vertex(d.x2,yb);
+                vertex(d.x1,yb);
                 endShape();
-            }else if(d.y1>y3 && d.y2< y3){
-                var x3 = ((y3 - d.y1)*(d.x2-d.x1)/(d.y2-d.y1)) + d.x1;
-                fill("#ffff00");
-                triangle(d.x1,d.y1,d.x1,d.y3,x3,y3)
-                // fill("#0000ff");
-                // beginShape();
-                // vertex(d.x2,d.y2);
-                // vertex(d.x2,d.y3);
-                // vertex(x3,y3);
-                // endShape();
+            }else if(d.y1>yb && d.y2<yb){
+                xb = ((yb - d.y1)*(d.x2-d.x1)/(d.y2-d.y1)) + d.x1;
+                stroke("#00ff00");
+                strokeWeight(1);
+                // line 
+                line(d.x2, d.y2, xb, yb);
+                //area 
+                strokeWeight(0);
+                fill("#00ff0010");
+                triangle(d.x2,d.y2,d.x2,yb,xb,yb);
+                stroke("#ff0000");
+                strokeWeight(1);
+                // line 
+                line(d.x1, d.y1, xb, yb);
+                //area 
+                strokeWeight(0);
+                fill("#ff000010");
+                triangle(d.x1,d.y1,d.x1,yb,xb,yb)
             }else{
-                // fill("#ff000010");
-                // beginShape();
-                // vertex(d.x1,d.y1);
-                // vertex(d.x2,d.y2);
-                // vertex(d.x2,y3);
-                // vertex(d.x1,y3);
-                // endShape();
+                xb = ((yb - d.y1)*(d.x2-d.x1)/(d.y2-d.y1)) + d.x1;
+                stroke("#00ff00");
+                strokeWeight(1);
+                // line 
+                line(d.x1, d.y1, xb, yb);
+                //area 
+                strokeWeight(0);
+                fill("#00ff0010");
+                triangle(d.x1,d.y1,d.x1,yb,xb,yb)
+                stroke("#ff0000");
+                strokeWeight(1);
+                // line 
+                line(d.x2, d.y2, xb, yb);
+                //area 
+                strokeWeight(0);
+                fill("#ff000010");
+                triangle(d.x2,d.y2,d.x2,yb,xb,yb);
             }
-            beginShape();
-            vertex(d.x1,d.y1);
-            vertex(d.x2,d.y2);
-            vertex(d.x2,y3);
-            vertex(d.x1,y3);
-            endShape();
             //calculate selected candle
             d.isInBound(mouseX - translateX);
         }
         pop()
+
+        if(mouseY>yb-20 && mouseY<yb+20){
+            canvas.canvas.style.cursor = "ns-resize";
+        }else{
+            cursor(CROSS);
+        }
 
         stroke(0);
         //horizontal x line
@@ -490,7 +514,7 @@ function drawbaseline() {
         // baseline 
         strokeWeight(0.4);
         canvas.drawingContext.setLineDash([2, 2]);
-        line(0,y3,width,y3);
+        line(0,yb,width,yb);
         canvas.drawingContext.setLineDash([0, 0]);
         strokeWeight(1);
 
@@ -631,6 +655,13 @@ function mouseDragged() {
     }
     move_baseline(mouseY,pmouseY);
 }
+
+function move_baseline(mouseY,pmouseY){
+    if(mouseY>yb-20 && mouseY < yb +20){
+        yb = pmouseY;
+    }
+}
+
 
 // zoom in and out and translate on basis of mouse wheel or trackpad scroll x and y
 window.addEventListener("wheel", function (e) {
@@ -819,13 +850,6 @@ class line_cal {
         }
     }
 }
-
-function move_baseline(mouseY,pmouseY){
-    if(mouseY>y3-20 && mouseY < y3 +20){
-        y3 = pmouseY;
-    }
-}
-
 
 
 // calculate maximum value and minimum value in a given array
