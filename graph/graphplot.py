@@ -229,14 +229,6 @@ class graph:
         renko_obj_atr.set_brick_size(auto = False, brick_size = optimal_brick)
         renko_obj_atr.build_history(prices = self.df["close"], dates = self.df["date"])
 
-        # Calculate the limits of axes
-        # self.ax.set_xlim(0.0, 
-        #             len(self.renko_prices) + 1.0)
-        # self.ax.set_ylim(np.min(self.renko_prices) - 3.0 * self.brick_size, 
-        #             np.max(self.renko_prices) + 3.0 * self.brick_size)
-
-        # self.ax.set_xticks(range(1, len(self.renko_prices))[::50])
-        # self.ax.set_xticklabels(self.dates[::50])
         self.x = range(1, len(renko_obj_atr.renko_prices))
         self.df=pd.DataFrame(renko_obj_atr.dates,columns=['date'])
         # Plot each renko bar

@@ -60,6 +60,9 @@ function draw() {
         case 'baseline':
             drawbaseline();
             break;
+        case 'renko':
+            drawrenko();
+            break;
         default:
             drawcandle();
             break;
@@ -548,6 +551,69 @@ function drawbaseline() {
 
 }
 
+function drawrenko() {
+
+    //calculate scale value i.e minimum and maximum value and moved value of data
+    calcScales();
+    background(255);
+
+    stroke(0);
+    //only horizontal grid 
+    drawGridY();
+
+    //when data is loaded start drawing graph
+    if (dataloaded) {
+        push()
+        // move  data to left or right 
+        translate(translateX, 0);
+        // calculate number of candles to show on screen
+        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+            // draw grid and scale on x axis
+            drawScaleX(i);
+            // create a candle object and pass i , width and height for calculation
+            d = new renko(i, width, height);
+            //set color of candles and position of rect and line on basis of calculation
+            fill(d.color);
+            stroke(d.color);
+            rect(d.x1, d.y1, d.widthX, d.heightY);
+            //calculate selected candle
+            d.isInBound(mouseX - translateX);
+        }
+        pop()
+
+        stroke(0);
+        //horizontal x line
+        line(0, height - 50, width, height - 50);
+
+        //draw vertical value and ticks on x-axis
+        drawScaleY()
+
+        //show the value of selected candle
+        legend()
+
+        //ticks for selected position on graph as date on x-axis and price on y
+        fill(0);
+        //price tick
+        rect(width - 102, mouseY - 10, 60, 20);
+        //date tick
+        rect(mouseX - 35, height - 40, 80, 20);
+        fill(255);
+        //calculate value of current position
+        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
+        //price
+        text(ycurrent, width - 100, mouseY + 5)
+        //date
+        text(date[selectedI], mouseX - 25, height - 25)
+        // dotted cross line according to mouse coordinates
+        strokeWeight(0.4);
+        canvas.drawingContext.setLineDash([5, 5]);
+        line(0, mouseY, width - paddingX, mouseY);
+        line(mouseX, 0, mouseX, height - 50);
+        canvas.drawingContext.setLineDash([0, 0]);
+        strokeWeight(1);
+    }
+}
+
 //change min and maximum value of scales
 function calcScales() {
     //get no of graph elements moved
@@ -846,6 +912,39 @@ class line_cal {
     isInBound(mouseX) {
         //mousex is in  bound (X)
         if (mouseX > this.x1 - this.widthX && mouseX < this.x1 + this.widthX) {
+            selectedI = this.i;
+        }
+    }
+}
+
+class renko {
+    constructor(i, width, height) {
+        this.i = i;                     // index of data
+        this.width = width;             //width of canvas
+        this.height = height;           //height of canvas
+        this.widthX = 0;                //width of candle
+        this.heightX = 0;               //height of candle
+        this.x1 = 0;                    //rect x1
+        this.y1 = 0;                    //rect y1   
+        this.color = 0;                 //color of candle 
+        this.calc();                    //perform calculation
+    }
+    calc() {
+        let i = this.i;
+        //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
+        this.x1 = map(i - 0.5, data_length - data_on_graph, data_length, 0, width - paddingX)
+        //y1 value for visible candles on basis of close price mapped to height
+        this.y1 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+        // width of candle is half the regular width
+        this.widthX = map(1, 0, data_on_graph, 0, this.width - paddingX);
+        //height of candle calculated using open and close price
+        this.heightY = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2) - this.y1;
+        this.color = color_[i]              //color of candle
+    }
+    //check if mouseX is on the candle area anywhere between candle width
+    isInBound(mouseX) {
+        //mousex is in rectangle bound (X)
+        if (mouseX > this.x1 && mouseX < this.x1 + this.widthX) {
             selectedI = this.i;
         }
     }

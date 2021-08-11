@@ -1,4 +1,5 @@
-
+import pandas as pd
+import renkolib
 
 class Data:
     def __init__(self , df=None , graphtype="candle"):
@@ -23,6 +24,8 @@ class Data:
             self.line()
         elif self.graphtype=='baseline':
             self.line()
+        elif self.graphtype=='renko':
+            self.renko()
 
 
 
@@ -121,7 +124,45 @@ class Data:
                 self.df['color'][i] = '#ff6960'     #red
         self.send_data()
    
-            
+    def renko(self):
+        
+        # Get optimal brick size based
+        optimal_brick = renkolib.renko().set_brick_size(
+            auto = True, HLC_history = self.df[["high", "low", "close"]])
+        # Build Renko chart
+        renko_obj = renkolib.renko()
+        renko_obj.set_brick_size(auto = False, brick_size = 34.23)
+        renko_obj.build_history(prices = self.df["close"], dates = self.df["date"])
+
+        self.x = range(0,len(renko_obj.renko_prices))
+        self.df= pd.DataFrame(renko_obj.dates,columns=['date'])
+        self.df = self.df.loc[::-1].reset_index()
+        self.df = self.df.drop(columns=['index'])
+        
+        
+        self.df['close'] = 0.0
+        self.df['open'] = 0.0
+        self.df['high'] = 0.0
+        self.df['low'] = 0.0
+        self.df['color'] = "r"
+        bric_size = 34.23
+        for i in self.x:
+            if(renko_obj.renko_directions[i]==1):
+                self.df['close'][i] = renko_obj.renko_prices[i]
+                self.df['open'][i] = renko_obj.renko_prices[i] - bric_size
+                self.df['high'][i] = renko_obj.renko_prices[i]
+                self.df['low'][i] = renko_obj.renko_prices[i] - bric_size
+                self.df['color'][i] = '#00ca73'         #green
+                
+            else:
+                self.df['close'][i] = renko_obj.renko_prices[i]
+                self.df['open'][i] = renko_obj.renko_prices[i] + bric_size
+                self.df['high'][i] = renko_obj.renko_prices[i] + bric_size
+                self.df['low'][i] = renko_obj.renko_prices[i]
+                self.df['color'][i] = '#ff6960'         #red
+                
+        self.send_data()
+
 
     #tranfer data as json to changeGraph.js file
     def send_data(self):

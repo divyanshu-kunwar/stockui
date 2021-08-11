@@ -14,10 +14,9 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("lineBtn","line");
   setGraph("areaBtn","area");
   setGraph("baselineBtn","baseline");
-  /*
-  
   setGraph("renkoBtn","renko");
   
+  /*
   setGraph("pnfBtn","pnf");
   setGraph("kagiBtn","kagi");
   setGraph("linebreakBtn","linebreak"); */
@@ -128,7 +127,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   // connect to my sql database for company data
-  var con = mysql.createConnection({
+  /*var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "vishal"
@@ -137,7 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
   con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
-  });
+  }); */
 
   minimize_btn = document.getElementById('minimize_btn');
   maximize_btn = document.getElementById('maximize_btn');
