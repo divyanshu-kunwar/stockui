@@ -92,6 +92,7 @@ class renko:
                                              low = np.double(HLC_history.iloc[:, 1]), 
                                              close = np.double(HLC_history.iloc[:, 2]), 
                                              )[atr_timeperiod:])
+            
         
         return brick_size
 

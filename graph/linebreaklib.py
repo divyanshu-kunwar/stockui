@@ -1,41 +1,51 @@
 import pandas as pd
 def linebreak(df):
-    data=df[["date", "close","open"]]
-    d , o , c ,lbo ,lbc = [],[],[],[],[]
+    d  ,lbo ,lbc, vol , low , high , color = [],[],[],[],[],[],[]
     for i in range(0,3):
-        d.append(data['date'][i])
-        o.append(data['open'][i])
-        c.append(data["close"][i])
-        lbo.append(data["open"][i])
-        lbc.append(data["close"][i])
-
-    for i in range(3,len(data)):
+        d.append(df['date'][i])
+        lbo.append(df["open"][i])
+        lbc.append(df["close"][i])
+        vol.append(df["volume"][i])
+    volume = 0.0
+    for i in range(3,len(df)):
+        volume += df['volume'][i]
         leng = len(lbo)
-        if(data['close'][i]>max(lbc[leng-1],lbc[leng-2],lbc[leng-3],lbo[leng-1],lbo[leng-2],lbo[leng-3])):
-            lbc.append(data['close'][i])
+        if(df['close'][i]>max(lbc[leng-1],lbc[leng-2],lbc[leng-3],lbo[leng-1],lbo[leng-2],lbo[leng-3])):
+            lbc.append(df['close'][i])
             if(lbc[leng-1]>lbo[leng-1]):
                 lnbr_open=lbc[leng-1]
             else:
                 lnbr_open=lbo[leng-1]
             lbo.append(lnbr_open)
-            d.append(data['date'][i])
-            o.append(data['open'][i])
-            c.append(data['close'][i])
-        elif(data['close'][i]<min(lbc[leng-1],lbc[leng-2],lbc[leng-3],lbo[leng-1],lbo[leng-2],lbo[leng-3])):
-            lbc.append(data['close'][i])
+            d.append(df['date'][i])
+            vol.append(df['volume'][i])
+            volume = 0.0
+        elif(df['close'][i]<min(lbc[leng-1],lbc[leng-2],lbc[leng-3],lbo[leng-1],lbo[leng-2],lbo[leng-3])):
+            lbc.append(df['close'][i])
             if(lbc[leng-1]>lbo[leng-1]):
                     lnbr_open=lbo[leng-1]
             else:
                 lnbr_open=lbc[leng-1]
             lbo.append(lnbr_open)
-            d.append(data['date'][i])
-            o.append(data['open'][i])
-            c.append(data['close'][i])
-    data_ = pd.DataFrame(d,columns=['date'])
-    data_['open'] = o
-    data_['close'] = c
-    data_['lbopen'] = lbo
-    data_['lbclose'] = lbc
-    data_=data_.reset_index()
-    data_ = data_.drop(columns=["index"])
-    return data_
+            d.append(df['date'][i])
+            vol.append(df['volume'][i])
+            volume = 0.0
+    for i in range(0,len(lbo)):
+        low.append(min(lbo[i],lbc[i]))
+        high.append(max(lbo[i],lbc[i]))
+        if(lbc[i]>lbo[i]):
+            color.append('#00ca73')         #green 
+        else:
+            color.append('#ff6960')         #red
+
+
+    df_ = pd.DataFrame(d,columns=['date'])
+    df_['open'] = lbo
+    df_['close'] = lbc
+    df_['low'] = low
+    df_['high'] = high
+    df_['volume'] = vol
+    df_['color'] = color
+    # df_=df_.reset_index()
+    # df_ = df_.drop(columns=["index"])
+    return df_

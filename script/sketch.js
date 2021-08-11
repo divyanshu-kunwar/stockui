@@ -20,7 +20,7 @@ var data_length = 0;
 var selectedI = 0;
 var dataMoved = 0;
 var scaleValue = 1;
-var data_on_graph = 30;
+var data_on_graph = 60;
 var yb ;
 var xb;
 
@@ -61,6 +61,9 @@ function draw() {
             drawbaseline();
             break;
         case 'renko':
+            drawrenko();
+            break;
+        case 'linebreak':
             drawrenko();
             break;
         default:
@@ -699,6 +702,7 @@ function drawScaleY() {
 // display the ohcl data on basis of selecteI (selected candle)
 function legend() {
     fill(255);
+    textSize(14);
     //background rectangle
     rect(8, 10, 380, 30);
     fill(color_[selectedI]);
@@ -710,7 +714,10 @@ function legend() {
     text(high[selectedI].toFixed(2), 230, 30);
     text("C :", 310, 30);
     text(close_[selectedI].toFixed(2), 330, 30);
+    text((close_[selectedI]-close_[selectedI-1]).toFixed(2), 30, 60);
+    text("("+((close_[selectedI]-close_[selectedI-1])*100/close_[selectedI-1]).toFixed(2)+"%)", 75, 60);
     strokeWeight(1);
+    textSize(12);
 }
 
 // translate on basis of click and drag
@@ -975,7 +982,7 @@ setInterval(function () {
         selectedI = 0;
         dataMoved = 0;
         scaleValue = 1;
-        data_on_graph = 30;
+        data_on_graph = 60;
 
     }
     // whenever there is value in hidden element and data is not loaded then load the data

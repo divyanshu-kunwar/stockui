@@ -1,5 +1,7 @@
 import pandas as pd
 import renkolib
+import atrlib
+import linebreaklib
 
 class Data:
     def __init__(self , df=None , graphtype="candle"):
@@ -26,6 +28,8 @@ class Data:
             self.line()
         elif self.graphtype=='renko':
             self.renko()
+        elif self.graphtype=='linebreak':
+            self.linebreak()
 
 
 
@@ -131,13 +135,14 @@ class Data:
             auto = True, HLC_history = self.df[["high", "low", "close"]])
         # Build Renko chart
         renko_obj = renkolib.renko()
-        renko_obj.set_brick_size(auto = False, brick_size = 34.23)
-        renko_obj.build_history(prices = self.df["close"], dates = self.df["date"])
+        renko_obj.set_brick_size(auto = False, brick_size = optimal_brick)
+        dates_ = self.df[['date']]
+        dates_ = dates_.loc[::-1].reset_index()
+        renko_obj.build_history(prices = self.df["close"], dates = dates_["date"])
+        
 
         self.x = range(0,len(renko_obj.renko_prices))
         self.df= pd.DataFrame(renko_obj.dates,columns=['date'])
-        self.df = self.df.loc[::-1].reset_index()
-        self.df = self.df.drop(columns=['index'])
         
         
         self.df['close'] = 0.0
@@ -145,7 +150,7 @@ class Data:
         self.df['high'] = 0.0
         self.df['low'] = 0.0
         self.df['color'] = "r"
-        bric_size = 34.23
+        bric_size = renko_obj.brick_size
         for i in self.x:
             if(renko_obj.renko_directions[i]==1):
                 self.df['close'][i] = renko_obj.renko_prices[i]
@@ -163,6 +168,9 @@ class Data:
                 
         self.send_data()
 
+    def linebreak(self):
+        self.df = linebreaklib.linebreak(self.df)
+        self.send_data()
 
     #tranfer data as json to changeGraph.js file
     def send_data(self):

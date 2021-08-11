@@ -15,11 +15,12 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("areaBtn","area");
   setGraph("baselineBtn","baseline");
   setGraph("renkoBtn","renko");
+  setGraph("linebreakBtn","linebreak");
   
   /*
   setGraph("pnfBtn","pnf");
   setGraph("kagiBtn","kagi");
-  setGraph("linebreakBtn","linebreak"); */
+  */
   function setGraph(elementName, graph) {
     var graphSrc = graph + "_.svg";
     document.getElementById(elementName).addEventListener("click", function (e) {
@@ -41,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
     pyshell.on('message', function (message) {
       document.getElementById("hiddenGraphType").innerHTML = graphName;
       document.getElementById("hiddenData").innerHTML = message;
-      // console.log(message);
+      //console.log(JSON.parse(message));
     });
     pyshell.end(function (err) {
       if (err) {
@@ -54,12 +55,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   btn = document.getElementById("intervalchange");
   btn2 = document.getElementById("graphchange");
+  btn3 = document.getElementById("indicator");
+  btn4 = document.getElementById("close_indictor");
 
   elementToCollapse = document.getElementById("dropIntervalType");
   elementToCollapse2 = document.getElementById("dropGraphType");
+  elementToCollapse3 = document.getElementById("indicator_box");
+
 
   toggleDropDown(btn, elementToCollapse);
   toggleDropDown(btn2, elementToCollapse2);
+  toggleDropDown(btn3, elementToCollapse3);
+  toggleDropDown(btn4, elementToCollapse3);
 
 
   // toogle drop down menu by passing btn id and drop down id
