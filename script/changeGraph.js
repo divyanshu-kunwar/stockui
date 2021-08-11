@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
     pyshell.on('message', function (message) {
       document.getElementById("hiddenGraphType").innerHTML = graphName;
       document.getElementById("hiddenData").innerHTML = message;
-      console.log(message);
+      // console.log(message);
     });
     pyshell.end(function (err) {
       if (err) {
@@ -145,7 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   function change_company(company) {
-    console.log(company);
+    // console.log(company);
     companyName = company;
     change_graph();
   }

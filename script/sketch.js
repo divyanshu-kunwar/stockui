@@ -438,7 +438,7 @@ function drawbaseline() {
             strokeWeight(0);
             
             if(d.y1 < y3 && d.y2< y3){
-                fill("#00ff00")
+                fill("#00ff0010")
                 beginShape();
                 vertex(d.x1,d.y1);
                 vertex(d.x2,d.y2);
@@ -446,38 +446,29 @@ function drawbaseline() {
                 vertex(d.x1,y3);
                 endShape();
             }else if(d.y1> y3 && d.y2>y3){
-                fill("#ff0000");
+                fill("#ff000010");
                 beginShape();
                 vertex(d.x1,d.y1);
                 vertex(d.x2,d.y2);
                 vertex(d.x2,y3);
                 vertex(d.x1,y3);
                 endShape();
+         
             }else if(d.y1>y3 && d.y2< y3){
-                var x3 = ((y3 - d.y1)*(d.x2-d.x1)/(d.y2-d.y1)) + d.x1;
-                fill("#ffff00");
-                triangle(d.x1,d.y1,d.x1,d.y3,x3,y3)
-                // fill("#0000ff");
-                // beginShape();
-                // vertex(d.x2,d.y2);
-                // vertex(d.x2,d.y3);
-                // vertex(x3,y3);
-                // endShape();
-            }else{
-                // fill("#ff000010");
-                // beginShape();
-                // vertex(d.x1,d.y1);
-                // vertex(d.x2,d.y2);
-                // vertex(d.x2,y3);
-                // vertex(d.x1,y3);
-                // endShape();
+                var x3=((d.y1-y3)*d.x2+(y3-d.y2)*d.x1)/(d.y1-d.y2)
+                fill("#ff000010");
+                triangle(d.x1,d.y1,d.x1,y3,x3,y3)
+                fill("#00ff0010");
+                triangle(d.x2,d.y2,d.x2,y3,x3,y3)
+            }else if(d.y1<y3 && d.y2> y3){
+                var x3=((y3-d.y1)*d.x2+(d.y2-y3)*d.x1)/(d.y2-d.y1)
+                fill("#00ff0010");
+                triangle(d.x1,d.y1,d.x1,y3,x3,y3)
+                fill("#ff000010");
+                triangle(d.x2,d.y2,d.x2,y3,x3,y3)
+                
             }
-            beginShape();
-            vertex(d.x1,d.y1);
-            vertex(d.x2,d.y2);
-            vertex(d.x2,y3);
-            vertex(d.x1,y3);
-            endShape();
+            
             //calculate selected candle
             d.isInBound(mouseX - translateX);
         }
