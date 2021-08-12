@@ -2,6 +2,7 @@ import pandas as pd
 import renkolib
 import atrlib
 import linebreaklib
+import abclib
 
 class Data:
     def __init__(self , df=None , graphtype="candle"):
@@ -30,6 +31,7 @@ class Data:
             self.renko()
         elif self.graphtype=='linebreak':
             self.linebreak()
+        self.send_data()
 
 
 
@@ -42,7 +44,7 @@ class Data:
                 self.df['color'][i] = '#00ca73'     #green
             else:
                 self.df['color'][i] = '#ff6960'     #red
-        self.send_data()
+        
    
     def candle(self):
         self.df['color'] = 'r'
@@ -52,7 +54,7 @@ class Data:
                 self.df['color'][i] = '#00ca73'  #green
             else:
                 self.df['color'][i] = '#ff6960'  #red
-        self.send_data()
+        
     
 
     def hollowcandle(self):
@@ -84,7 +86,7 @@ class Data:
                 else:
                     self.df['color'][i]='#ff6960'  #red
                     self.df['stroke'][i]='#ff6960'  #red
-        self.send_data()
+        
                 
     def heikinashi(self):
         self.df['ha_open'] = 0.0
@@ -116,7 +118,7 @@ class Data:
                 self.df['color'][i] = '#00ca73'  #green
             else:
                 self.df['color'][i] = '#ff6960'  #red
-        self.send_data()
+        
 
     def line(self):
         self.df['color'] = 'r'
@@ -126,9 +128,9 @@ class Data:
                 self.df['color'][i] = '#00ca73'     #green
             else:
                 self.df['color'][i] = '#ff6960'     #red
-        self.send_data()
+        
    
-    def renko(self):
+    '''def renko(self):
         
         # Get optimal brick size based
         optimal_brick = renkolib.renko().set_brick_size(
@@ -166,11 +168,15 @@ class Data:
                 self.df['low'][i] = renko_obj.renko_prices[i]
                 self.df['color'][i] = '#ff6960'         #red
                 
-        self.send_data()
+        self.send_data()'''
 
+    def renko(self):
+        self.df = abclib.renko(self.df)
+        
+    
     def linebreak(self):
         self.df = linebreaklib.linebreak(self.df)
-        self.send_data()
+        
 
     #tranfer data as json to changeGraph.js file
     def send_data(self):

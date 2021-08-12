@@ -1,4 +1,5 @@
-date,Symbol,Series,Prev Close,open,high,low,Last Price,close,Average Price,Total Traded Quantity,Turnover,No. of Trades,Deliverable Qty,% Dly Qt to Traded Qty, 
+date,Symbol,Series,Prev Close,open,high,low,Last Price,close,Average Price,volume,Turnover,No. of Trades,Deliverable Qty,% Dly Qt to Traded Qty, 
+11-Aug-21,ACC,EQ,2296.95,2297,2327.95,2248.55,2276.9,2276.05,2270.55,401413,911429368.2,26273,164669,41.02, 
 10-Aug-21,ACC,EQ,2312.6,2324,2330,2266.95,2296,2296.95,2301.73,321608,740253479.7,19833,83463,25.95, 
 09-Aug-21,ACC,EQ,2341.35,2348,2366.55,2304,2322.3,2312.6,2331.85,449768,1048790657,21109,192059,42.7, 
 06-Aug-21,ACC,EQ,2392.2,2382.1,2398.8,2335.4,2344,2341.35,2362.48,516746,1220800564,26616,216620,41.92, 
