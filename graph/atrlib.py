@@ -1,16 +1,20 @@
-import numpy as np
 import pandas as pd
 
-def ATR(high,low,close):
-    df = pd.DataFrame(high,columns=['h'])
-    df['l'] = pd.DataFrame(low)
-    df['c'] = pd.DataFrame(close)
-    high_low = df['h'] - df['l']
-    high_close = np.abs(df['h'] - df['c'].shift())
-    low_close = np.abs(df['l'] - df['c'].shift())
-
-    ranges = pd.concat([high_low, high_close, low_close], axis=1)
-    true_range = np.max(ranges, axis=1)
-
-    atr = true_range.rolling(14).sum()/14
+def atr(df):
+    ar = []
+    for i in range(0,len(df)):
+        if i==0:
+            ar.append(df['high'][i]-df['low'][i])
+        else:
+            hl=(df['high'][i]-df['low'][i])
+            hc=abs(df['high'][i]-df['close'][i-1])
+            lc=abs(df['low'][i]-df['close'][i-1])
+            ar.append(max(hl,hc,lc))
+    df['ar'] = ar
+    atrlist = (df['ar'].rolling(14, min_periods=1).sum()/14).tolist()
+    atr = pd.DataFrame(atrlist,columns= ['atr'])
     return atr
+
+def brick_size(df):
+    brick_size= atr(df)['atr'].median()
+    return brick_size

@@ -16,10 +16,11 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("baselineBtn","baseline");
   setGraph("renkoBtn","renko");
   setGraph("linebreakBtn","linebreak");
+  setGraph("kagiBtn","kagi");
   
   /*
   setGraph("pnfBtn","pnf");
-  setGraph("kagiBtn","kagi");
+  
   */
   function setGraph(elementName, graph) {
     var graphSrc = graph + "_.svg";

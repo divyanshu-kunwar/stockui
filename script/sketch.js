@@ -1,28 +1,11 @@
 // initialized variable
-var canvas;
-var paddingY = 100;
-var paddingX = 100;
-var data;
-var data_ = "";
-var dataloaded = false;
-var graph_type = "candle";
-var date = [];
-var open_ = [];
-var close_ = [];
-var low = [];
-var high = [];
-var color_ = [];
-var stroke_ = [];
-var min_low = 0;
-var max_high = 0;
-var translateX = 0;
-var data_length = 0;
-var selectedI = 0;
-var dataMoved = 0;
-var scaleValue = 1;
-var data_on_graph = 60;
-var yb;
-var xb;
+var canvas, paddingY = 100, paddingX = 100;
+var data, data_ = "", dataloaded = false, graph_type = "candle";
+var date = [], open_ = [], close_ = [], low = [], height_ = [];
+var high = [], color_ = [], stroke_ = [];
+var min_low = 0, max_high = 0, translateX = 0, scaleValue = 1;
+var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
+var yb, xb , drawCount = 0;
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -35,6 +18,7 @@ function setup() {
 
 // all drawing goes inside i.e the main graph plotting function
 function draw() {
+    
     //when data is loaded start drawing graph
     if (dataloaded) {
         //calculate scale value i.e minimum and maximum value and moved value of data
@@ -74,6 +58,9 @@ function draw() {
                 break;
             case 'linebreak':
                 drawrenko();
+                break;
+            case 'kagi':
+                drawkagi();
                 break;
             default:
                 drawcandle();
@@ -128,16 +115,16 @@ function draw_candle_heikinashi() {
         fill(d.color);
         if (graph_type == 'hollowcandle') stroke(d.stroke);
         else stroke(d.color);
-        if(graph_type=='bars'){
+        if (graph_type == 'bars') {
             strokeWeight(2);
-            line(d.x2, d.y1, d.x2+d.widthX/2, d.y1);
-            line(d.x2, d.y1 + d.heightY, d.x2-d.widthX/2, d.y1 + d.heightY);
+            line(d.x2, d.y1, d.x2 + d.widthX / 2, d.y1);
+            line(d.x2, d.y1 + d.heightY, d.x2 - d.widthX / 2, d.y1 + d.heightY);
             line(d.x2, d.y2, d.x2, d.y3);
-        }else{
+        } else {
             line(d.x2, d.y2, d.x2, d.y3);
             rect(d.x1, d.y1, d.widthX, d.heightY);
         }
-        
+
         //calculate selected candle
         d.isInBound(mouseX - translateX);
     }
@@ -289,6 +276,44 @@ function drawrenko() {
     }
 }
 
+function drawkagi() {
+    drawCount ++ ;
+    // move  data to left or right 
+    translate(translateX, 0);
+    // calculate number of candles to show on screen
+    for (var i = (data_length - data_on_graph - dataMoved); i < data_length; i++) {
+        // draw grid and scale on x axis
+        drawScaleX(i);
+        // create a candle object and pass i , width and height for calculation
+        d = new kagi_cal(i, width, height);
+
+        strokeWeight(1);
+
+        if ((height_[i]>height_[i-1]) && (close_[i] >open_[i-1])){
+            stroke(color_[i-1]);
+            console.log(color_[i-1])
+            line(d.x1, d.y1, d.x1, d.y2);
+            stroke(color_[i]);
+            line(d.x1, d.y2, d.x1, d.y3);
+        }
+        else if((height_[i]>height_[i-1]) && (close_[i] <open_[i-1])){
+            stroke(color_[i-1]);
+            console.log(color_[i-1])
+            line(d.x1, d.y4, d.x1, d.y3);
+            stroke(color_[i]);
+            line(d.x1, d.y1, d.x1, d.y4);
+        }else{
+            stroke(color_[i-1]);
+            line(d.x1, d.y1, d.x1, d.y3);
+            color_[i] = color_[i-1];
+        }
+        stroke(color_[i-1]);
+        line(d.x2, d.y5, d.x1, d.y6);        //horizontal
+        //calculate selected candle
+        d.isInBound(mouseX - translateX);
+    }
+}
+
 //change min and maximum value of scales
 function calcScales() {
     //get no of graph elements moved
@@ -377,7 +402,7 @@ function legend() {
     textSize(14);
     //background rectangle
     rect(8, 10, 380, 30);
-    if(graph_type=='hollowcandle') fill(stroke_[selectedI]);
+    if (graph_type == 'hollowcandle') fill(stroke_[selectedI]);
     else fill(color_[selectedI]);
     text("O :", 10, 30);
     text(open_[selectedI].toFixed(2), 30, 30);
@@ -548,6 +573,50 @@ class renko {
     }
 }
 
+class kagi_cal {
+    constructor(i, width, height) {
+        this.i = i;                     // index of data
+        this.width = width;             //width of canvas
+        this.height = height;           //height of canvas
+        this.widthX = 0;                //width of candle
+        this.x1 = 0;                    //position 
+        this.x2 = 0;                    //prev position
+        this.y1 = 0;                    // lower  
+        this.y2 = 0;                    // lower + prev height 
+        this.y3 = 0;                    // lower + height
+        this.y4 = 0;                    // lower  + height - prev height
+        this.y5 = 0;                    // prev close
+        this.y6 = 0;                    // open  
+        this.color = 0;                 //color of candle 
+        if(i!=0)  this.calc();          //perform calculation
+    }
+    calc() {
+        let i = this.i;
+        //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
+        this.x1 = map(i, data_length - data_on_graph, data_length, 0, width - paddingX)
+        this.x2 = map(i-1, data_length - data_on_graph, data_length, 0, width - paddingX)
+
+        //y1 value for visible candles on basis of close price mapped to height
+        this.y1 = map(-min(open_[i],close_[i]), -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y2 = map(-(min(open_[i],close_[i])+height_[i-1]), -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y3 = map(-(min(open_[i],close_[i])+height_[i]), -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y4 = map(-(min(open_[i],close_[i])+height_[i]-height_[i-1]), -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y5 = map(-close_[i-1], -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y6 = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+        // width of candle is half the regular width
+        this.widthX = map(1, 0, data_on_graph, 0, this.width - paddingX);
+
+
+        this.color = color_[i];              //color of candle
+    }
+    //check if mouseX is on the candle area anywhere between candle width
+    isInBound(mouseX) {
+        //mousex is in rectangle bound (X)
+        if (mouseX > this.x1-this.widthX/2 && mouseX < this.x1 + this.widthX/2) {
+            selectedI = this.i;
+        }
+    }
+}
 
 // calculate maximum value and minimum value in a given array
 function getMaxOfArray(numArray) {
@@ -568,6 +637,7 @@ setInterval(function () {
     if (document.getElementById("hiddenData").innerHTML != "" && dataloaded == false) {
         data = []; date = []; open_ = []; close_ = [];
         low = []; high = []; color_ = []; stroke_ = [];
+        height_ = [];
         // get data and change to json object
         data_ = document.getElementById("hiddenData").innerHTML;
         data = JSON.parse(document.getElementById("hiddenData").innerHTML);
@@ -584,8 +654,9 @@ setInterval(function () {
             low[i] = (data['low'][i]);
             high[i] = (data['high'][i]);
             color_[i] = (data['color'][i]);
-            if (graph_type == "hollowcandle") {
-                stroke_[i] = (data['stroke'][i]);
+            if (graph_type == "hollowcandle") stroke_[i] = (data['stroke'][i]);
+            if(graph_type == 'kagi'){
+                 height_[i] = data['height'][i];
             }
         }
         //calculate min and max of first 30 data

@@ -1,8 +1,6 @@
-import pandas as pd
 import renkolib
-import atrlib
 import linebreaklib
-import abclib
+import kagilib
 
 class Data:
     def __init__(self , df=None , graphtype="candle"):
@@ -14,46 +12,26 @@ class Data:
     
     def cal_data(self):
         if self.graphtype=='bars':
-            self.bars()
+            self.color()
         elif self.graphtype=='candle':
-            self.candle()
+            self.color()
         elif self.graphtype=='hollowcandle':
             self.hollowcandle()
         elif self.graphtype=='heikinashi':
             self.heikinashi()
         elif self.graphtype=='line':
-            self.line()
+            self.color()
         elif self.graphtype=='area':
-            self.line()
+            self.color()
         elif self.graphtype=='baseline':
-            self.line()
+            self.color()
         elif self.graphtype=='renko':
             self.renko()
         elif self.graphtype=='linebreak':
             self.linebreak()
+        elif self.graphtype=='kagi':
+            self.kagi()
         self.send_data()
-
-
-
-
-    def bars(self):
-        self.df['color'] = 'r'
-       
-        for i in range(0,self.x):
-            if self.df['close'][i] >=self.df['open'][i]:
-                self.df['color'][i] = '#00ca73'     #green
-            else:
-                self.df['color'][i] = '#ff6960'     #red
-        
-   
-    def candle(self):
-        self.df['color'] = 'r'
-    
-        for i in range(0,self.x):
-            if self.df['close'][i] >=self.df['open'][i]:
-                self.df['color'][i] = '#00ca73'  #green
-            else:
-                self.df['color'][i] = '#ff6960'  #red
         
     
 
@@ -113,14 +91,29 @@ class Data:
                             'ha_close':'close'})
 
         self.df['color'] = 'r'
-        for i in range(0,self.x):
-            if self.df['close'][i] >=self.df['open'][i]:
-                self.df['color'][i] = '#00ca73'  #green
-            else:
-                self.df['color'][i] = '#ff6960'  #red
+        self.color()
+        
+   
+    def renko(self):
+        self.df = renkolib.renko(self.df)
+        self.x = len(self.df)
+        self.color()
+        
+    
+    def linebreak(self):
+        self.df = linebreaklib.linebreak(self.df)
+        self.x = len(self.df)
+        self.color()
+    
+    def kagi(self):
+        self.df = kagilib.kagi(self.df)
         
 
-    def line(self):
+    #tranfer data as json to changeGraph.js file
+    def send_data(self):
+        print(self.df.to_json())
+
+    def color(self):
         self.df['color'] = 'r'
        
         for i in range(0,self.x):
@@ -128,56 +121,3 @@ class Data:
                 self.df['color'][i] = '#00ca73'     #green
             else:
                 self.df['color'][i] = '#ff6960'     #red
-        
-   
-    '''def renko(self):
-        
-        # Get optimal brick size based
-        optimal_brick = renkolib.renko().set_brick_size(
-            auto = True, HLC_history = self.df[["high", "low", "close"]])
-        # Build Renko chart
-        renko_obj = renkolib.renko()
-        renko_obj.set_brick_size(auto = False, brick_size = optimal_brick)
-        dates_ = self.df[['date']]
-        dates_ = dates_.loc[::-1].reset_index()
-        renko_obj.build_history(prices = self.df["close"], dates = dates_["date"])
-        
-
-        self.x = range(0,len(renko_obj.renko_prices))
-        self.df= pd.DataFrame(renko_obj.dates,columns=['date'])
-        
-        
-        self.df['close'] = 0.0
-        self.df['open'] = 0.0
-        self.df['high'] = 0.0
-        self.df['low'] = 0.0
-        self.df['color'] = "r"
-        bric_size = renko_obj.brick_size
-        for i in self.x:
-            if(renko_obj.renko_directions[i]==1):
-                self.df['close'][i] = renko_obj.renko_prices[i]
-                self.df['open'][i] = renko_obj.renko_prices[i] - bric_size
-                self.df['high'][i] = renko_obj.renko_prices[i]
-                self.df['low'][i] = renko_obj.renko_prices[i] - bric_size
-                self.df['color'][i] = '#00ca73'         #green
-                
-            else:
-                self.df['close'][i] = renko_obj.renko_prices[i]
-                self.df['open'][i] = renko_obj.renko_prices[i] + bric_size
-                self.df['high'][i] = renko_obj.renko_prices[i] + bric_size
-                self.df['low'][i] = renko_obj.renko_prices[i]
-                self.df['color'][i] = '#ff6960'         #red
-                
-        self.send_data()'''
-
-    def renko(self):
-        self.df = abclib.renko(self.df)
-        
-    
-    def linebreak(self):
-        self.df = linebreaklib.linebreak(self.df)
-        
-
-    #tranfer data as json to changeGraph.js file
-    def send_data(self):
-        print(self.df.to_json())

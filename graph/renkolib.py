@@ -1,128 +1,69 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import atrlib
-
-class renko:   
-    fig = ""
-    ax = ""   
-    def __init__(self):
-        self.source_prices = []
-        self.renko_prices = []
-        self.renko_directions = []
-        self.dates = []
-    
-    # Setting brick size. Auto mode is preferred, it uses history
-    def set_brick_size(self, HLC_history = None, auto = True, brick_size = 10.0):
-        if auto == True:
-            self.brick_size = self.__get_optimal_brick_size(HLC_history.iloc[:, [0, 1, 2]])
-        else:
-            self.brick_size = brick_size
-        return self.brick_size
-    
-    def __renko_rule(self, last_price , dates_):
-        # Get the gap between two prices
-        gap_div = int(float(last_price - self.renko_prices[-1]) / self.brick_size)
-        is_new_brick = False
-        start_brick = 0
-        num_new_bars = 0
-
-        # When we have some gap in prices
-        if gap_div != 0:
-            # Forward any direction (up or down)
-            if (gap_div > 0 and (self.renko_directions[-1] > 0 or self.renko_directions[-1] == 0)) or (gap_div < 0 and (self.renko_directions[-1] < 0 or self.renko_directions[-1] == 0)):
-                num_new_bars = gap_div
-                is_new_brick = True
-                start_brick = 0
-            # Backward direction (up -> down or down -> up)
-            elif np.abs(gap_div) >= 2: # Should be double gap at least
-                num_new_bars = gap_div
-                num_new_bars -= np.sign(gap_div)
-                start_brick = 2
-                is_new_brick = True
-                self.renko_prices.append(self.renko_prices[-1] + 2 * self.brick_size * np.sign(gap_div))
-                self.renko_directions.append(np.sign(gap_div))
-                self.dates.insert(0,dates_)
-            #else:
-                #num_new_bars = 0
-
-            if is_new_brick:
-                # Add each brick
-                for d in range(start_brick, np.abs(gap_div)):
-                    self.renko_prices.append(self.renko_prices[-1] + self.brick_size * np.sign(gap_div))
-                    self.renko_directions.append(np.sign(gap_div))
-                    self.dates.insert(0,dates_)
-        
-        return num_new_bars
-                
-    # Getting renko on history
-    def build_history(self, prices , dates):
-        if len(prices) > 0:
-            # Init by start values
-            self.source_prices = prices
-            self.renko_prices.append(prices.iloc[0])
-            self.renko_directions.append(0)
-        
-            # For each price in history
-            i=0
-            for p in self.source_prices[1:]:
-                self.__renko_rule(p,dates[i])
-                i = i+1
-        
-        return len(self.renko_prices)
-    
-    # Getting next renko value for last price
-    def do_next(self, last_price):
-        if len(self.renko_prices) == 0:
-            self.source_prices.append(last_price)
-            self.renko_prices.append(last_price)
-            self.renko_directions.append(0)
-            return 1
-        else:
-            self.source_prices.append(last_price)
-            return self.__renko_rule(last_price)
-    
-    # Simple method to get optimal brick size based on ATR
-    def __get_optimal_brick_size(self, HLC_history, atr_timeperiod = 14):
-        brick_size = 0.0
-        
-        # If we have enough of data
-        if HLC_history.shape[0] > atr_timeperiod:
-            brick_size = np.median(atrlib.ATR(high = np.double(HLC_history.iloc[:, 0]), 
-                                             low = np.double(HLC_history.iloc[:, 1]), 
-                                             close = np.double(HLC_history.iloc[:, 2]), 
-                                             )[atr_timeperiod:])
-            
-        
-        return brick_size
-
-    def evaluate(self, method = 'simple'):
-        balance = 0
-        sign_changes = 0
-        price_ratio = len(self.source_prices) / len(self.renko_prices)
-
-        if method == 'simple':
-            for i in range(2, len(self.renko_directions)):
-                if self.renko_directions[i] == self.renko_directions[i - 1]:
-                    balance = balance + 1
-                else:
-                    balance = balance - 2
-                    sign_changes = sign_changes + 1
-
-            if sign_changes == 0:
-                sign_changes = 1
-
-            score = balance / sign_changes
-            if score >= 0 and price_ratio >= 1:
-                score = np.log(score + 1) * np.log(price_ratio)
+import pandas as pd
+def renko(df):
+    d , l , h ,lbo ,lbc,vol=[],[],[],[],[],[]
+    brick_size = atrlib.brick_size(df)
+    volume = 0.0
+    for i in range(0,len(df)):
+        if i==0:
+            if(df['close'][i]>df['open'][i]):
+                d.append(df['date'][i])
+                l.append(df['open'][i])
+                h.append(df["close"][i])
+                lbo.append(df["open"][i])
+                lbc.append(df["close"][i])
+                vol.append(df['volume'][i])
             else:
-                score = -1.0
-
-            return {'balance': balance, 'sign_changes:': sign_changes, 
-                    'price_ratio': price_ratio, 'score': score}
-    
-    def get_renko_prices(self):
-        return self.renko_prices
-    
-    def get_renko_directions(self):
-        return self.renko_directions
+                d.append(df['date'][i])
+                l.append(df['close'][i])
+                h.append(df["open"][i])
+                lbo.append(df["open"][i])
+                lbc.append(df["close"][i])
+                vol.append(df['volume'][i])
+        else:
+            volume += df["volume"][i]
+            leng = len(lbo)
+            if(lbc[leng-1]>lbo[leng-1]):
+                if(df["close"][i]>=(lbc[leng-1]+brick_size)):
+                    lbc.append((lbc[leng-1]+brick_size))
+                    lbo.append(lbc[leng-1])
+                    l.append(lbc[leng-1])
+                    h.append((lbc[leng-1]+brick_size))
+                    d.append(df["date"][i])
+                    vol.append(volume)
+                    volume = 0.0
+                elif(df["close"][i]<=(lbo[leng-1]-brick_size)):
+                    lbc.append((lbo[leng-1]-brick_size))
+                    lbo.append(lbo[leng-1])
+                    h.append(lbo[leng-1])
+                    l.append((lbo[leng-1]-brick_size))
+                    d.append(df["date"][i])
+                    vol.append(volume)
+                    volume = 0.0
+            else:
+                if(df["close"][i]>=(lbo[leng-1]+brick_size)):
+                    lbc.append((lbo[leng-1]+brick_size))
+                    lbo.append(lbo[leng-1])
+                    l.append(lbo[leng-1])
+                    h.append((lbo[leng-1]+brick_size))
+                    d.append(df["date"][i])
+                    vol.append(volume)
+                    volume = 0.0
+                elif(df["close"][i]<=(lbc[leng-1]-brick_size)):
+                    lbc.append((lbc[leng-1]-brick_size))
+                    lbo.append(lbc[leng-1])
+                    h.append(lbc[leng-1])
+                    l.append((lbc[leng-1]-brick_size))
+                    d.append(df["date"][i])
+                    vol.append(volume)
+                    volume = 0.0
+                
+                
+    data_ = pd.DataFrame(d,columns=["date"])
+    data_["open"] = lbo
+    data_["close"] =lbc
+    data_["low"] = l
+    data_["high"] = h
+    data_['volume']=vol
+    return data_
+  
