@@ -21,7 +21,7 @@ var selectedI = 0;
 var dataMoved = 0;
 var scaleValue = 1;
 var data_on_graph = 60;
-var yb ;
+var yb;
 var xb;
 
 //get width and height of parents
@@ -30,84 +30,54 @@ var parentWidth = parents.getBoundingClientRect().width;
 var parentHeight = parents.getBoundingClientRect().height;
 function setup() {
     canvas = createCanvas(parentWidth, parentHeight - 30);
-    yb = height/2;
+    yb = height / 2;
 }
 
 // all drawing goes inside i.e the main graph plotting function
 function draw() {
-    
-    //update the type of graph
-
-    switch (graph_type) {
-        case "bars":
-            drawbars();
-            break;
-        case "candle":
-            drawcandle();
-            break;
-        case 'hollowcandle':
-            drawhollowcandle();
-            break;
-        case 'heikinashi':
-            drawcandle();
-            break;
-        case 'line':
-            drawline();
-            break;
-        case 'area':
-            drawarea();
-            break;
-        case 'baseline':
-            drawbaseline();
-            break;
-        case 'renko':
-            drawrenko();
-            break;
-        case 'linebreak':
-            drawrenko();
-            break;
-        default:
-            drawcandle();
-            break;
-    }
-}
-
-//function for bars graph
-function drawbars() {
-
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
-
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
     //when data is loaded start drawing graph
     if (dataloaded) {
+        //calculate scale value i.e minimum and maximum value and moved value of data
+        calcScales();
+        background(255);
+
+        stroke(0);
+        //only horizontal grid 
+        drawGridY();
+
+        //update the type of graph
         push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new bars_cal(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            fill(d.color);
-            stroke(d.color);
-            strokeWeight(2);
-            //vertical lines
-            line(d.x1, d.y1, d.x1, d.y2);
-
-            //horizontal small lines
-            line(d.x1, d.y3, d.x1 - d.widthX / 2, d.y3); //open
-            line(d.x1, d.y4, d.x1 + d.widthX / 2, d.y4); //close
-
-            strokeWeight(1);
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
+        switch (graph_type) {
+            case "bars":
+                draw_candle_heikinashi();
+                break;
+            case "candle":
+                draw_candle_heikinashi();
+                break;
+            case 'hollowcandle':
+                draw_candle_heikinashi();
+                break;
+            case 'heikinashi':
+                draw_candle_heikinashi();
+                break;
+            case 'line':
+                draw_line_area();
+                break;
+            case 'area':
+                draw_line_area();
+                break;
+            case 'baseline':
+                drawbaseline();
+                break;
+            case 'renko':
+                drawrenko();
+                break;
+            case 'linebreak':
+                drawrenko();
+                break;
+            default:
+                drawcandle();
+                break;
         }
         pop()
 
@@ -142,478 +112,180 @@ function drawbars() {
         canvas.drawingContext.setLineDash([0, 0]);
         strokeWeight(1);
     }
-
 }
 
 // function for candle graph
-function drawcandle() {
-
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
-
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
-    //when data is loaded start drawing graph
-    if (dataloaded) {
-        push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new candle_cal(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            fill(d.color);
-            stroke(d.color);
-            rect(d.x1, d.y1, d.widthX, d.heightY);
+function draw_candle_heikinashi() {
+    // move  data to left or right 
+    translate(translateX, 0);
+    // calculate number of candles to show on screen
+    for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+        // draw grid and scale on x axis
+        drawScaleX(i);
+        // create a candle object and pass i , width and height for calculation
+        d = new candle_cal(i, width, height);
+        //set color of candles and position of rect and line on basis of calculation
+        fill(d.color);
+        if (graph_type == 'hollowcandle') stroke(d.stroke);
+        else stroke(d.color);
+        if(graph_type=='bars'){
+            strokeWeight(2);
+            line(d.x2, d.y1, d.x2+d.widthX/2, d.y1);
+            line(d.x2, d.y1 + d.heightY, d.x2-d.widthX/2, d.y1 + d.heightY);
             line(d.x2, d.y2, d.x2, d.y3);
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
-        }
-        pop()
-
-        stroke(0);
-        //horizontal x line
-        line(0, height - 50, width, height - 50);
-
-        //draw vertical value and ticks on x-axis
-        drawScaleY()
-
-        //show the value of selected candle
-        legend()
-
-        //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
-        //price tick
-        rect(width - 102, mouseY - 10, 60, 20);
-        //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
-        //calculate value of current position
-        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
-        //price
-        text(ycurrent, width - 100, mouseY + 5)
-        //date
-        text(date[selectedI], mouseX - 25, height - 25)
-        // dotted cross line according to mouse coordinates
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([5, 5]);
-        line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
-        canvas.drawingContext.setLineDash([0, 0]);
-        strokeWeight(1);
-    }
-}
-
-function drawhollowcandle() {
-
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
-
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
-    //when data is loaded start drawing graph
-    if (dataloaded) {
-        push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new hollowcandle_cal(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            fill(d.color);
-            stroke(d.stroke);
-
+        }else{
             line(d.x2, d.y2, d.x2, d.y3);
             rect(d.x1, d.y1, d.widthX, d.heightY);
-
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
         }
-        pop()
-
-        stroke(0);
-        //horizontal x line
-        line(0, height - 50, width, height - 50);
-
-        //draw vertical value and ticks on x-axis
-        drawScaleY()
-
-        //show the value of selected candle
-        legend()
-
-        //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
-        //price tick
-        rect(width - 102, mouseY - 10, 60, 20);
-        //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
-        //calculate value of current position
-        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
-        //price
-        text(ycurrent, width - 100, mouseY + 5)
-        //date
-        text(date[selectedI], mouseX - 25, height - 25)
-        // dotted cross line according to mouse coordinates
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([5, 5]);
-        line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
-        canvas.drawingContext.setLineDash([0, 0]);
-        strokeWeight(1);
+        
+        //calculate selected candle
+        d.isInBound(mouseX - translateX);
     }
 }
 
-function drawline() {
+//function for line and area
+function draw_line_area() {
 
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
-
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
-    //when data is loaded start drawing graph
-    if (dataloaded) {
-        push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new line_cal(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            stroke("#0044ff66");
-            strokeWeight(1);
-            //vertical lines
-            line(d.x1, d.y1, d.x2, d.y2);
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
-        }
-        pop()
-
-        stroke(0);
-        //horizontal x line
-        line(0, height - 50, width, height - 50);
-
-        //draw vertical value and ticks on x-axis
-        drawScaleY()
-
-        //show the value of selected candle
-        legend()
-
-        //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
-        //price tick
-        rect(width - 102, mouseY - 10, 60, 20);
-        //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
-        //calculate value of current position
-        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
-        //price
-        text(ycurrent, width - 100, mouseY + 5)
-        //date
-        text(date[selectedI], mouseX - 25, height - 25)
-        // dotted cross line according to mouse coordinates
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([5, 5]);
-        line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
-        canvas.drawingContext.setLineDash([0, 0]);
+    // move  data to left or right 
+    translate(translateX, 0);
+    // calculate number of candles to show on screen
+    for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+        // draw grid and scale on x axis
+        drawScaleX(i);
+        // create a candle object and pass i , width and height for calculation
+        d = new line_area_cal(i, width, height);
+        //set color of candles and position of rect and line on basis of calculation
+        stroke("#0044ff66");
         strokeWeight(1);
-    }
-
-}
-
-function drawarea() {
-
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
-
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
-    //when data is loaded start drawing graph
-    if (dataloaded) {
-        push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new line_cal(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            stroke("#0044ff66");
-            strokeWeight(1);
-            // line 
-            line(d.x1, d.y1, d.x2, d.y2);
-            //area 
-            strokeWeight(0);
+        // line 
+        line(d.x1, d.y1, d.x2, d.y2);
+        //area 
+        strokeWeight(0);
+        if (graph_type == 'area') {             //draw shape when graph type is area
             fill("#0066ff10")
             beginShape();
-            vertex(d.x1,d.y1);
-            vertex(d.x2,d.y2);
-            vertex(d.x2,height - 50);
-            vertex(d.x1,height - 50);
+            vertex(d.x1, d.y1);
+            vertex(d.x2, d.y2);
+            vertex(d.x2, height - 50);
+            vertex(d.x1, height - 50);
             endShape();
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
         }
-        pop()
-
-        stroke(0);
-        //horizontal x line
-        line(0, height - 50, width, height - 50);
-
-        //draw vertical value and ticks on x-axis
-        drawScaleY()
-
-        //show the value of selected candle
-        legend()
-
-        //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
-        //price tick
-        rect(width - 102, mouseY - 10, 60, 20);
-        //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
-        //calculate value of current position
-        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
-        //price
-        text(ycurrent, width - 100, mouseY + 5)
-        //date
-        text(date[selectedI], mouseX - 25, height - 25)
-        // dotted cross line according to mouse coordinates
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([5, 5]);
-        line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
-        canvas.drawingContext.setLineDash([0, 0]);
-        strokeWeight(1);
+        //calculate selected candle
+        d.isInBound(mouseX - translateX);
     }
 
 }
 
 function drawbaseline() {
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
+    // move  data to left or right 
+    translate(translateX, 0);
+    // calculate number of candles to show on screen
+    for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+        // draw grid and scale on x axis
+        drawScaleX(i);
+        // create a candle object and pass i , width and height for calculation
+        d = new line_area_cal(i, width, height);
+        //set color of candles and position of rect and line on basis of calculation
 
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
-    //when data is loaded start drawing graph
-    if (dataloaded) {
-        push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new line_cal(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            
-            if(d.y1 < yb && d.y2< yb){
-                stroke("#00ff00");
-                strokeWeight(1);
-                // line 
-                line(d.x1, d.y1, d.x2, d.y2);
-                //area 
-                strokeWeight(0);
-                fill("#00ff0010")
-                beginShape();
-                vertex(d.x1,d.y1);
-                vertex(d.x2,d.y2);
-                vertex(d.x2,yb);
-                vertex(d.x1,yb);
-                endShape();
-            }else if(d.y1> yb && d.y2>yb){
-                stroke("#ff0000");
-                strokeWeight(1);
-                // line 
-                line(d.x1, d.y1, d.x2, d.y2);
-                //area 
-                strokeWeight(0);
-                fill("#ff000010");
-                beginShape();
-                vertex(d.x1,d.y1);
-                vertex(d.x2,d.y2);
-                vertex(d.x2,yb);
-                vertex(d.x1,yb);
-                endShape();
-            }else if(d.y1>yb && d.y2<yb){
-                xb = ((yb - d.y1)*(d.x2-d.x1)/(d.y2-d.y1)) + d.x1;
-                stroke("#00ff00");
-                strokeWeight(1);
-                // line 
-                line(d.x2, d.y2, xb, yb);
-                //area 
-                strokeWeight(0);
-                fill("#00ff0010");
-                triangle(d.x2,d.y2,d.x2,yb,xb,yb);
-                stroke("#ff0000");
-                strokeWeight(1);
-                // line 
-                line(d.x1, d.y1, xb, yb);
-                //area 
-                strokeWeight(0);
-                fill("#ff000010");
-                triangle(d.x1,d.y1,d.x1,yb,xb,yb)
-            }else{
-                xb = ((yb - d.y1)*(d.x2-d.x1)/(d.y2-d.y1)) + d.x1;
-                stroke("#00ff00");
-                strokeWeight(1);
-                // line 
-                line(d.x1, d.y1, xb, yb);
-                //area 
-                strokeWeight(0);
-                fill("#00ff0010");
-                triangle(d.x1,d.y1,d.x1,yb,xb,yb)
-                stroke("#ff0000");
-                strokeWeight(1);
-                // line 
-                line(d.x2, d.y2, xb, yb);
-                //area 
-                strokeWeight(0);
-                fill("#ff000010");
-                triangle(d.x2,d.y2,d.x2,yb,xb,yb);
-            }
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
+        if (d.y1 < yb && d.y2 < yb) {
+            stroke("#00ff00");
+            strokeWeight(1);
+            // line 
+            line(d.x1, d.y1, d.x2, d.y2);
+            //area 
+            strokeWeight(0);
+            fill("#00ff0010")
+            beginShape();
+            vertex(d.x1, d.y1);
+            vertex(d.x2, d.y2);
+            vertex(d.x2, yb);
+            vertex(d.x1, yb);
+            endShape();
+        } else if (d.y1 > yb && d.y2 > yb) {
+            stroke("#ff0000");
+            strokeWeight(1);
+            // line 
+            line(d.x1, d.y1, d.x2, d.y2);
+            //area 
+            strokeWeight(0);
+            fill("#ff000010");
+            beginShape();
+            vertex(d.x1, d.y1);
+            vertex(d.x2, d.y2);
+            vertex(d.x2, yb);
+            vertex(d.x1, yb);
+            endShape();
+        } else if (d.y1 > yb && d.y2 < yb) {
+            xb = ((yb - d.y1) * (d.x2 - d.x1) / (d.y2 - d.y1)) + d.x1;
+            stroke("#00ff00");
+            strokeWeight(1);
+            // line 
+            line(d.x2, d.y2, xb, yb);
+            //area 
+            strokeWeight(0);
+            fill("#00ff0010");
+            triangle(d.x2, d.y2, d.x2, yb, xb, yb);
+            stroke("#ff0000");
+            strokeWeight(1);
+            // line 
+            line(d.x1, d.y1, xb, yb);
+            //area 
+            strokeWeight(0);
+            fill("#ff000010");
+            triangle(d.x1, d.y1, d.x1, yb, xb, yb)
+        } else {
+            xb = ((yb - d.y1) * (d.x2 - d.x1) / (d.y2 - d.y1)) + d.x1;
+            stroke("#00ff00");
+            strokeWeight(1);
+            // line 
+            line(d.x1, d.y1, xb, yb);
+            //area 
+            strokeWeight(0);
+            fill("#00ff0010");
+            triangle(d.x1, d.y1, d.x1, yb, xb, yb)
+            stroke("#ff0000");
+            strokeWeight(1);
+            // line 
+            line(d.x2, d.y2, xb, yb);
+            //area 
+            strokeWeight(0);
+            fill("#ff000010");
+            triangle(d.x2, d.y2, d.x2, yb, xb, yb);
         }
-        pop()
-
-        if(mouseY>yb-20 && mouseY<yb+20){
-            canvas.canvas.style.cursor = "ns-resize";
-        }else{
-            cursor(CROSS);
-        }
-
-        stroke(0);
-        //horizontal x line
-        line(0, height - 50, width, height - 50);
-
-        // baseline 
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([2, 2]);
-        line(0,yb,width,yb);
-        canvas.drawingContext.setLineDash([0, 0]);
-        strokeWeight(1);
-
-        //draw vertical value and ticks on x-axis
-        drawScaleY()
-
-        //show the value of selected candle
-        legend()
-
-        //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
-        //price tick
-        rect(width - 102, mouseY - 10, 60, 20);
-        //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
-        //calculate value of current position
-        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
-        //price
-        text(ycurrent, width - 100, mouseY + 5)
-        //date
-        text(date[selectedI], mouseX - 25, height - 25)
-        // dotted cross line according to mouse coordinates
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([5, 5]);
-        line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
-        canvas.drawingContext.setLineDash([0, 0]);
-        strokeWeight(1);
+        //calculate selected candle
+        d.isInBound(mouseX - translateX);
     }
+    translate(-translateX, 0);
+    stroke(0);
+    if (mouseY > yb - 20 && mouseY < yb + 20) {
+        canvas.canvas.style.cursor = "ns-resize";
+    } else {
+        cursor(CROSS);
+    }
+    // baseline 
+    strokeWeight(0.4);
+    canvas.drawingContext.setLineDash([2, 2]);
+    line(0, yb, width, yb);
+    canvas.drawingContext.setLineDash([0, 0]);
+    strokeWeight(1);
 
 }
 
 function drawrenko() {
-
-    //calculate scale value i.e minimum and maximum value and moved value of data
-    calcScales();
-    background(255);
-
-    stroke(0);
-    //only horizontal grid 
-    drawGridY();
-
-    //when data is loaded start drawing graph
-    if (dataloaded) {
-        push()
-        // move  data to left or right 
-        translate(translateX, 0);
-        // calculate number of candles to show on screen
-        for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
-            // draw grid and scale on x axis
-            drawScaleX(i);
-            // create a candle object and pass i , width and height for calculation
-            d = new renko(i, width, height);
-            //set color of candles and position of rect and line on basis of calculation
-            fill(d.color);
-            stroke(d.color);
-            rect(d.x1, d.y1, d.widthX, d.heightY);
-            //calculate selected candle
-            d.isInBound(mouseX - translateX);
-        }
-        pop()
-
-        stroke(0);
-        //horizontal x line
-        line(0, height - 50, width, height - 50);
-
-        //draw vertical value and ticks on x-axis
-        drawScaleY()
-
-        //show the value of selected candle
-        legend()
-
-        //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
-        //price tick
-        rect(width - 102, mouseY - 10, 60, 20);
-        //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
-        //calculate value of current position
-        var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
-        //price
-        text(ycurrent, width - 100, mouseY + 5)
-        //date
-        text(date[selectedI], mouseX - 25, height - 25)
-        // dotted cross line according to mouse coordinates
-        strokeWeight(0.4);
-        canvas.drawingContext.setLineDash([5, 5]);
-        line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
-        canvas.drawingContext.setLineDash([0, 0]);
-        strokeWeight(1);
+    // move  data to left or right 
+    translate(translateX, 0);
+    // calculate number of candles to show on screen
+    for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+        // draw grid and scale on x axis
+        drawScaleX(i);
+        // create a candle object and pass i , width and height for calculation
+        d = new renko(i, width, height);
+        //set color of candles and position of rect and line on basis of calculation
+        fill(d.color);
+        stroke(d.color);
+        rect(d.x1, d.y1, d.widthX, d.heightY);
+        //calculate selected candle
+        d.isInBound(mouseX - translateX);
     }
 }
 
@@ -705,7 +377,8 @@ function legend() {
     textSize(14);
     //background rectangle
     rect(8, 10, 380, 30);
-    fill(color_[selectedI]);
+    if(graph_type=='hollowcandle') fill(stroke_[selectedI]);
+    else fill(color_[selectedI]);
     text("O :", 10, 30);
     text(open_[selectedI].toFixed(2), 30, 30);
     text("L :", 110, 30);
@@ -714,8 +387,8 @@ function legend() {
     text(high[selectedI].toFixed(2), 230, 30);
     text("C :", 310, 30);
     text(close_[selectedI].toFixed(2), 330, 30);
-    text((close_[selectedI]-close_[selectedI-1]).toFixed(2), 30, 60);
-    text("("+((close_[selectedI]-close_[selectedI-1])*100/close_[selectedI-1]).toFixed(2)+"%)", 75, 60);
+    text((close_[selectedI] - close_[selectedI - 1]).toFixed(2), 30, 60);
+    text("(" + ((close_[selectedI] - close_[selectedI - 1]) * 100 / close_[selectedI - 1]).toFixed(2) + "%)", 75, 60);
     strokeWeight(1);
     textSize(12);
 }
@@ -723,14 +396,14 @@ function legend() {
 // translate on basis of click and drag
 function mouseDragged() {
     // do not drag to right when reached last data
-    if (translateX + (mouseX - pmouseX) > 0){
+    if (translateX + (mouseX - pmouseX) > 0) {
         translateX += (mouseX - pmouseX);
     }
-    move_baseline(mouseY,pmouseY);
+    move_baseline(mouseY, pmouseY);
 }
 
-function move_baseline(mouseY,pmouseY){
-    if(mouseY>yb-20 && mouseY < yb +20){
+function move_baseline(mouseY, pmouseY) {
+    if (mouseY > yb - 20 && mouseY < yb + 20) {
         yb = pmouseY;
     }
 }
@@ -763,46 +436,7 @@ window.addEventListener("wheel", function (e) {
     }
 });
 
-
-// a class for calculating values and behaviour of bars i.e 2h and 1v line
-class bars_cal {
-    constructor(i, width, height) {
-        this.i = i;                     // index of data
-        this.width = width;             //width of canvas
-        this.height = height;           //height of canvas
-        this.widthX = 0;                //width of line
-        this.x1 = 0;                    //position
-        this.y1 = 0;                    //vertical line low
-        this.y2 = 0;                    //vertical line high
-        this.y3 = 0;                    //horizontal line open
-        this.y4 = 0;                    //horizontal line close
-        this.color = 0;                 //color of candle 
-        this.calc();                    //perform calculation
-    }
-    calc() {
-        let i = this.i;
-        //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
-        this.x1 = map(i, data_length - data_on_graph, data_length, 0, width - paddingX)
-        //y1 value for visible candles on basis of close price mapped to height
-        this.y1 = map(-low[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-        this.y2 = map(-high[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-        this.y3 = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-        this.y4 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-        // width of candle is half the regular width
-        this.widthX = map(0.5, 0, data_on_graph, 0, this.width - paddingX);
-
-        this.color = color_[i]              //color of bar
-    }
-    //check if mouseX is on the bar area anywhere between bar width
-    isInBound(mouseX) {
-        //mousex is in  bound (X)
-        if (mouseX > this.x1 - this.widthX && mouseX < this.x1 + this.widthX) {
-            selectedI = this.i;
-        }
-    }
-}
-
-// a class for calculating values and behaviour of candle stick rect and line
+// a class for calculating values and behaviour[candle hollow candle and heikin ashi]
 class candle_cal {
     constructor(i, width, height) {
         this.i = i;                     // index of data
@@ -817,6 +451,7 @@ class candle_cal {
         this.y3 = 0;                    //line y axis value 2
         this.color = 0;                 //color of candle 
         this.calc();                    //perform calculation
+        this.stroke;                // if hollow then will also have stroke colors
     }
     calc() {
         let i = this.i;
@@ -834,7 +469,8 @@ class candle_cal {
         this.y2 = map(-high[i], -min_low, -max_high, height - paddingY, paddingY / 2);
         this.y3 = map(-low[i], -min_low, -max_high, height - paddingY, paddingY / 2)
 
-        this.color = color_[i]              //color of candle
+        this.color = color_[i];              //color of candle
+        if (graph_type == 'hollowcandle') this.stroke = stroke_[i];
     }
     //check if mouseX is on the candle area anywhere between candle width
     isInBound(mouseX) {
@@ -844,53 +480,8 @@ class candle_cal {
         }
     }
 }
-
-class hollowcandle_cal {
-    constructor(i, width, height) {
-        this.i = i;                     // index of data
-        this.width = width;             //width of canvas
-        this.height = height;           //height of canvas
-        this.widthX = 0;                //width of candle
-        this.heightX = 0;               //height of candle
-        this.x1 = 0;                    //rect x1
-        this.y1 = 0;                    //rect y1   
-        this.x2 = 0;                    //line x axis value
-        this.y2 = 0;                    //line y axis value 1
-        this.y3 = 0;                    //line y axis value 2
-        this.color = 0;                 //color of candle 
-        this.stroke = 0;
-        this.calc();                    //perform calculation
-    }
-    calc() {
-        let i = this.i;
-        //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
-        this.x1 = map(i - 0.25, data_length - data_on_graph, data_length, 0, width - paddingX)
-        //y1 value for visible candles on basis of close price mapped to height
-        this.y1 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-        // width of candle is half the regular width
-        this.widthX = map(0.5, 0, data_on_graph, 0, this.width - paddingX);
-        //height of candle calculated using open and close price
-        this.heightY = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2) - this.y1;
-        //position of visible line on x-axis 
-        this.x2 = map(i, data_length - data_on_graph, data_length, 0, this.width - paddingX);
-        //position of visible line on y-axis (y2 and y3)
-        this.y2 = map(-high[i], -min_low, -max_high, height - paddingY, paddingY / 2);
-        this.y3 = map(-low[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-
-        this.color = color_[i]              //color of candle
-        this.stroke = stroke_[i]
-    }
-    //check if mouseX is on the candle area anywhere between candle width
-    isInBound(mouseX) {
-        //mousex is in rectangle bound (X)
-        if (mouseX > this.x1 && mouseX < this.x1 + this.widthX) {
-            selectedI = this.i;
-        }
-    }
-}
-
-// a class for calculating values and behaviour of line
-class line_cal {
+// a class for calculating values and behaviour[line , area and baseline]
+class line_area_cal {
     constructor(i, width, height) {
         this.i = i;                     // index of data
         this.width = width;             //width of canvas
@@ -907,10 +498,10 @@ class line_cal {
         let i = this.i;
         //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
         this.x1 = map(i, data_length - data_on_graph, data_length, 0, width - paddingX)
-        this.x2 = map(i-1, data_length - data_on_graph, data_length, 0, width - paddingX)
+        this.x2 = map(i - 1, data_length - data_on_graph, data_length, 0, width - paddingX)
         //y1 value for visible candles on basis of close price mapped to height
         this.y1 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
-        this.y2 = map(-close_[i-1], -min_low, -max_high, height - paddingY, paddingY / 2)
+        this.y2 = map(-close_[i - 1], -min_low, -max_high, height - paddingY, paddingY / 2)
         // width of candle is half the regular width
         this.widthX = map(0.5, 0, data_on_graph, 0, this.width - paddingX);
         this.color = color_[i]              //color of bar
@@ -968,25 +559,15 @@ function getMinOfArray(numArray) {
 
 //getting data from the hidden div element and adding it back to arrays
 setInterval(function () {
-    if (document.getElementById("hiddenData").innerHTML != data_ || document.getElementById("hiddenGraphType").innerHTML!=graph_type) {
-        dataloaded = false;
-        data = []
-        date = []
-        open_ = []
-        close_ = []
-        low = []
-        high = []
-        color_ = []
-        stroke_ = []
-        translateX = 0;
-        selectedI = 0;
-        dataMoved = 0;
-        scaleValue = 1;
-        data_on_graph = 60;
-
+    if (document.getElementById("hiddenData").innerHTML != data_ || document.getElementById("hiddenGraphType").innerHTML != graph_type) {
+        dataloaded = false; data_on_graph = 60;
+        translateX = 0; scaleValue = 1;
+        selectedI = 0; dataMoved = 0;
     }
     // whenever there is value in hidden element and data is not loaded then load the data
     if (document.getElementById("hiddenData").innerHTML != "" && dataloaded == false) {
+        data = []; date = []; open_ = []; close_ = [];
+        low = []; high = []; color_ = []; stroke_ = [];
         // get data and change to json object
         data_ = document.getElementById("hiddenData").innerHTML;
         data = JSON.parse(document.getElementById("hiddenData").innerHTML);
