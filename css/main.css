@@ -1,6 +1,183 @@
 body{
-    background-color: #000 !important;
+    width: 100vw;
+    height: 100vh;
+    background-color: #111 !important;
     color: #fff !important;
-    padding: 2%;
+    padding: 0% !important;
+    margin: 0% !important;
     overflow: hidden;
+}
+#view-graph{
+    position: fixed;
+    top: 80%;
+    left: 40%;
+}
+#topBar{
+    background-color: #000;
+    padding:0.5% 1% 0.5% 3% !important;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+}
+#topOptions{
+    position: fixed;
+    right: 0px;
+    text-align: end;
+}
+#topOptions img{
+    margin-right: 10px;
+    opacity: 60%;
+}
+#topOptions img:hover{
+    opacity: 100%;
+}
+.row{
+    margin: 0% !important;
+    padding: 0% !important;
+}
+#side_bar{
+    background: #000;
+    height: 100%;
+    width: 80px;
+}
+#side_menu{
+    padding: 25px;
+}
+#side_menu img{
+    display: block;
+    margin-top: 45px;
+}
+#main_side{
+    height: 100%;
+}
+#main_content{
+    width: calc(100% - 80px);
+}
+#search_input{
+    width:350px;
+    margin-left:0px;
+    padding-left: 50px;
+    color: #fff;
+    background-color: #222;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 30px;
+    border: #000;
+}
+#search_icon{
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 5px;
+    z-index: 3;
+    filter: invert(100%) grayscale(1%);
+}
+#search_box{
+    position: absolute;
+    display: block;
+    margin-top: 10px;
+    right: 20px;
+}
+#indices_higlights{
+    position: absolute;
+    width: 66%;
+    overflow-x: auto;
+    margin-left: 5px;
+    padding-top: 10px  !important; 
+    padding-right: 50px;
+    display: flex;
+}
+#indices_higlights::-webkit-scrollbar{
+    display: none;
+}
+.indice{
+    border: 1px solid #555;
+    font-size: small;
+    padding: 4px 10px 6px 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.ind_name{
+    font-size: medium;
+}
+.ind_growth{
+    text-align: right;
+}
+#market_highlights{
+    width: 92%;
+    position: absolute;
+    top: 85px;;
+    left: 100px;
+}
+.news_image img{
+    width: 150px;
+    height: 120px;
+    object-fit: cover;
+    margin-right: 5px;
+}
+#news_section{
+    position: relative;
+    display: block;
+    height: 85vh;
+    background-color: #141414;
+    padding: 10px;
+}
+#news_wrap{
+    height: 100%;
+    display: block;
+    overflow-y: auto;
+}
+#news_wrap::-webkit-scrollbar{
+    display: none;
+}
+.news_info{
+    background-color: #191919;
+    padding: 10px;
+    color: #aaa;
+}
+.news_info h6{
+    color: #fff3e8;
+}
+.new_cont{
+    display: block;
+    margin-bottom: 5px !important;
+}
+#tab{
+    width: 100%;
+    background: #191919;
+    margin-top: 5px;
+    padding: 2px;
+}
+#tab a{
+    margin: 20px;
+    text-decoration: none;
+    color: #fff3e8;
+}
+#stock_list{
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+#graph_view{
+    height: 300px;
+    padding:5px;
+    background: #000;
+}
+.green-text{
+    color: #22ff00;
+}
+#indices_overview{
+    height: 85vh;
+    background-color: #141414;
+    margin-right: 5px;
+}
+#main_list{
+    position: relative;
+    display: block;
+    height: 44%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+}
+#main_list::-webkit-scrollbar{
+    display: none;
 }

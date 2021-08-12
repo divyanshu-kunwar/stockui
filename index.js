@@ -1,9 +1,8 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow ,ipcMain } = require('electron')
+const {app, BrowserWindow ,ipcMain , nativeTheme } = require('electron')
 const path = require('path')
-const remote = require('electron').remote;
 
 
 function createWindow () {
@@ -11,15 +10,18 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
+      enableRemoteModule: true
     }
   })
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
   mainWindow.maximize();
+  nativeTheme.shouldUseDarkColors
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
