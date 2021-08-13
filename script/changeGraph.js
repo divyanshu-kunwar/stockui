@@ -17,11 +17,8 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("renkoBtn","renko");
   setGraph("linebreakBtn","linebreak");
   setGraph("kagiBtn","kagi");
-  
-  /*
   setGraph("pnfBtn","pnf");
   
-  */
   function setGraph(elementName, graph) {
     var graphSrc = graph + "_.svg";
     document.getElementById(elementName).addEventListener("click", function (e) {
@@ -43,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
     pyshell.on('message', function (message) {
       document.getElementById("hiddenGraphType").innerHTML = graphName;
       document.getElementById("hiddenData").innerHTML = message;
-      //console.log(JSON.parse(message));
+      console.log(JSON.parse(message));
     });
     pyshell.end(function (err) {
       if (err) {

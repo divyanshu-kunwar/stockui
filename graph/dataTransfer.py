@@ -1,6 +1,7 @@
 import renkolib
 import linebreaklib
 import kagilib
+import pnflib
 
 class Data:
     def __init__(self , df=None , graphtype="candle"):
@@ -31,6 +32,9 @@ class Data:
             self.linebreak()
         elif self.graphtype=='kagi':
             self.kagi()
+        elif self.graphtype=='pnf':
+            self.pnf()
+
         self.send_data()
         
     
@@ -107,6 +111,9 @@ class Data:
     
     def kagi(self):
         self.df = kagilib.kagi(self.df)
+    
+    def pnf(self):
+        self.df = pnflib.pnf(self.df)
         
 
     #tranfer data as json to changeGraph.js file

@@ -2,8 +2,8 @@
 var canvas, paddingY = 100, paddingX = 100;
 var data, data_ = "", dataloaded = false, graph_type = "candle";
 var date = [], open_ = [], close_ = [], low = [], height_ = [];
-var high = [], color_ = [], stroke_ = [];
-var min_low = 0, max_high = 0, translateX = 0, scaleValue = 1;
+var high = [], color_ = [], stroke_ = [] , volume = [], pnf_count = [];
+var min_low = 0, max_high = 0, min_vol = 0, max_vol = 0; translateX = 0, scaleValue = 1;
 var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
 var yb, xb , drawCount = 0;
 
@@ -28,6 +28,11 @@ function draw() {
         stroke(0);
         //only horizontal grid 
         drawGridY();
+        strokeWeight(0);
+        fill("#fffff");
+        //background rectangle
+        rect(8, 10, 380, 90);
+        strokeWeight(1);
 
         //update the type of graph
         push()
@@ -61,6 +66,9 @@ function draw() {
                 break;
             case 'kagi':
                 drawkagi();
+                break;
+            case 'pnf':
+                drawpnf();
                 break;
             default:
                 drawcandle();
@@ -111,6 +119,7 @@ function draw_candle_heikinashi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new candle_cal(i, width, height);
+        volumePlot(i,d.x1,d.volY,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill(d.color);
         if (graph_type == 'hollowcandle') stroke(d.stroke);
@@ -124,7 +133,6 @@ function draw_candle_heikinashi() {
             line(d.x2, d.y2, d.x2, d.y3);
             rect(d.x1, d.y1, d.widthX, d.heightY);
         }
-
         //calculate selected candle
         d.isInBound(mouseX - translateX);
     }
@@ -141,6 +149,7 @@ function draw_line_area() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new line_area_cal(i, width, height);
+        volumePlot(i,d.x1,d.volY,d.x1-d.x2-3);
         //set color of candles and position of rect and line on basis of calculation
         stroke("#0044ff66");
         strokeWeight(1);
@@ -172,6 +181,8 @@ function drawbaseline() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new line_area_cal(i, width, height);
+
+        volumePlot(i,d.x1,d.volY,d.x1-d.x2-3);
         //set color of candles and position of rect and line on basis of calculation
 
         if (d.y1 < yb && d.y2 < yb) {
@@ -267,6 +278,7 @@ function drawrenko() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new renko(i, width, height);
+        volumePlot(i,d.x1,d.volY,d.widthX-3);
         //set color of candles and position of rect and line on basis of calculation
         fill(d.color);
         stroke(d.color);
@@ -286,19 +298,18 @@ function drawkagi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new kagi_cal(i, width, height);
+        volumePlot(i,d.x1,d.volY,d.x1-d.x2-3);
 
         strokeWeight(1);
 
         if ((height_[i]>height_[i-1]) && (close_[i] >open_[i-1])){
             stroke(color_[i-1]);
-            console.log(color_[i-1])
             line(d.x1, d.y1, d.x1, d.y2);
             stroke(color_[i]);
             line(d.x1, d.y2, d.x1, d.y3);
         }
         else if((height_[i]>height_[i-1]) && (close_[i] <open_[i-1])){
             stroke(color_[i-1]);
-            console.log(color_[i-1])
             line(d.x1, d.y4, d.x1, d.y3);
             stroke(color_[i]);
             line(d.x1, d.y1, d.x1, d.y4);
@@ -314,6 +325,37 @@ function drawkagi() {
     }
 }
 
+function drawpnf() {
+    // move  data to left or right 
+    translate(translateX, 0);
+    // calculate number of candles to show on screen
+    for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
+        // draw grid and scale on x axis
+        drawScaleX(i);
+        // create a candle object and pass i , width and height for calculation
+        d = new renko(i, width, height);
+        volumePlot(i,d.x1,d.volY,d.widthX-3);
+        //set color of candles and position of rect and line on basis of calculation
+        fill("#fff");
+        stroke(d.color);
+        strokeWeight(1);
+        // rect(d.x1, d.y1, d.widthX, d.heightY);
+        for(var j = 0; j<pnf_count[i]; j++){
+            var pnf_height = d.heightY/pnf_count[i];
+            if(d.color=='#00ca73'){
+                console.log(j);
+                line(d.x1+8,d.y1+(j*pnf_height),d.x1+d.widthX,d.y1+((j+1)*pnf_height));
+                line(d.x1+8,d.y1+((j+1)*pnf_height),d.x1+d.widthX,d.y1+(j*pnf_height));
+            }else {
+                console.log(j);
+                ellipse(d.x1+8,d.y1+((j+0.5)*pnf_height),d.widthX-8,-pnf_height);
+            }
+        }
+        //calculate selected candle
+        d.isInBound(mouseX - translateX);
+    }
+}
+
 //change min and maximum value of scales
 function calcScales() {
     //get no of graph elements moved
@@ -321,6 +363,8 @@ function calcScales() {
     // get low price and high price value for scale
     min_low = getMinOfArray(low.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
     max_high = getMaxOfArray(high.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
+    min_vol = getMinOfArray(volume.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
+    max_vol = getMaxOfArray(volume.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
 }
 
 // draw y grids 
@@ -398,10 +442,9 @@ function drawScaleY() {
 
 // display the ohcl data on basis of selecteI (selected candle)
 function legend() {
-    fill(255);
+    
     textSize(14);
-    //background rectangle
-    rect(8, 10, 380, 30);
+    
     if (graph_type == 'hollowcandle') fill(stroke_[selectedI]);
     else fill(color_[selectedI]);
     text("O :", 10, 30);
@@ -412,8 +455,10 @@ function legend() {
     text(high[selectedI].toFixed(2), 230, 30);
     text("C :", 310, 30);
     text(close_[selectedI].toFixed(2), 330, 30);
-    text((close_[selectedI] - close_[selectedI - 1]).toFixed(2), 30, 60);
-    text("(" + ((close_[selectedI] - close_[selectedI - 1]) * 100 / close_[selectedI - 1]).toFixed(2) + "%)", 75, 60);
+    text((close_[selectedI] - close_[selectedI - 1]).toFixed(2), 30, 55);
+    text("(" + ((close_[selectedI] - close_[selectedI - 1]) * 100 / close_[selectedI - 1]).toFixed(2) + "%)", 75, 55);
+    text("Volume :",10,80);
+    text(volume[selectedI],70,80);
     strokeWeight(1);
     textSize(12);
 }
@@ -475,6 +520,7 @@ class candle_cal {
         this.y2 = 0;                    //line y axis value 1
         this.y3 = 0;                    //line y axis value 2
         this.color = 0;                 //color of candle 
+        this.volY = 0;                      //plotting volume
         this.calc();                    //perform calculation
         this.stroke;                // if hollow then will also have stroke colors
     }
@@ -493,6 +539,8 @@ class candle_cal {
         //position of visible line on y-axis (y2 and y3)
         this.y2 = map(-high[i], -min_low, -max_high, height - paddingY, paddingY / 2);
         this.y3 = map(-low[i], -min_low, -max_high, height - paddingY, paddingY / 2)
+
+        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
 
         this.color = color_[i];              //color of candle
         if (graph_type == 'hollowcandle') this.stroke = stroke_[i];
@@ -517,6 +565,7 @@ class line_area_cal {
         this.y1 = 0;                    //vertical line close 1
         this.y2 = 0;                    //vertical line close 1
         this.color = 0;                 //color 
+        this.volY = 0;                  //volume
         this.calc();                    //perform calculation
     }
     calc() {
@@ -530,6 +579,7 @@ class line_area_cal {
         // width of candle is half the regular width
         this.widthX = map(0.5, 0, data_on_graph, 0, this.width - paddingX);
         this.color = color_[i]              //color of bar
+        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
     }
     //check if mouseX is on the bar area anywhere between bar width
     isInBound(mouseX) {
@@ -550,6 +600,7 @@ class renko {
         this.x1 = 0;                    //rect x1
         this.y1 = 0;                    //rect y1   
         this.color = 0;                 //color of candle 
+        this.volY = 0;                  //volume
         this.calc();                    //perform calculation
     }
     calc() {
@@ -563,6 +614,8 @@ class renko {
         //height of candle calculated using open and close price
         this.heightY = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2) - this.y1;
         this.color = color_[i]              //color of candle
+
+        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
     }
     //check if mouseX is on the candle area anywhere between candle width
     isInBound(mouseX) {
@@ -588,6 +641,7 @@ class kagi_cal {
         this.y5 = 0;                    // prev close
         this.y6 = 0;                    // open  
         this.color = 0;                 //color of candle 
+        this.volY = 0;                  //volume
         if(i!=0)  this.calc();          //perform calculation
     }
     calc() {
@@ -605,7 +659,7 @@ class kagi_cal {
         this.y6 = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
         // width of candle is half the regular width
         this.widthX = map(1, 0, data_on_graph, 0, this.width - paddingX);
-
+        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
 
         this.color = color_[i];              //color of candle
     }
@@ -637,7 +691,7 @@ setInterval(function () {
     if (document.getElementById("hiddenData").innerHTML != "" && dataloaded == false) {
         data = []; date = []; open_ = []; close_ = [];
         low = []; high = []; color_ = []; stroke_ = [];
-        height_ = [];
+        height_ = []; volume = [] , pnf_count = [];
         // get data and change to json object
         data_ = document.getElementById("hiddenData").innerHTML;
         data = JSON.parse(document.getElementById("hiddenData").innerHTML);
@@ -654,14 +708,24 @@ setInterval(function () {
             low[i] = (data['low'][i]);
             high[i] = (data['high'][i]);
             color_[i] = (data['color'][i]);
+            volume[i] = (data['volume'][i]);
             if (graph_type == "hollowcandle") stroke_[i] = (data['stroke'][i]);
-            if(graph_type == 'kagi'){
-                 height_[i] = data['height'][i];
-            }
+            if(graph_type == 'kagi')height_[i] = data['height'][i];
+            if(graph_type=="pnf") pnf_count[i] = data['pnf_count'][i];
         }
         //calculate min and max of first 30 data
         min_low = getMinOfArray(low.slice(data_length - 31, data_length));
         max_high = getMaxOfArray(high.slice(data_length - 31, data_length));
+        min_vol = getMinOfArray(volume.slice(data_length - 31, data_length));
+        max_vol = getMaxOfArray(volume.slice(data_length - 31, data_length));
         dataloaded = true;
     }
 }, 100);
+
+// indicators i.e volume 
+function volumePlot(i,x,y,widthX){
+    fill(color_[i]+"44");
+    if(graph_type=="hollowcandle")fill(stroke_[i]+"44");
+    stroke(color_[i]+"44")
+    rect(x,y,widthX,height-y-paddingY/2);
+}
