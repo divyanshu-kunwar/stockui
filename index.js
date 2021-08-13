@@ -87,4 +87,5 @@ ipcMain.on('main:indicatorDialog', event => {
 })
 ipcMain.on("ind",function(e,indId){
     graphWindow.webContents.send('ind', indId);
+    console.log(indId);
 });

@@ -191,7 +191,6 @@ window.addEventListener('DOMContentLoaded', () => {
       numOfInd --;
       hiddenInd.innerHTML = JSON.stringify(indicators);
     }
-    // console.log(indicators);
 });
 
 Array.prototype.remove = function() {
