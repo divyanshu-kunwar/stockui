@@ -10,6 +10,7 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -63,7 +64,27 @@ ipcMain.on('main:graph', event => {
   graphWindow.loadURL("file://"+__dirname+"/pages/graph.html");
   //graphWindow.webContents.openDevTools();
   graphWindow.maximize()
-  graphWindow.on('closed', () => {
-    graphWindow = null;
+  // graphWindow.on('closed', () => {
+  //   graphWindow = null;
+  // });
+});
+let childWindow;
+ipcMain.on('main:indicatorDialog', event => {
+
+  childWindow = new BrowserWindow({
+    top:graphWindow, modal:true,
+    width: 400 , 
+    height: 600,
+    frame:false,
+    resizable: false,
+    webPreferences: {
+      preload: path.join(__dirname, '/script/indicator.js'),
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
   });
+  childWindow.loadURL("file://"+__dirname+"/pages/indicator.html");
+})
+ipcMain.on("ind",function(e,indId){
+    graphWindow.webContents.send('ind', indId);
 });

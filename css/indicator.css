@@ -1,0 +1,89 @@
+body{
+    margin: 0%;
+    left: 0%;
+    top: 0%;
+    padding: 0%;
+    border-radius: 20px;
+}
+#indicator_box{
+    background: #ffffff99; 
+}
+#indicator_head{
+    background: black;
+    height: 30px;
+    color: white;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+#draggable-area{
+    width: 70%;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+}
+#close_indictor{
+    position: absolute;
+    right: 20px;
+    z-index:30;
+    margin-top: -20px;
+}
+
+#search_box_ind{
+    text-align: center;
+    padding:10px;
+    
+}
+#search_input_ind{
+    width:90%;
+    padding-left: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    
+    
+}
+#search_ind{
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 15px;
+    z-index: 8;
+}
+#selected_indicator{
+    padding-left : 10px;
+    padding-right : 10px;
+    padding-top: 5px;
+    height: 80%;
+    overflow-y:auto;
+    
+}
+#indicator_scroll{
+    position:relative;
+}
+
+#selected_ind_table{
+    width: 100%;
+    font-size: medium;
+}
+.rightMenu {
+    position: relative;
+    right: 2px;
+}
+.rightMenu img{
+    margin:5px;
+}
+#selected_indicator::-webkit-scrollbar {
+    display: none;
+}
+.close_indicator{
+    display:none;
+}
+
+#selected_ind_table tr:hover{
+    cursor:pointer;
+    background: rgb(0, 0, 0);
+    color: #ffffff;
+
+}
+#selected_ind_table  tr:hover img{
+    -webkit-filter: grayscale(100%) invert(100%);
+    filter: grayscale(100%) invert(100%);
+}

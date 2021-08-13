@@ -5,7 +5,7 @@ var date = [], open_ = [], close_ = [], low = [], height_ = [];
 var high = [], color_ = [], stroke_ = [] , volume = [], pnf_count = [];
 var min_low = 0, max_high = 0, min_vol = 0, max_vol = 0; translateX = 0, scaleValue = 1;
 var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
-var yb, xb , drawCount = 0;
+var yb, xb , drawCount = 0; indicator = [];
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -334,7 +334,9 @@ function drawpnf() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new renko(i, width, height);
-        volumePlot(i,d.x1,d.volY,d.widthX-3);
+        if(indicator.includes(0)){
+            volumePlot(i,d.x1,d.volY,d.widthX-3);
+        }
         //set color of candles and position of rect and line on basis of calculation
         fill("#fff");
         stroke(d.color);
@@ -343,12 +345,11 @@ function drawpnf() {
         for(var j = 0; j<pnf_count[i]; j++){
             var pnf_height = d.heightY/pnf_count[i];
             if(d.color=='#00ca73'){
-                console.log(j);
-                line(d.x1+8,d.y1+(j*pnf_height),d.x1+d.widthX,d.y1+((j+1)*pnf_height));
-                line(d.x1+8,d.y1+((j+1)*pnf_height),d.x1+d.widthX,d.y1+(j*pnf_height));
+                line(d.x1+d.widthX/4,d.y1+(j*pnf_height),d.x1+3*d.widthX/4,d.y1+((j+1)*pnf_height));
+                line(d.x1+d.widthX/4,d.y1+((j+1)*pnf_height),d.x1+3*d.widthX/4,d.y1+(j*pnf_height));
             }else {
-                console.log(j);
-                ellipse(d.x1+8,d.y1+((j+0.5)*pnf_height),d.widthX-8,-pnf_height);
+                ellipseMode(CORNER);
+                ellipse(d.x1+d.widthX/4,d.y1+((j+1)*pnf_height),d.widthX/2,-pnf_height);
             }
         }
         //calculate selected candle
@@ -679,9 +680,11 @@ function getMaxOfArray(numArray) {
 function getMinOfArray(numArray) {
     return Math.min.apply(null, numArray);
 }
-
 //getting data from the hidden div element and adding it back to arrays
 setInterval(function () {
+    if(document.getElementById("hiddenInd").innerHTML != ""){
+    indicator = JSON.parse(document.getElementById("hiddenInd").innerHTML);
+    }
     if (document.getElementById("hiddenData").innerHTML != data_ || document.getElementById("hiddenGraphType").innerHTML != graph_type) {
         dataloaded = false; data_on_graph = 60;
         translateX = 0; scaleValue = 1;

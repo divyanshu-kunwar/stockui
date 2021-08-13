@@ -2,6 +2,7 @@ const { PythonShell } = require('python-shell');
 const electron = require('electron');
 const remote = electron.remote;
 const mysql = require('mysql');
+const { ipcRenderer } = require('electron');
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -63,8 +64,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   toggleDropDown(btn, elementToCollapse);
   toggleDropDown(btn2, elementToCollapse2);
-  toggleDropDown(btn3, elementToCollapse3);
-  toggleDropDown(btn4, elementToCollapse3);
+  // toggleDropDown(btn3, elementToCollapse3);
+  // toggleDropDown(btn4, elementToCollapse3);
+
+  btn3.addEventListener("click",(e) =>{
+      ipcRenderer.send("main:indicatorDialog");
+  })
 
 
   // toogle drop down menu by passing btn id and drop down id
@@ -173,4 +178,31 @@ window.addEventListener('DOMContentLoaded', () => {
     var window_ = remote.getCurrentWindow();
     window_.close();
   });
+ var indicators = []
+ var numOfInd = 0;
+ var hiddenInd = document.getElementById("hiddenInd");
+  ipcRenderer.on('ind', function (evt, id) {
+    if(!indicators.includes(id)){
+      indicators[numOfInd] = id;
+      numOfInd++;
+      hiddenInd.innerHTML = JSON.stringify(indicators);
+    }else{
+      indicators.remove(id);
+      numOfInd --;
+      hiddenInd.innerHTML = JSON.stringify(indicators);
+    }
+    // console.log(indicators);
+});
+
+Array.prototype.remove = function() {
+  var what, a = arguments, L = a.length, ax;
+  while (L && this.length) {
+      what = a[--L];
+      while ((ax = this.indexOf(what)) !== -1) {
+          this.splice(ax, 1);
+      }
+  }
+  return this;
+};
+
 });
