@@ -3,14 +3,14 @@ body{
     left: 0%;
     top: 0%;
     padding: 0%;
-    border-radius: 20px;
+    border: 0.5px solid #555;
 }
 #indicator_box{
     background: #ffffff99; 
 }
 #indicator_head{
     background: black;
-    height: 30px;
+    height: 40px;
     color: white;
     padding-left: 20px;
     padding-top: 10px;
@@ -89,7 +89,7 @@ body{
 }
 .indicator_settings_name{
     position:relative;
-    top: -10px;
+    top: 5px;
     left:25%;
     font-size: larger;
 }
@@ -103,4 +103,11 @@ body{
     top: 5px;
     left: 15px;
     margin-bottom: 10px;
+}
+form{
+    padding: 20px;
+}
+.row{
+    padding: 0% !important;
+    margin: 0% !important;
 }
