@@ -87,3 +87,20 @@ body{
     -webkit-filter: grayscale(100%) invert(100%);
     filter: grayscale(100%) invert(100%);
 }
+.indicator_settings_name{
+    position:relative;
+    top: -10px;
+    left:25%;
+    font-size: larger;
+}
+#label_and_button{
+    display: block;
+    border: 0.5px solid rgb(209, 209, 209);
+    
+}
+#back_btn{
+    position: relative;
+    top: 5px;
+    left: 15px;
+    margin-bottom: 10px;
+}

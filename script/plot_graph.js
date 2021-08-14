@@ -7,7 +7,7 @@ function draw_candle_heikinashi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new candle_cal(i, width, height);
-        volumePlot(i,d.x1,d.volY,d.widthX);
+        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill(d.color);
         if (graph_type == 'hollowcandle') stroke(d.stroke);
@@ -34,7 +34,7 @@ function draw_line_area() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new line_area_cal(i, width, height);
-        volumePlot(i,d.x1,d.volY,d.x1-d.x2-3);
+        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         stroke("#0044ff66");
         strokeWeight(1);
@@ -65,7 +65,7 @@ function drawbaseline() {
         // create a candle object and pass i , width and height for calculation
         d = new line_area_cal(i, width, height);
 
-        volumePlot(i,d.x1,d.volY,d.x1-d.x2-3);
+        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
 
         if (d.y1 < yb && d.y2 < yb) {
@@ -159,7 +159,7 @@ function drawrenko() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new renko(i, width, height);
-        volumePlot(i,d.x1,d.volY,d.widthX-3);
+        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill(d.color);
         stroke(d.color);
@@ -175,7 +175,7 @@ function drawkagi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new kagi_cal(i, width, height);
-        volumePlot(i,d.x1,d.volY,d.x1-d.x2-3);
+        indicatorPlot(i,width,height,d.x1,d.widthX);
 
         strokeWeight(1);
 
@@ -209,9 +209,7 @@ function drawpnf() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new renko(i, width, height);
-        if(indicator.includes(0)){
-            volumePlot(i,d.x1,d.volY,d.widthX-3);
-        }
+        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill("#fff");
         stroke(d.color);
@@ -300,7 +298,6 @@ class line_area_cal {
         this.y1 = 0;                    //vertical line close 1
         this.y2 = 0;                    //vertical line close 1
         this.color = 0;                 //color 
-        this.volY = 0;                  //volume
         this.calc();                    //perform calculation
     }
     calc() {
@@ -314,7 +311,6 @@ class line_area_cal {
         // width of candle is half the regular width
         this.widthX = map(0.5, 0, data_on_graph, 0, this.width - paddingX);
         this.color = color_[i]              //color of bar
-        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
     }
     //check if mouseX is on the bar area anywhere between bar width
     isInBound(mouseX) {
@@ -335,7 +331,6 @@ class renko {
         this.x1 = 0;                    //rect x1
         this.y1 = 0;                    //rect y1   
         this.color = 0;                 //color of candle 
-        this.volY = 0;                  //volume
         this.calc();                    //perform calculation
     }
     calc() {
@@ -349,8 +344,6 @@ class renko {
         //height of candle calculated using open and close price
         this.heightY = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2) - this.y1;
         this.color = color_[i]              //color of candle
-
-        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
     }
     //check if mouseX is on the candle area anywhere between candle width
     isInBound(mouseX) {
@@ -377,7 +370,6 @@ class kagi_cal {
         this.y5 = 0;                    // prev close
         this.y6 = 0;                    // open  
         this.color = 0;                 //color of candle 
-        this.volY = 0;                  //volume
         if(i!=0)  this.calc();          //perform calculation
     }
     calc() {
@@ -395,7 +387,6 @@ class kagi_cal {
         this.y6 = map(-open_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
         // width of candle is half the regular width
         this.widthX = map(1, 0, data_on_graph, 0, this.width - paddingX);
-        this.volY = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
 
         this.color = color_[i];              //color of candle
     }
