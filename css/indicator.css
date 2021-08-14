@@ -87,7 +87,7 @@ body{
     -webkit-filter: grayscale(100%) invert(100%);
     filter: grayscale(100%) invert(100%);
 }
-.indicator_settings_name{
+#indicator_settings_name{
     position:relative;
     top: 5px;
     left:25%;
@@ -109,5 +109,62 @@ form{
 }
 .row{
     padding: 0% !important;
-    margin: 0% !important;
+    margin: 0%  !important;
+}
+.column-35{
+    width: 35%;
+    margin: auto;
+}
+.column-65{
+    width: 65%;
+    margin-top: auto;
+}
+.column-50{
+    display: flex;
+    width: 50%;
+    height: 100%;
+    margin-top: 10px;
+}
+.column-50-inner{
+    display: flex;
+    width: 50%;
+    height: 100%;
+}
+/* .layoutTest{
+    border:0.2px solid rgb(231, 235, 255);
+    background-color: #00ff0010;
+} */
+.form-control-color{
+    width: 40px !important;
+    margin: 1% 10% 1% 1%;
+    padding: 1% !important;
+}
+.with_check{
+    margin-left: 0px !important;
+}
+form span{
+    margin-left: 15px;
+}
+form input{
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10%;
+}
+form select{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.bottom_fixed{
+    position: fixed;
+    display: flex;
+    bottom:40px;
+    left: 30px;
+    width: 100%;
+    height: auto;
+}
+.form-range{
+    width: 100% !important;
+}
+.apply_btn{
+    margin-left: 15%;
 }

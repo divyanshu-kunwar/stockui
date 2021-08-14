@@ -18,7 +18,7 @@
         <div>
             
         </div>
-        <div id='ind_search' style="display: none;">
+        <div id='ind_search' style="display: block;">
 
             <div id="search_box_ind">
                 <img id="search_ind" src="../icon/SEARCH.svg" alt="search" />
@@ -26,55 +26,95 @@
             </div>
 
         </div>
-        <div id="indicator_scroll" style="display: none;">
+        <div id="indicator_scroll" style="display: block;">
         <div id='selected_indicator'>
             <table id='selected_ind_table'>
             </table>
         </div>
     </div>
         </div>
-    <div id="indicator_settings">
+    <div id="indicator_settings" style="display: none;">
             <div id="label_and_button">
                 <img id="back_btn" src="../icon/backarrow.svg" alt="back"/>
-                <span class="indicator_settings_name"> Volume </span>
+                <span id="indicator_settings_name"> Volume </span>
             </div>
-            <form action="send">
-            <div class="row">
-                <div class="col">
-                    <input type="checkbox" class="form-check-input form-control-sm"/>
-                    <label>Volume MA</label>
-                </div>
-                <div class="col-3">
-                    <input type="color" class="form-control form-control-color form-control-sm"
-                value="#563d7c" title="Choose your color">
-                </div>
-                <div class="col-3">
-                    <input type="color" class="form-control form-control-color form-control-sm" 
-                value="#563d7c" title="Choose your color">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-5">
-                    <label>Input Number</label>
-                </div>
-                <div class="col-3">
-                    <input type="number" class="form-control form-control-sm"
-                      placeholder="9">
-                </div>
-                <div class="col-4">
-                    <select class="form-control form-control-sm">
-                        <option>select</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                    <div class="col-5">Range Slider</div>
-                    <div class="col-2">
-                        <input type="range" class="form-range form-control-sm">
+            <form id="form_setting" action="send">
+
+                <div class="row">
+                    <div class="column-35 layoutTest">
+                        <div class="form-check-inline">
+                        <input type="checkbox"  class="form-check-input"/>
+                        <span class="with_check">Show MA</span>
+                        </div>
                     </div>
-            </div>                
-            </div>
+                    <div class="column-65 row layoutTest">
+                        <div class="column-50 layoutTest">
+                            <input type="color" class="form-control form-control-color" 
+                            value="#563d7c" title="Choose your color">
+                        </div>
+                        <div class="column-50 layoutTest">
+                            
+                        </div>
+                    </div>
+                </div>  
+
+                <div class="row">
+                    <div class="column-35 layoutTest">
+                        <div class="form-check-inline">
+                        <span>Volume</span>
+                        </div>
+                    </div>
+                    <div class="column-65 row layoutTest">
+                        <div class="column-50">
+                        <div class="column-50-inner layoutTest">
+                            <input type="color" class="form-control form-control-color" 
+                            value="#563d7c" title="Choose your color">
+                        </div>
+                        <div class="column-50-inner layoutTest">
+                            <input type="color" class="form-control form-control-color" 
+                            value="#563d7c" title="Choose your color">
+                        </div>
+                    </div>
+                        <div class="column-50 layoutTest">
+                            <select class="form-control form-control-sm">
+                                <option>Line</option>
+                                <option>Column</option>
+                                <option>Area</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>  
+
+                <div class="row">
+                    <div class="column-35 layoutTest">
+                        <div class="form-check-inline">
+                        <span>MA Length</span>
+                        </div>
+                    </div>
+                    <div class="column-65 row layoutTest">
+                        <div class="column-50 layoutTest">
+                            <input type="number" class="form-control form-control-sm"
+                            placeholder="9">
+                        </div>
+                        <div class="column-50 layoutTest">
+                            <input type="range" class="form-range form-control-sm">
+                        </div>
+                    </div>
+
+                </div>  
+
+               
+
+    </div>  
             </form>
+            <div class=" bottom_fixed">
+                <div class="column-65 layoutTest">
+                    <Button class="btn btn-sm btn-outline-Danger ">Reset Settings</Button>
+                </div>
+                <div class="column-35 layoutTest">
+                    <Button class="btn btn-Primary btn-sm apply_btn" id="apply_btn">Apply</Button>
+            </div>
     </div>
+    <script></script>
 </body>
 </html>
