@@ -84,7 +84,6 @@ ipcMain.on('main:indicatorDialog', event => {
     }
   });
   childWindow.loadURL("file://"+__dirname+"/pages/indicator.html");
-  childWindow.maximize();
 })
 ipcMain.on("ind",function(e,indId){
     graphWindow.webContents.send('ind', indId);

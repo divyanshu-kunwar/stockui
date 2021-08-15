@@ -157,7 +157,7 @@ function setSettingClick(setting){
            _column65 + _column50 ;
           if(hasColor1) formHTML += _column50 + _colorInput(indicator_id+"color1"+i,settings.controls[i].color1.value) +_divTagClose;
 
-          if(hasColor2) formHTML += _column50 + _colorInput(indicator_id+"color2"+i,settings.controls[i].color1.value) +_divTagClose;
+          if(hasColor2) formHTML += _column50 + _colorInput(indicator_id+"color2"+i,settings.controls[i].color2.value) +_divTagClose;
           if(!hasColor1 && !hasColor2){
               if(hasNumInput){ 
                 formHTML += _numInput(indicator_id+"numInput"+i,settings.controls[i].numInput.value,settings.controls[i].numInput.minValue,settings.controls[i].numInput.maxValue);
