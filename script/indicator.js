@@ -3,7 +3,6 @@ const remote = electron.remote;
 const { ipcRenderer } = electron;
 
 window.addEventListener('DOMContentLoaded', () => {
-  ind_table = document.getElementById("selected_ind_table");
 
   var volSettings = {
       name : "Volume",
@@ -12,17 +11,20 @@ window.addEventListener('DOMContentLoaded', () => {
       hidden : false,
       controls : {
         0 :{ label: "Volume",
-        checkbox :false, 
+        checkbox :false,
         color1:{value:"#ff0000"}, 
         color2:{value:"#ff0000"}},
         1 :{ label: "Volume MA",
         checkbox :true, 
+        checkValue: false,
         color1:{value:"#ff0000"},
         numInput : {value : 9, maxValue : 60, minValue : 2}
         },
         2 :{ label: "Volume SA",
         checkbox :true, 
-        selectInput:{0:"low" , 1:"high" , 2:"heyy"}
+        checkValue: false,
+        selectInput:{0:"low" , 1:"high" , 2:"heyy"},
+        selectedValue : 1,
         }
       }
   }
@@ -33,20 +35,23 @@ window.addEventListener('DOMContentLoaded', () => {
     hidden : false,
     controls : {
       0 :{ label: "SMA",
-      checkbox :false, 
-      color1:{value:"#00ff00"}, 
-      color2:{value:"#ffff00"}},
-      1 :{ label: "MA Cross",
+      checkbox :false,
+      color1:{value:"#ff0000"}, 
+      color2:{value:"#ff0000"}},
+      1 :{ label: " MA",
       checkbox :true, 
-      color1:{value:"0000ff"},
+      checkValue: false,
+      color1:{value:"#ff0000"},
       numInput : {value : 9, maxValue : 60, minValue : 2}
       },
-      2 :{ label: "SA",
+      2 :{ label: " SA",
       checkbox :true, 
-      selectInput:{0:"low" , 1:"high" , 2:"heyy"}
+      checkValue: false,
+      selectInput:{0:"low" , 1:"high" , 2:"heyy"},
+      selectedValue : 2,
       }
     }
-  }
+}
 
 
   addIndicators(volSettings);
@@ -68,7 +73,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const _selectInputClose = "</select>";
   const _options = "<option>";
+  const _options_default = "<option selected>";
   const _optionsClose = "</option>" ;
+
+  function _bottomControl(id){
+    return "<div  class='bottom_fixed'><div class='column-65 layoutTest'>"
+    +"<Button id='reset"+id+"' class='btn btn-sm btn-outline-Danger '>Reset Settings</Button>"
+    +"</div><div class='column-35 layoutTest'>"
+    +"<Button id='apply"+id+"' class='btn btn-Primary btn-sm apply_btn'>Apply</Button>"
+    +"</div></div>";
+  }
 
   function _colorInput(id,colorValue){
     return "<input id='"+id+"' type='color' class='form-control form-control-color' value="+colorValue+" title='Choose color' />";
@@ -87,6 +101,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   
   function addIndicators(settings){
+      var ind_table = document.getElementById("selected_ind_table");
       var indicator_name = settings.name;
       var indicator_id = settings.id;
 
@@ -104,6 +119,7 @@ function setSettingClick(setting){
   indicator_id = setting.id+"setting";
   document.getElementById(indicator_id).addEventListener('click',function(e){
     implementSetting(setting);
+    get_and_set_value(setting);
   });
 }
 
@@ -123,7 +139,6 @@ function setSettingClick(setting){
     indicator_hidden = settings.hidden;
     no_of_controls = Object.keys(settings.controls).length;
     var formHTML = "";
-    var formScript = "";
       if(no_of_controls>=0){
         for(var i=0; i<no_of_controls; i++){
           labelsName = settings.controls[i].label;
@@ -136,7 +151,6 @@ function setSettingClick(setting){
           formHTML += _controlsRow + _column35 + _checkBoxDiv;
           if(labels_with_check){
             formHTML += _checkBox(indicator_id+"check"+i) + _labelWithCheck;
-            let checkValue = document.getElementById(indicator_id+"check"+i).checked;
           } 
           else formHTML+= _labelWithoutCheck;
           formHTML += labelsName + _spanClose + _divTagClose + _divTagClose +
@@ -157,7 +171,11 @@ function setSettingClick(setting){
                 formHTML += _selectInput(indicator_id+"selectInput"+i) ;
                 const options_len = Object.keys(settings.controls[i].selectInput).length;
                 for(var j=0; j < options_len; j++){
-                  formHTML += _options + settings.controls[i].selectInput[j] + _optionsClose;
+                  if(settings.controls[i].selectedValue==j){
+                    formHTML += _options_default + settings.controls[i].selectInput[j] + _optionsClose;
+                  }else{
+                    formHTML += _options + settings.controls[i].selectInput[j] + _optionsClose;
+                  }
                 }
                 formHTML += _selectInputClose;
                 hasSelectInput = false;
@@ -181,11 +199,45 @@ function setSettingClick(setting){
 
           formHTML += _divTagClose + _divTagClose + _divTagClose;
         }
+        formHTML += _bottomControl(indicator_id);
         document.getElementById("form_setting").innerHTML = formHTML;
         //setting the name of indicator on top head
         document.getElementById("indicator_settings_name").innerHTML= indicator_name;
       }
   }
+
+  function get_and_set_value(settings){
+        let indicator_id = settings.id;
+        let apply_btn = document.getElementById("apply"+indicator_id);
+        let reset_btn = document.getElementById("reset"+indicator_id);
+        no_of_controls = Object.keys(settings.controls).length;
+        apply_btn.addEventListener('click', ()=>{
+          if(no_of_controls>=0){
+            for(var i=0; i<no_of_controls; i++){
+                labelsName = settings.controls[i].label;
+                labels_with_check = settings.controls[i].checkbox;
+                hasColor1 = (settings.controls[i].color1!=null);
+                hasColor2 = (settings.controls[i].color2!=null);
+                hasNumInput = (settings.controls[i].numInput!=null);
+                hasSliderInput = (settings.controls[i].sliderInput!=null);
+                hasSelectInput = (settings.controls[i].selectInput!=null);
+                if(labels_with_check)
+                settings.controls[i].checkValue = document.getElementById(indicator_id+"check"+i).checked;
+                if(hasColor1) 
+               settings.controls[i].color1.value = document.getElementById(indicator_id+"color1"+i).value;
+               if(hasColor2) 
+               settings.controls[i].color2.value = document.getElementById(indicator_id+"color2"+i).value;
+               if(hasNumInput)
+               settings.controls[i].numInput.value = document.getElementById(indicator_id+"numInput"+i).value;
+               if(hasSliderInput)
+               settings.controls[i].sliderInput.value = document.getElementById(indicator_id+"sliderInput"+i).value;
+               if(hasSelectInput)
+               settings.controls[i].selectedValue = document.getElementById(indicator_id+"selectInput"+i).value;
+            }}
+          console.log(volSettings);
+        });
+        
+}
 
     var close_btn = document.getElementById('close_indictor');
     close_btn.addEventListener('click', function (e) {

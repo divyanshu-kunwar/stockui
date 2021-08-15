@@ -72,7 +72,7 @@ let childWindow;
 ipcMain.on('main:indicatorDialog', event => {
 
   childWindow = new BrowserWindow({
-    top:graphWindow, modal:true,
+    // top:graphWindow, modal:true,
     width: 400 , 
     height: 600,
     frame:false,
@@ -84,6 +84,7 @@ ipcMain.on('main:indicatorDialog', event => {
     }
   });
   childWindow.loadURL("file://"+__dirname+"/pages/indicator.html");
+  childWindow.maximize();
 })
 ipcMain.on("ind",function(e,indId){
     graphWindow.webContents.send('ind', indId);
