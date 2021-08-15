@@ -178,30 +178,10 @@ window.addEventListener('DOMContentLoaded', () => {
     var window_ = remote.getCurrentWindow();
     window_.close();
   });
- var indicators = []
- var numOfInd = 0;
- var hiddenInd = document.getElementById("hiddenInd");
-  ipcRenderer.on('ind', function (evt, id) {
-    if(!indicators.includes(id)){
-      indicators[numOfInd] = id;
-      numOfInd++;
-      hiddenInd.innerHTML = JSON.stringify(indicators);
-    }else{
-      indicators.remove(id);
-      numOfInd --;
-      hiddenInd.innerHTML = JSON.stringify(indicators);
-    }
-});
 
-Array.prototype.remove = function() {
-  var what, a = arguments, L = a.length, ax;
-  while (L && this.length) {
-      what = a[--L];
-      while ((ax = this.indexOf(what)) !== -1) {
-          this.splice(ax, 1);
-      }
-  }
-  return this;
-};
+ var hiddenInd = document.getElementById("hiddenInd");
+  ipcRenderer.on('indicator', function (evt,message) {
+  hiddenInd.innerHTML = JSON.stringify(message);
+});
 
 });

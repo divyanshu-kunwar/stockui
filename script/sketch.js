@@ -5,7 +5,8 @@ var date = [], open_ = [], close_ = [], low = [], height_ = [];
 var high = [], color_ = [], stroke_ = [] , volume = [], pnf_count = [];
 var min_low = 0, max_high = 0, min_vol = 0, max_vol = 0; translateX = 0, scaleValue = 1;
 var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
-var yb, xb , drawCount = 0; indicator = [];
+var yb, xb , drawCount = 0;
+var indicatorRaw, indicator, indicator_list = [];
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -18,7 +19,6 @@ function setup() {
 
 // all drawing goes inside i.e the main graph plotting function
 function draw() {
-    console.log(indicator);
     //when data is loaded start drawing graph
     if (dataloaded) {
         //calculate scale value i.e minimum and maximum value and moved value of data

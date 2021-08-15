@@ -7,57 +7,22 @@ window.addEventListener('DOMContentLoaded', () => {
   var volSettings = {
       name : "Volume",
       id : "Volume",
+      number : 0,
       applied : false,
       hidden : false,
       controls : {
-        0 :{ label: "Volume",
+        0 :{ label: "Volume Colors",
         checkbox :false,
-        color1:{value:"#ff0000"}, 
+        color1:{value:"#00ff00"}, 
         color2:{value:"#ff0000"}},
-        1 :{ label: "Volume MA",
-        checkbox :true, 
-        checkValue: false,
-        color1:{value:"#ff0000"},
-        numInput : {value : 9, maxValue : 60, minValue : 2}
-        },
-        2 :{ label: "Volume SA",
-        checkbox :true, 
-        checkValue: false,
-        selectInput:{0:"low" , 1:"high" , 2:"heyy"},
-        selectedValue : 1,
-        }
       }
   }
-  var smaSettings = {
-    name : "SMA",
-    id : "sma",
-    applied : false,
-    hidden : false,
-    controls : {
-      0 :{ label: "SMA",
-      checkbox :false,
-      color1:{value:"#ff0000"}, 
-      color2:{value:"#ff0000"}},
-      1 :{ label: " MA",
-      checkbox :true, 
-      checkValue: false,
-      color1:{value:"#ff0000"},
-      numInput : {value : 9, maxValue : 60, minValue : 2}
-      },
-      2 :{ label: " SA",
-      checkbox :true, 
-      checkValue: false,
-      selectInput:{0:"low" , 1:"high" , 2:"heyy"},
-      selectedValue : 2,
-      }
-    }
-}
+
 
 
   addIndicators(volSettings);
-  addIndicators(smaSettings);
   setSettingClick(volSettings);
-  setSettingClick(smaSettings);
+
 
   const _controlsRow = "<div class='row'>";
   const _column35 = "<div class='column-35 layoutTest'>";
@@ -108,19 +73,36 @@ window.addEventListener('DOMContentLoaded', () => {
 
       //append the indicator to list of indicators with close hide and settings icon
       ind_table.innerHTML = ind_table.innerHTML+
-      "<tr id='"+indicator_id+"'><td>"
+      "<tr><td id='"+indicator_id+"'>"
       +indicator_name
-      +"</td><td class='rightMenu'><img src='../icon/eyehide.svg' class='eye_indicator'>"
+      +"</td><td class='rightMenu'><img id='"+indicator_id+"visibility' src='../icon/eyehide.svg' class='eye_indicator'>"
       +"<img id='"+indicator_id+"setting' src='../icon/setting.svg'>"
-      +"<img src='../icon/closebtn.svg' class='close_indicator'></td></tr>";
+      +"<img id='"+indicator_id+"close' src='../icon/closebtn.svg' class='close_indicator'></td></tr>";
   }
 
 function setSettingClick(setting){
-  indicator_id = setting.id+"setting";
-  document.getElementById(indicator_id).addEventListener('click',function(e){
+  setting_id = setting.id+"setting";
+  indicator_id = setting.id;
+  visibility_id = setting.id +"visibility";
+  remove_id = setting.id +"close";
+  document.getElementById(setting_id).addEventListener('click',function(e){
     implementSetting(setting);
     get_and_set_value(setting);
   });
+  document.getElementById(visibility_id).addEventListener('click',function(e){
+      setting.hidden = !setting.hidden;
+      ipcRenderer.send("indicator",setting);
+  });
+  document.getElementById(remove_id).addEventListener('click',function(e){
+      setting.applied = !setting.applied;
+      ipcRenderer.send("indicator",setting);
+  });
+  document.getElementById(indicator_id).addEventListener('click',function(e){
+     setting.hidden = false;
+     setting.applied = true;
+     ipcRenderer.send("indicator",setting);
+  });
+
 }
 
  document.getElementById("back_btn").addEventListener("click", ()=>{
@@ -234,7 +216,7 @@ function setSettingClick(setting){
                if(hasSelectInput)
                settings.controls[i].selectedValue = document.getElementById(indicator_id+"selectInput"+i).value;
             }}
-          console.log(volSettings);
+          ipcRenderer.send("indicator",settings);
         });
         
 }

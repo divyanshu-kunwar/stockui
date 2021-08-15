@@ -7,8 +7,13 @@ function getMinOfArray(numArray) {
 }
 //getting data from the hidden div element and adding it back to arrays
 setInterval(function () {
-    if(document.getElementById("hiddenInd").innerHTML != ""){
-    indicator = JSON.parse(document.getElementById("hiddenInd").innerHTML);
+    if(document.getElementById("hiddenInd").innerHTML != "" 
+    && document.getElementById("hiddenInd").innerHTML != indicatorRaw){
+        console.log(document.getElementById("hiddenInd").innerHTML);
+    indicatorRaw = document.getElementById("hiddenInd").innerHTML;
+    indicator = JSON.parse(indicatorRaw);
+    indicator_list[indicator['number']] = indicator;
+    console.log(indicator_list);
     }
     if (document.getElementById("hiddenData").innerHTML != data_ || document.getElementById("hiddenGraphType").innerHTML != graph_type) {
         dataloaded = false; data_on_graph = 60;
