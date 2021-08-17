@@ -15,6 +15,7 @@ var parentHeight = parents.getBoundingClientRect().height;
 function setup() {
     canvas = createCanvas(parentWidth, parentHeight - 30);
     yb = height / 2;
+    // height = 0.20 * height;
 }
 
 // all drawing goes inside i.e the main graph plotting function

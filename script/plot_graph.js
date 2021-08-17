@@ -303,8 +303,8 @@ class line_area_cal {
     calc() {
         let i = this.i;
         //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
-        this.x1 = map(i, data_length - data_on_graph, data_length, 0, width - paddingX)
-        this.x2 = map(i - 1, data_length - data_on_graph, data_length, 0, width - paddingX)
+        this.x1 = map(i, data_length - data_on_graph, data_length, 0, this.width - paddingX)
+        this.x2 = map(i - 1, data_length - data_on_graph, data_length, 0, this.width - paddingX)
         //y1 value for visible candles on basis of close price mapped to height
         this.y1 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
         this.y2 = map(-close_[i - 1], -min_low, -max_high, height - paddingY, paddingY / 2)
@@ -336,7 +336,7 @@ class renko {
     calc() {
         let i = this.i;
         //x1 value for visible candles on basis of i mapped b/w 0 width-paddingX
-        this.x1 = map(i - 0.5, data_length - data_on_graph, data_length, 0, width - paddingX)
+        this.x1 = map(i - 0.5, data_length - data_on_graph, data_length, 0, this.width - paddingX)
         //y1 value for visible candles on basis of close price mapped to height
         this.y1 = map(-close_[i], -min_low, -max_high, height - paddingY, paddingY / 2)
         // width of candle is half the regular width

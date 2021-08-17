@@ -4,23 +4,46 @@ const { ipcRenderer } = electron;
 
 window.addEventListener('DOMContentLoaded', () => {
 
+  var maSetting = {
+    name: "Moving Average",
+    id:"MA",
+    number:1,
+    applied:false,
+    hidden:true,
+    controls:{
+      0:{label:"MA Length",
+      numInput : { value:10 , minValue:2, maxValue:300}},
+      1:{label:"Source",
+    selectInput:{0:"open",1:"high",2:"low",3:"close"},
+    selectedValue:3,},
+    2:{ label: "MA Color",
+      color1:{value:"#0000ff"}}
+    }
+  }
   var volSettings = {
       name : "Volume",
       id : "Volume",
       number : 0,
-      applied : false,
+      applied : true,
       hidden : false,
       controls : {
         0 :{ label: "Volume Colors",
         checkbox :false,
         color1:{value:"#00ff00"}, 
         color2:{value:"#ff0000"}},
+        1:{label: "Show MA",
+        checkbox:true,
+        color1:{ value:"#0000ff"}},
+        2:{ label:"MA Length",
+        numInput : { value:20 , minValue:2, maxValue:300}
+      }
       }
   }
 
-
-
+  addIndicators(maSetting);
   addIndicators(volSettings);
+
+  setSettingClick(maSetting);
   setSettingClick(volSettings);
 
 
@@ -210,11 +233,11 @@ function setSettingClick(setting){
                if(hasColor2) 
                settings.controls[i].color2.value = document.getElementById(indicator_id+"color2"+i).value;
                if(hasNumInput)
-               settings.controls[i].numInput.value = document.getElementById(indicator_id+"numInput"+i).value;
+               settings.controls[i].numInput.value = parseInt(document.getElementById(indicator_id+"numInput"+i).value);
                if(hasSliderInput)
-               settings.controls[i].sliderInput.value = document.getElementById(indicator_id+"sliderInput"+i).value;
+               settings.controls[i].sliderInput.value = parseInt(document.getElementById(indicator_id+"sliderInput"+i).value);
                if(hasSelectInput)
-               settings.controls[i].selectedValue = document.getElementById(indicator_id+"selectInput"+i).value;
+               settings.controls[i].selectedValue = parseInt(document.getElementById(indicator_id+"selectInput"+i).value);
             }}
           ipcRenderer.send("indicator",settings);
         });
