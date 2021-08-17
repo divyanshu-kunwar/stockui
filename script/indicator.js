@@ -17,7 +17,9 @@ window.addEventListener('DOMContentLoaded', () => {
     selectInput:{0:"open",1:"high",2:"low",3:"close"},
     selectedValue:3,},
     2:{ label: "MA Color",
-      color1:{value:"#0000ff"}}
+      color1:{value:"#0000ff"}},
+    3:{label: "Add",
+        btn:"sma_add"},
     }
   }
   var volSettings = {
@@ -247,22 +249,35 @@ function setSettingClick(setting){
                if(hasSliderInput)
                settings.controls[i].sliderInput.value = parseInt(document.getElementById(indicator_id+"sliderInput"+i).value);
                if(hasSelectInput)
-               settings.controls[i].selectedValue = parseInt(document.getElementById(indicator_id+"selectInput"+i).value);
+               settings.controls[i].selectedValue = (document.getElementById(indicator_id+"selectInput"+i).value);
             }}
           ipcRenderer.send("indicator",settings);
         });
         if(no_of_controls>=0){
-          for(var i =0; i<no_of_controls;i++){
+          for(let i =0; i<no_of_controls;i++){
+            console.log(i);
             hasButton = (settings.controls[i].btn!=null);
             if(hasButton){
-              document.getElementById(indicator_id+"btn"+i).addEventListener('click',
-              settings.controls[i].btn.fun);
+            document.getElementById(indicator_id+"btn"+i).addEventListener('click',function(e){
+              if(settings.controls[i].btn == "sma_add") sma_add();
+            });              
             }
           }
         } 
 }
 
 function sma_add(){
+    no_of_controls = Object.keys(maSetting.controls).length;
+    if(no_of_controls<10){
+    maSetting.controls[no_of_controls-1] = {label:"MA Length",numInput : { value:10 , minValue:2, maxValue:300} };
+    maSetting.controls[no_of_controls] = {label:"Source",selectInput:{0:"open",1:"high",2:"low",3:"close"},selectedValue:3};
+    maSetting.controls[no_of_controls+1] = {label: "MA Color",color1:{value:"#0000ff"}};
+    if(no_of_controls<7){
+    maSetting.controls[no_of_controls+2] = {label: "Add",btn: "sma_add"}; 
+    }
+    implementSetting(maSetting);
+    get_and_set_value(maSetting);
+    }
 }
 
     var close_btn = document.getElementById('close_indictor');
