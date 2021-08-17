@@ -87,6 +87,9 @@ window.addEventListener('DOMContentLoaded', () => {
   function _checkBox(id) {
     return "<input id='"+id+"' type='checkbox'  class='form-check-input'/>";
   }
+  function _button(id , label){
+    return "<button id='"+id+"' type='submit'  class='btn btn-primary'>"+label+"</button>";
+  }
   
   function addIndicators(settings){
       var ind_table = document.getElementById("selected_ind_table");
@@ -153,6 +156,11 @@ function setSettingClick(setting){
           hasNumInput = (settings.controls[i].numInput!=null);
           hasSliderInput = (settings.controls[i].sliderInput!=null);
           hasSelectInput = (settings.controls[i].selectInput!=null);
+          hasButton = (settings.controls[i].btn!=null);
+        if(hasButton){
+                formHTML += _controlsRow + _column50 +_button(indicator_id+"btn"+i,labelsName) + _divTagClose + _divTagClose;
+        }
+        else{
           formHTML += _controlsRow + _column35 + _checkBoxDiv;
           if(labels_with_check){
             formHTML += _checkBox(indicator_id+"check"+i) + _labelWithCheck;
@@ -204,6 +212,8 @@ function setSettingClick(setting){
 
           formHTML += _divTagClose + _divTagClose + _divTagClose;
         }
+
+        }
         formHTML += _bottomControl(indicator_id);
         document.getElementById("form_setting").innerHTML = formHTML;
         //setting the name of indicator on top head
@@ -226,11 +236,11 @@ function setSettingClick(setting){
                 hasNumInput = (settings.controls[i].numInput!=null);
                 hasSliderInput = (settings.controls[i].sliderInput!=null);
                 hasSelectInput = (settings.controls[i].selectInput!=null);
-                if(labels_with_check)
+              if(labels_with_check)
                 settings.controls[i].checkValue = document.getElementById(indicator_id+"check"+i).checked;
-                if(hasColor1) 
+              if(hasColor1) 
                settings.controls[i].color1.value = document.getElementById(indicator_id+"color1"+i).value;
-               if(hasColor2) 
+              if(hasColor2) 
                settings.controls[i].color2.value = document.getElementById(indicator_id+"color2"+i).value;
                if(hasNumInput)
                settings.controls[i].numInput.value = parseInt(document.getElementById(indicator_id+"numInput"+i).value);
@@ -241,7 +251,18 @@ function setSettingClick(setting){
             }}
           ipcRenderer.send("indicator",settings);
         });
-        
+        if(no_of_controls>=0){
+          for(var i =0; i<no_of_controls;i++){
+            hasButton = (settings.controls[i].btn!=null);
+            if(hasButton){
+              document.getElementById(indicator_id+"btn"+i).addEventListener('click',
+              settings.controls[i].btn.fun);
+            }
+          }
+        } 
+}
+
+function sma_add(){
 }
 
     var close_btn = document.getElementById('close_indictor');
