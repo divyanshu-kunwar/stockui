@@ -4,6 +4,25 @@ const { ipcRenderer } = electron;
 
 window.addEventListener('DOMContentLoaded', () => {
 
+  var ewmaSetting = {
+    name: "Exponential Moving Average",
+    id:"EWMA",
+    number:3,
+    applied:false,
+    hidden:true,
+    controls:{
+      0:{label:"EWMA Length",
+      numInput : { value:9 , minValue:2, maxValue:300}},
+      1:{label:"Source",
+    selectInput:{0:"open",1:"high",2:"low",3:"close"},
+    selectedValue:3,},
+    2:{ label: "EWMA Color",
+      color1:{value:"#0000ff"}},
+    3:{label: "Add",
+        btn:"ewma_add"},
+    }
+  }
+
   var maSetting = {
     name: "Moving Average",
     id:"MA",
@@ -22,6 +41,27 @@ window.addEventListener('DOMContentLoaded', () => {
         btn:"sma_add"},
     }
   }
+
+  var mmSetting = {
+    name: "Moving Median",
+    id:"MM",
+    number:2,
+    applied:false,
+    hidden:true,
+    controls:{
+      0:{label:"MM Length",
+      numInput : { value:10 , minValue:2, maxValue:300}},
+      1:{label:"Source",
+    selectInput:{0:"open",1:"high",2:"low",3:"close"},
+    selectedValue:3,},
+    2:{ label: "MM Color",
+      color1:{value:"#0000ff"}},
+    3:{label: "Add",
+        btn:"mm_add"},
+    }
+  }
+
+
   var volSettings = {
       name : "Volume",
       id : "Volume",
@@ -42,10 +82,14 @@ window.addEventListener('DOMContentLoaded', () => {
       }
   }
 
+  addIndicators(ewmaSetting);
   addIndicators(maSetting);
+  addIndicators(mmSetting);
   addIndicators(volSettings);
 
+  setSettingClick(ewmaSetting);
   setSettingClick(maSetting);
+  setSettingClick(mmSetting);
   setSettingClick(volSettings);
 
 
@@ -260,6 +304,8 @@ function setSettingClick(setting){
             if(hasButton){
             document.getElementById(indicator_id+"btn"+i).addEventListener('click',function(e){
               if(settings.controls[i].btn == "sma_add") sma_add();
+              else if(settings.controls[i].btn == "mm_add") smm_add();
+              else if(settings.controls[i].btn == "ewma_add") ewma_add();
             });              
             }
           }
@@ -278,6 +324,33 @@ function sma_add(){
     implementSetting(maSetting);
     get_and_set_value(maSetting);
     }
+}
+
+function smm_add(){
+  no_of_controls = Object.keys(mmSetting.controls).length;
+  if(no_of_controls<10){
+  mmSetting.controls[no_of_controls-1] = {label:"MM Length",numInput : { value:10 , minValue:2, maxValue:300} };
+  mmSetting.controls[no_of_controls] = {label:"Source",selectInput:{0:"open",1:"high",2:"low",3:"close"},selectedValue:3};
+  mmSetting.controls[no_of_controls+1] = {label: "MM Color",color1:{value:"#0000ff"}};
+  if(no_of_controls<7){
+  mmSetting.controls[no_of_controls+2] = {label: "Add",btn: "mm_add"}; 
+  }
+  implementSetting(mmSetting);
+  get_and_set_value(mmSetting);
+  }
+}
+function ewma_add(){
+  no_of_controls = Object.keys(ewmaSetting.controls).length;
+  if(no_of_controls<10){
+  ewmaSetting.controls[no_of_controls-1] = {label:"MM Length",numInput : { value:10 , minValue:2, maxValue:300} };
+  ewmaSetting.controls[no_of_controls] = {label:"Source",selectInput:{0:"open",1:"high",2:"low",3:"close"},selectedValue:3};
+  ewmaSetting.controls[no_of_controls+1] = {label: "MM Color",color1:{value:"#0000ff"}};
+  if(no_of_controls<7){
+  ewmaSetting.controls[no_of_controls+2] = {label: "Add",btn: "mm_add"}; 
+  }
+  implementSetting(ewmaSetting);
+  get_and_set_value(ewmaSetting);
+  }
 }
 
     var close_btn = document.getElementById('close_indictor');
