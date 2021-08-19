@@ -61,6 +61,25 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  var smmaSetting = {
+    name: "Smooth Moving Average",
+    id:"smma",
+    number:2,
+    applied:false,
+    hidden:true,
+    controls:{
+      0:{label:"smma Length",
+      numInput : { value:10 , minValue:2, maxValue:300}},
+      1:{label:"Source",
+    selectInput:{0:"open",1:"high",2:"low",3:"close"},
+    selectedValue:3,},
+    2:{ label: "smma Color",
+      color1:{value:"#0000ff"}},
+    3:{label: "Add",
+        btn:"smma_add"},
+    }
+  }
+
 
   var volSettings = {
       name : "Volume",
@@ -85,11 +104,13 @@ window.addEventListener('DOMContentLoaded', () => {
   addIndicators(ewmaSetting);
   addIndicators(maSetting);
   addIndicators(mmSetting);
+  addIndicators(smmaSetting);
   addIndicators(volSettings);
 
   setSettingClick(ewmaSetting);
   setSettingClick(maSetting);
   setSettingClick(mmSetting);
+  setSettingClick(smmaSetting);
   setSettingClick(volSettings);
 
 
@@ -306,6 +327,7 @@ function setSettingClick(setting){
               if(settings.controls[i].btn == "sma_add") sma_add();
               else if(settings.controls[i].btn == "mm_add") smm_add();
               else if(settings.controls[i].btn == "ewma_add") ewma_add();
+              else if(settings.controls[i].btn == "smma_add") smma_add();
             });              
             }
           }
@@ -350,6 +372,19 @@ function ewma_add(){
   }
   implementSetting(ewmaSetting);
   get_and_set_value(ewmaSetting);
+  }
+}
+function smma_add(){
+  no_of_controls = Object.keys(smmaSetting.controls).length;
+  if(no_of_controls<10){
+  smmaSetting.controls[no_of_controls-1] = {label:"MM Length",numInput : { value:10 , minValue:2, maxValue:300} };
+  smmaSetting.controls[no_of_controls] = {label:"Source",selectInput:{0:"open",1:"high",2:"low",3:"close"},selectedValue:3};
+  smmaSetting.controls[no_of_controls+1] = {label: "MM Color",color1:{value:"#0000ff"}};
+  if(no_of_controls<7){
+  smmaSetting.controls[no_of_controls+2] = {label: "Add",btn: "mm_add"}; 
+  }
+  implementSetting(smmaSetting);
+  get_and_set_value(smmaSetting);
   }
 }
 

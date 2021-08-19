@@ -83,4 +83,5 @@ function toggleDropDown(btn , elementToCollapse){
         }
     })
 }
+
 });

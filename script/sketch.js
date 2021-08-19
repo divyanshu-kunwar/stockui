@@ -2,11 +2,13 @@
 var canvas, paddingY = 100, paddingX = 100;
 var data, data_ = "", dataloaded = false, graph_type = "candle";
 var date = [], open_ = [], close_ = [], low = [], height_ = [];
-var high = [], color_ = [], stroke_ = [] , volume = [], pnf_count = [];
+var high = [], color_ = [], stroke_ = [], volume = [], pnf_count = [];
 var min_low = 0, max_high = 0, min_vol = 0, max_vol = 0; translateX = 0, scaleValue = 1;
 var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
-var yb, xb , drawCount = 0;
+var yb, xb, drawCount = 0;
 var indicatorRaw, indicator, indicator_list = [];
+var background_color = "#fff";
+var text_color = "#000";
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -24,22 +26,22 @@ function draw() {
     if (dataloaded) {
         //calculate scale value i.e minimum and maximum value and moved value of data
         calcScales();
-        background(255);
+        background(background_color);
 
-        stroke(0);
+        stroke(text_color);
         //only horizontal grid 
         drawGridY();
         strokeWeight(0);
-        fill("#fffff");
+        fill(background_color);
         //background rectangle
         rect(8, 10, 380, 90);
         strokeWeight(1);
 
         //update the type of graph
         push()
- // move  data to left or right 
+        // move  data to left or right 
         translate(translateX, 0);
-        
+
         switch (graph_type) {
             case "bars":
                 draw_candle_heikinashi();
@@ -80,7 +82,7 @@ function draw() {
         }
         pop()
 
-        stroke(0);
+        stroke(text_color);
         //horizontal x line
         line(0, height - 50, width, height - 50);
 
@@ -91,12 +93,12 @@ function draw() {
         legend()
 
         //ticks for selected position on graph as date on x-axis and price on y
-        fill(0);
+        fill(text_color);
         //price tick
         rect(width - 102, mouseY - 10, 60, 20);
         //date tick
         rect(mouseX - 35, height - 40, 80, 20);
-        fill(255);
+        fill(background_color);
         //calculate value of current position
         var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
         //price
@@ -148,8 +150,8 @@ function drawScaleX(i) {
     //calculate position for all x ticks on basis of position
     // of first 30 candles 
     x = map(i, data_length - data_on_graph, data_length, 0, width - paddingX);
-    fill(0);
-    stroke(0);
+    fill(text_color);
+    stroke(text_color);
     if (i % Math.round(data_on_graph / 10) == 0) {
         //small dark tick lines on x axis 
         line(x, height - 40, x, height - 50);
@@ -175,15 +177,15 @@ function drawScaleY() {
     //calculate scaling value in accordance with max and min price
     var y1 = map(-min_low, -max_high, -min_low, height - paddingY, paddingY / 2);
     var y2 = map(-max_high, -max_high, -min_low, height - paddingY, paddingY / 2);
-    stroke(0);
+    stroke(text_color);
     //vertical fixed line (y-axis)
     line(width - 102, 0, width - 102, height - 50);
-    stroke(255);
-    fill(255);
+    stroke(background_color);
+    fill(background_color);
     // vertical fixed rectangle right to y-axis
     rect(width - 100, 0, 100, height - 20);
-    stroke(0);
-    fill(0);
+    stroke(text_color);
+    fill(text_color);
     for (var i = 0; i < 9; i++) {
         var difTick = (max_high - min_low) / 7;
         y = map(i, 0, 7, y2, y1);
@@ -199,9 +201,9 @@ function drawScaleY() {
 
 // display the ohcl data on basis of selecteI (selected candle)
 function legend() {
-    
+
     textSize(14);
-    
+
     if (graph_type == 'hollowcandle') fill(stroke_[selectedI]);
     else fill(color_[selectedI]);
     text("O :", 10, 30);
@@ -214,8 +216,8 @@ function legend() {
     text(close_[selectedI].toFixed(2), 330, 30);
     text((close_[selectedI] - close_[selectedI - 1]).toFixed(2), 30, 55);
     text("(" + ((close_[selectedI] - close_[selectedI - 1]) * 100 / close_[selectedI - 1]).toFixed(2) + "%)", 75, 55);
-    text("Volume :",10,80);
-    text(volume[selectedI],70,80);
+    text("Volume :", 10, 80);
+    text(volume[selectedI], 70, 80);
     strokeWeight(1);
     textSize(12);
 }
@@ -255,3 +257,71 @@ window.addEventListener("wheel", function (e) {
         translateX += translateValue;
     }
 });
+
+var themeButton = document.getElementById("themeBtn");
+var nightMode = false;
+themeButton.addEventListener("click", function (e) {
+    if (!nightMode) {
+        toDark();
+        document.body.style.filter = "invert(100%)";
+        document.getElementById("graph_area").style.filter = "invert(100%)";
+        themeButton.setAttribute("src","../icon/changeToLight.svg");
+        nightMode = true;
+        background_color = "#020204";
+        text_color = "#fffff9";
+        
+    } else {
+        toLight();
+        document.body.style.filter = "invert(0%)";
+        document.getElementById("graph_area").style.filter = "invert(0%)";
+        nightMode = false;
+        background_color = "#fffff9";
+        text_color = "#020204";
+        themeButton.setAttribute("src","../icon/changeToDark.svg");
+        
+    }
+});
+
+function toLight(){
+    document.body.animate([
+        // keyframes
+        { backgroundColor: '#020204' },
+        { backgroundColor: '#fffff9' }
+      ], {
+        // timing options
+        duration: 200,
+        iterations: 1
+      });
+      document.getElementById("graph_area").animate([
+        // keyframes
+        { opacity: 0 },
+        { opacity: 0.3 },
+      ], {
+        // timing options
+        duration: 300,
+        iterations: 1
+      });
+      document.body.style.backgroundColor = "#fffff9";
+}
+function toDark(){
+    document.body.animate([
+        // keyframes
+        { backgroundColor: '#fffff9' },
+        { backgroundColor: '#020204' }
+      ], {
+        // timing options
+        duration: 200,
+        iterations: 1
+      });
+      document.getElementById("graph_area").animate([
+        // keyframes
+        { opacity: 0 },
+        { opacity: 0.3 },
+      ], {
+        // timing options
+        duration: 300,
+        iterations: 1
+      });
+
+      document.body.style.backgroundColor = "#020204";
+}
