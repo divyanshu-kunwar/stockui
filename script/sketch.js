@@ -9,6 +9,7 @@ var yb, xb, drawCount = 0;
 var indicatorRaw, indicator, indicator_list = [];
 var background_color = "#fff";
 var text_color = "#000";
+var subPlot = 0.25;
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -17,7 +18,7 @@ var parentHeight = parents.getBoundingClientRect().height;
 function setup() {
     canvas = createCanvas(parentWidth, parentHeight - 30);
     yb = height / 2;
-    // height = 0.20 * height;
+    height = 0.75 * height;
 }
 
 // all drawing goes inside i.e the main graph plotting function
@@ -84,6 +85,7 @@ function draw() {
 
         stroke(text_color);
         //horizontal x line
+        line(0, parentHeight - 80, width, parentHeight - 80);
         line(0, height - 50, width, height - 50);
 
         //draw vertical value and ticks on x-axis
@@ -154,11 +156,11 @@ function drawScaleX(i) {
     stroke(text_color);
     if (i % Math.round(data_on_graph / 10) == 0) {
         //small dark tick lines on x axis 
-        line(x, height - 40, x, height - 50);
+        line(x, parentHeight - 70, x, parentHeight - 80);
 
         //date on x-axis
         strokeWeight(0);
-        text(date[i], x - 20, height - 30);
+        text(date[i], x - 20, parentHeight - 60);
 
         // dashed vertical grid line
         strokeWeight(0.2);
@@ -179,11 +181,11 @@ function drawScaleY() {
     var y2 = map(-max_high, -max_high, -min_low, height - paddingY, paddingY / 2);
     stroke(text_color);
     //vertical fixed line (y-axis)
-    line(width - 102, 0, width - 102, height - 50);
+    line(width - 102, 0, width - 102, parentHeight - 80);
     stroke(background_color);
     fill(background_color);
     // vertical fixed rectangle right to y-axis
-    rect(width - 100, 0, 100, height - 20);
+    rect(width - 100, 0, 100, parentHeight - 50);
     stroke(text_color);
     fill(text_color);
     for (var i = 0; i < 9; i++) {

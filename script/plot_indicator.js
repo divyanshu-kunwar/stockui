@@ -6,10 +6,14 @@ function indicatorPlot(i,width,height,x1,widthX){
     if(indicator_list[0]){
         if(indicator_list[0]['applied']==true && indicator_list[0]['hidden']==false){
         const y1 = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
-        volumePlot(i,x1,y1,width_,
+        const y1_sub = map(volume[i], max_vol, min_vol,
+            parentHeight-60-(subPlot * parentHeight),parentHeight-30-paddingY/2);
+        /*volumePlot(i,x1,y1,width_,
+            indicator_list[0]['controls'][0]['color1']['value'],
+            indicator_list[0]['controls'][0]['color2']['value']);*/
+        volumeSubPlot(i,x1,y1_sub,width_,
             indicator_list[0]['controls'][0]['color1']['value'],
             indicator_list[0]['controls'][0]['color2']['value']);
-            console.log(width_);
         }
     }
     if(indicator_list[1]){
@@ -160,4 +164,18 @@ function maPlot(x1_offset,ma,x2,pma,color_ma){
     strokeWeight(1);
     stroke(color_ma);
     line(x1_offset,ma,x2,pma);
+}
+
+function volumeSubPlot(i,x1_,y1_sub,width_,colorup , colordown){
+    var color_name;
+    if(color_[i]=="#00ca73") color_name = colorup;
+    else color_name = colordown;
+    fill(color_name);
+    if(graph_type=="hollowcandle")fill(stroke_[i]+"44");
+    stroke(color_name)
+    rect(x1_,y1_sub,width_,parentHeight-30-y1_sub-paddingY/2);
+}
+
+function yscaleforsubplot(){
+    
 }
