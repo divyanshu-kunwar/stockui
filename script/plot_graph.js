@@ -137,7 +137,7 @@ function drawbaseline() {
         d.isInBound(mouseX - translateX);
     }
     translate(-translateX, 0);
-    stroke(0);
+    stroke(text_color);
     if (mouseY > yb - 20 && mouseY < yb + 20) {
         canvas.canvas.style.cursor = "ns-resize";
     } else {
@@ -175,7 +175,7 @@ function drawkagi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new kagi_cal(i, width, height);
-        indicatorPlot(i,width,height,d.x1,d.widthX);
+        indicatorPlot(i,width,height,d.x1,(d.widthX-10));
 
         strokeWeight(1);
 
@@ -211,7 +211,7 @@ function drawpnf() {
         d = new renko(i, width, height);
         indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
-        fill("#fff");
+        fill(background_color);
         stroke(d.color);
         strokeWeight(1);
         // rect(d.x1, d.y1, d.widthX, d.heightY);

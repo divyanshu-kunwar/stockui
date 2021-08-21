@@ -13,10 +13,18 @@ function median(numbers) {
 //exponetial weighted moving average
 function ewm(numbers){
     const arr_length = numbers.length;
-    const alpha = 2 / (arr_length+1);
-    let ewma = numbers[arr_length-1];
+    const alpha = 1.22 / (arr_length+1);
+    let ewma = ((numbers.reduce((a, b) => a + b, 0))/arr_length);
     for(var i=arr_length-2; i>=0; i--){
-    ewma = (1-(alpha)) * ewma + (alpha) * numbers[i];
+        ewma = (1-(alpha)) * ewma + (alpha) * numbers[i];
     }
     return ewma;
+}
+function smma(numbers){
+    const arr_length = numbers.length;
+    let smma = ((numbers.reduce((a, b) => a + b, 0))/arr_length);
+    for(var i=arr_length-2; i>=0; i--){
+    smma = (smma * (arr_length-1) + numbers[i])/ arr_length;
+    }
+    return smma;
 }

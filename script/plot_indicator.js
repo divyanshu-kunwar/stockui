@@ -1,10 +1,17 @@
 function indicatorPlot(i,width,height,x1,widthX){
     x1_offset = map(i, data_length - data_on_graph, data_length, 0, width - paddingX);
     var x2 = map(i-1, data_length - data_on_graph, data_length, 0, width - paddingX);
+    x1_ = map(i+0.20, data_length - data_on_graph, data_length, 0, width - paddingX);
+    width_ = map(0.6, 0,data_on_graph, 0, width - paddingX);
     if(indicator_list[0]){
         if(indicator_list[0]['applied']==true && indicator_list[0]['hidden']==false){
         const y1 = map(volume[i], max_vol, min_vol,height-height/3,height-paddingY/2);
-        volumePlot(i,x1,y1,widthX,
+        const y1_sub = map(volume[i], max_vol, min_vol,
+            parentHeight-60-(subPlot * parentHeight),parentHeight-30-paddingY/2);
+        /*volumePlot(i,x1,y1,width_,
+            indicator_list[0]['controls'][0]['color1']['value'],
+            indicator_list[0]['controls'][0]['color2']['value']);*/
+        volumeSubPlot(i,x1,y1_sub,width_,
             indicator_list[0]['controls'][0]['color1']['value'],
             indicator_list[0]['controls'][0]['color2']['value']);
         }
@@ -108,20 +115,67 @@ function indicatorPlot(i,width,height,x1,widthX){
             }
         }
     }
+    if(indicator_list[4]){
+        if(indicator_list[4]['applied']==true && indicator_list[4]['hidden']==false){
+            for(let k=0; k<Object.keys(indicator_list[3].controls).length-1; k=k+3){
+                if(i>indicator_list[4]['controls'][k]["numInput"]["value"]){
+                color_smma = indicator_list[4]['controls'][k+2]['color1']['value'];
+                source = indicator_list[4]['controls'][k+1]['selectedValue'];
+                price = [];
+                prevPrice = [];
+                for(var j=1 ; j<indicator_list[4]['controls'][k]["numInput"]["value"]+1; j++){
+                    if(source == "high"){
+                        price[j-1] = high[i-j];
+                        prevPrice[j-1] = high[i-j-1];
+                    }else if(source == "low"){
+                        price[j-1] = low[i-j];
+                        prevPrice[j-1] = low[i-j-1];
+                    }else if(source == "open"){
+                        price[j-1] = open_[i-j];
+                        prevPrice[j-1] = open_[i-j-1];
+                    }else{
+                        price[j-1] = close_[i-j];
+                        prevPrice[j-1] = close_[i-j-1];
+                    }
+                    
+                }
+                smma = smma(price);
+                psmma = smma(prevPrice);
+                smma = map(-smma,-min_low, -max_high, height - paddingY, paddingY / 2);
+                psmma = map(-psmma,-min_low, -max_high, height - paddingY, paddingY / 2);
+                maPlot(x1_offset,smma,x2,psmma,color_smma);
+                }
+            }
+        }
+    }
 }
 // indicators i.e volume 
-function volumePlot(i,x,y,widthX,colorup , colordown){
+function volumePlot(i,x1_,y,width_,colorup , colordown){
     var color_name;
     if(color_[i]=="#00ca73") color_name = colorup;
     else color_name = colordown;
     fill(color_name);
     if(graph_type=="hollowcandle")fill(stroke_[i]+"44");
     stroke(color_name)
-    rect(x,y,widthX,height-y-paddingY/2);
+    rect(x1_,y,width_,height-y-paddingY/2);
 }
 
 function maPlot(x1_offset,ma,x2,pma,color_ma){
     strokeWeight(1);
     stroke(color_ma);
     line(x1_offset,ma,x2,pma);
+}
+
+function volumeSubPlot(i,x1_,y1_sub,width_,colorup , colordown){
+    var color_name;
+    if(color_[i]=="#00ca73") color_name = colorup;
+    else color_name = colordown;
+    fill(color_name);
+    if(graph_type=="hollowcandle")fill(stroke_[i]+"44");
+    stroke(color_name)
+    rect(x1_,y1_sub,width_,parentHeight-30-y1_sub-paddingY/2);
+}
+
+function yscaleforsubplot(){
+    
 }
