@@ -189,3 +189,102 @@ body{
     padding-left: 50px;
     padding-top: 30px;
 }
+.select_input{
+    width: 120px;
+    margin: 2%;
+    background-color: #000 !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+#filter_result{
+    display: flex;
+    width: 400px;
+}
+.navigation_btn{
+    margin-right: 20px;
+    opacity: 0.6;
+}
+.navigation_btn:hover{
+    opacity: 1.0;
+    cursor: pointer;
+}
+#prev_btn{
+    opacity: 0.4;
+    cursor:not-allowed;
+}
+#filter_btn{
+    position: absolute;
+    right: 5%;
+    margin: 5px;
+}
+#main_table_screener{
+    margin-top: 2%;
+    width: 95%;
+}
+#main_table_screener tr:nth-child(odd) {
+    background-color: #222;
+    
+}
+#main_table_screener tr input{
+    margin-left: 20px !important;
+}
+#criteria{
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-color: #161616;
+    top: 0%;
+    right: 0%;
+}
+
+.criteria{
+    padding-left: 25px;
+    padding-top: 10px;
+    
+}
+
+#min_cri{
+    position: absolute;
+    right: 5%;
+    margin-top: 10px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+#min_cri:hover{
+    opacity: 1;
+}
+.cri_items{
+    padding-left: 25px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: #222;
+    margin: 2px;
+    cursor: pointer;
+}
+.expend_Btn{
+    position: absolute;
+    right: 5%;
+    margin-top: 5px;
+    opacity: 0.6;
+   
+}
+.expend_Btn:hover{
+    opacity: 1;
+}
+
+.ind_items{
+    padding-left: 25px;
+    padding-top: 2px;
+    padding-bottom: 2px; 
+    cursor: pointer; 
+
+}
+.add_items{
+    position: absolute;
+    right: 5%;
+    margin-top: 5px;
+    opacity: 0.6;
+}
+.add_items:hover{
+    opacity: 1;
+}

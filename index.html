@@ -134,24 +134,96 @@
 
 
             </div>
+
+            <!-- Screener page goes here -->
             <div id="screener_page">
-                    <div>
-                        <select id = 'exchange_select'>
+                    <div id="filter_result">
+                        <img id="prev_btn" src="icon/prev_btn.svg" class="navigation_btn">
+                        <img id="next_btn" src="icon/next_btn.svg" class="navigation_btn">
+                        <select id ='exchange_select' class="select_input form-control form-control-sm">
                             <option selected>All</option>
                             <option selected>BSE</option>
                             <option selected>NSE</option>
                         </select>
-                        <select id="indices_select">
+                        <select id="indices_select" class="select_input form-control form-control-sm">
                             <option selected>All</option>
                             <option selected>Nifty 50</option>
                             <option selected>Sensex</option>
                         </select>
-                        <select  id="">
-                            <option selected>industries</option>
+                        <select  id="sector_select" class="select_input form-control form-control-sm">
+                            <option selected>All</option>
+                            <option selected>Advertisement</option>
+                            <option selected>Bank</option>
                         </select>
-                        <select  id="">
-                            <option selected>all</option>
-                        </select>
+                        <img src="icon/filter.svg" id="filter_btn">
+                    </div>
+                    <div id="tableArea">
+                        <table id="main_table_screener">
+                            <tr>
+                                <th>
+                                    <input type="checkbox"/>
+                                </th>
+                                <th>Name</th>
+                                <th>Last Price</th>
+                                <th>Chg %</th>
+                                <th>Market Cap</th>
+                                <th>Volume</th>
+                                <th>Pattern</th>
+                                <th><img src="icon/view_graph.svg"></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox"/>
+                                </td>
+                                <td>Reliance</td>
+                                <td>10000</td>
+                                <td>0.5%</td>
+                                <td>25Cr</td>
+                                <td>25L</td>
+                                <td>Evergreen Star</td>
+                                <td>View</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox"/>
+                                </td>
+                                <td>Reliance</td>
+                                <td>10000</td>
+                                <td>0.5%</td>
+                                <td>25Cr</td>
+                                <td>25L</td>
+                                <td>Evergreen Star</td>
+                                <td>View</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="criteria">
+                        <div class='criteria'>
+                            Add Criteria
+                            <img id="min_cri" src="icon/min_cri.svg" alt="">
+                        </div>
+                        <div class='cri_items'>
+                            Indicator
+                            <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
+                        </div>
+                        <div class='ind_items'>
+                            <div>macd
+                                <img class = 'add_items'src="icon/add_item.svg" alt="">
+                            </div>
+                            
+                        </div>
+                        <div class='cri_items'>
+                            pattern
+                            <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
+                        </div>
+                        <div class='cri_items'>
+                            price
+                            <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
+                        </div>
+                        <div class='cri_items'>
+                            volume
+                            <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
+                        </div>
                     </div>
             </div>
             <div id="news_page">
