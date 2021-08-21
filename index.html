@@ -5,15 +5,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; base-uri 'self';style-src 'self'">
     <title>Stock Market</title>
 
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script src="script/main_page.js"></script>
 
 </head>
 
@@ -202,27 +198,52 @@
                             Add Criteria
                             <img id="min_cri" src="icon/min_cri.svg" alt="">
                         </div>
-                        <div class='cri_items'>
+                        <div class='cri_items' id="indicator_drop_btn">
                             Indicator
                             <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
                         </div>
-                        <div class='ind_items'>
-                            <div>macd
+
+                        <div class='ind_items' id='ind_items' style="display: none;">
+                            <input id="search_ind" type="text" 
+                            placeholder="Search" class="form-control form-control-sm"/>
+                            <div class="items"> <p>macd</p>
                                 <img class = 'add_items'src="icon/add_item.svg" alt="">
-                            </div>
-                            
+                            </div>                            
                         </div>
-                        <div class='cri_items'>
+                        <div class='cri_items' id="pattern_drop_btn">
                             pattern
                             <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
                         </div>
-                        <div class='cri_items'>
+                        <div class='ind_items' id='pattern_items' style="display: none;">
+                            <input id="search_ind" type="text" 
+                            placeholder="Search" class="form-control form-control-sm"/>
+                            <div class="items"> <p>macd</p>
+                                <img class = 'add_items'src="icon/add_item.svg" alt="">
+                            </div>                            
+                            
+                        </div>
+                        <div class='cri_items' id="price_drop_btn">
                             price
                             <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
                         </div>
-                        <div class='cri_items'>
+                        <div class='ind_items' id='price_items' style="display: none;">
+                            <div class="items"> <p>macd</p>
+                                <img class = 'add_items'src="icon/add_item.svg" alt="">
+                            </div>                            
+                            
+                        </div>
+                        <div class='cri_items' id="volume_drop_btn">
                             volume
                             <img class = 'expend_Btn' src="icon/expand_cri.svg" alt="">
+                        </div>
+                        <div class='ind_items' id='vol_items' style="display: none;">
+                            <div class="items"> <p>macd</p>
+                                <img class = 'add_items'src="icon/add_item.svg" alt="">
+                            </div>                            
+                            
+                        </div>
+                        <div class='Edit_cri'>
+                            Edit criteria
                         </div>
                     </div>
             </div>

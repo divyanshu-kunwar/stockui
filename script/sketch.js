@@ -265,9 +265,11 @@ var nightMode = false;
 themeButton.addEventListener("click", function (e) {
     if (!nightMode) {
         toDark();
+        
         document.body.style.filter = "invert(100%)";
         document.getElementById("graph_area").style.filter = "invert(100%)";
         themeButton.setAttribute("src","../icon/changeToLight.svg");
+        $(".action_btn").css('filter','invert(100%)')
         nightMode = true;
         background_color = "#020204";
         text_color = "#fffff9";
@@ -276,6 +278,7 @@ themeButton.addEventListener("click", function (e) {
         toLight();
         document.body.style.filter = "invert(0%)";
         document.getElementById("graph_area").style.filter = "invert(0%)";
+        $(".action_btn").css('filter','invert(0%)')
         nightMode = false;
         background_color = "#fffff9";
         text_color = "#020204";

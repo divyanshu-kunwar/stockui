@@ -98,17 +98,20 @@ window.addEventListener('DOMContentLoaded', () => {
     setInterval(function (e) {
       if (search_box.value != input_text) {
         input_text = search_box.value;
-        var query = "SELECT Table_name as stock from information_schema.tables where (table_schema = 'company') and (table_name Like '%" + input_text + "%');"
+        var query = "SELECT Table_name as stock from information_schema.tables where (table_schema = 'bse') and (table_name Like '%" + input_text + "%');"
         con.query(query, function (err, result) {
           if (err) throw err;
           var search_row = ""
           for (var i = 0; i < 15; i++) {
             try {
-              search_row += "<tr><td id='company" + i.toString() + "'>" + result[i]['stock'] + "</td>"
-                + "<td>full name</td>"
-                + "<td>NSE</td>"
-                + "<td class='show_graph'>graph</td>"
-                + "<td class='add_company'>add</td></tr>"
+              search_row += "<tr class='companyName' ><td id='company" + i.toString() + "'>" + result[i]['stock'] + "</td>"
+                + "<td class='action_btn'>"
+                + "<img src='../icon/buy_btn.svg' />"
+                + "<img src='../icon/sell_btn.svg' />"
+                + "<img src='../icon/add_btn.svg' />"
+                +"</td>"
+                + "<td class='exchange_'>BSE</td>"
+                +"<td class='view_g'><img src='../icon/graph_fav.svg' /></td></tr>"
             } catch { }
           }
           table_for_search.innerHTML = search_row;
@@ -137,7 +140,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   // connect to my sql database for company data
-  /*var con = mysql.createConnection({
+  var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "vishal"
@@ -146,7 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
   con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
-  }); */
+  });
 
   minimize_btn = document.getElementById('minimize_btn');
   maximize_btn = document.getElementById('maximize_btn');

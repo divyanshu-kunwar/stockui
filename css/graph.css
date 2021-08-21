@@ -176,3 +176,29 @@ hr{
     margin-right: 10px;
     margin-left: 20px;
 }
+.companyName{
+    cursor: pointer;
+}
+.companyName:hover img{
+    opacity: 0.5;
+}
+.companyName img{
+    opacity: 0;
+    height: 30px;
+    margin-right: 5%;
+}
+.companyName:hover img:hover{
+    opacity: 1;
+}
+.companyName:hover{
+    background-color: #feffbb;   
+}
+.companyName:hover .exchange_{
+    display: none;
+}
+.view_g{
+    display: none;
+}
+.companyName:hover .view_g{
+    display: inline-block;
+}

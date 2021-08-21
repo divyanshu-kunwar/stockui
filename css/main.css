@@ -273,18 +273,42 @@ body{
 }
 
 .ind_items{
+    max-height: 200px;
     padding-left: 25px;
     padding-top: 2px;
     padding-bottom: 2px; 
     cursor: pointer; 
-
+    overflow-y: auto;
+}
+.items p{
+    width: 88%;
+    padding: 0% !important;
+    margin: 0% !important;
+} 
+.ind_items::-webkit-scrollbar{
+    display: none;
 }
 .add_items{
-    position: absolute;
-    right: 5%;
-    margin-top: 5px;
+    position:relative;
     opacity: 0.6;
+}
+.items{
+    display: flex;
 }
 .add_items:hover{
     opacity: 1;
+}
+
+.Edit_cri{
+    padding-left: 25px;
+    padding-top: 10px;
+    
+}
+#search_ind{
+    width: 90%;
+    margin: 4%;
+    padding-left: 20px;
+    background-color: #000;
+    color: #fff;
+    border: none !important;
 }
