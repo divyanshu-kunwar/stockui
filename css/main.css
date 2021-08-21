@@ -1,20 +1,47 @@
+:root{
+    --primary-color : #fff;
+    --primary-color2 : #f6f6f8;
+    --secondary-color : #000;
+    --accent-color-light : #feffbb;
+    --border-color-primary2 : #222222;
+    --border-color-primary : #e1e1e1;
+    --green-text : #22ff00;
+    --console-color : #9900ff;
+}
+/* :root{
+    --primary-color : #000;
+    --primary-color2 : #111;
+    --secondary-color : #fff;
+    --accent-color-light : #8e5eff;
+    --border-color-primary2 : #e1e1e1;
+    --border-color-primary : #222;
+} */
+.row{
+    margin: 0% !important;
+    padding: 0% !important;
+}
 body{
     width: 100vw;
     height: 100vh;
-    background-color: #111 !important;
-    color: #fff !important;
     padding: 0% !important;
     margin: 0% !important;
     overflow: hidden;
+    /* filter: invert(100%); */
 }
+
 #view-graph{
     position: fixed;
     top: 80%;
     left: 40%;
 }
-#topBar{
-    background-color: #000;
-    padding:0.5% 1% 0.5% 3% !important;
+#topbar{
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding:0.5% 1% 0.5% 0% !important;
+    border-bottom: 1px solid var(--border-color-primary2);   
+    filter: invert(100%); 
+}
+#draggable-area{
     -webkit-user-select: none;
     -webkit-app-region: drag;
 }
@@ -25,19 +52,24 @@ body{
 }
 #topOptions img{
     margin-right: 10px;
-    opacity: 60%;
+    opacity: 0.6;
 }
 #topOptions img:hover{
-    opacity: 100%;
+    opacity: 1;
+}
+#topmore{
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .row{
     margin: 0% !important;
     padding: 0% !important;
 }
 #side_bar{
-    background: #000;
+    background: var(--primary-color);
     height: 100%;
     width: 80px;
+    border-right: 1px solid var(--border-color-primary);
 }
 #side_menu{
     padding: 25px;
@@ -45,6 +77,11 @@ body{
 #side_menu img{
     display: block;
     margin-top: 45px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+#side_menu img:hover{
+   opacity: 1;
 }
 #main_side{
     height: 100%;
@@ -56,12 +93,12 @@ body{
     width:350px;
     margin-left:0px;
     padding-left: 50px;
-    color: #fff;
-    background-color: #222;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
     padding-top: 5px;
     padding-bottom: 5px;
-    border-radius: 30px;
-    border: #000;
+    border-radius: 25px;
+    border:1px solid var(--border-color-primary);
 }
 #search_icon{
     position: absolute;
@@ -89,7 +126,7 @@ body{
     display: none;
 }
 .indice{
-    border: 1px solid #555;
+    border: 1px solid var(--border-color-primary);
     font-size: small;
     padding: 4px 10px 6px 10px;
     border-radius: 10px;
@@ -105,11 +142,8 @@ body{
 #market_highlights{
     width: 92%;
     position: absolute;
-    top: 85px;;
+    top: 130px;;
     left: 100px;
-}
-#home_page{
-    display: none;
 }
 .news_image img{
     width: 150px;
@@ -121,8 +155,8 @@ body{
     position: relative;
     display: block;
     height: 85vh;
-    background-color: #141414;
     padding: 10px;
+    border: 1px solid var(--border-color-primary);
 }
 #news_wrap{
     height: 100%;
@@ -133,27 +167,28 @@ body{
     display: none;
 }
 .news_info{
-    background-color: #191919;
+    background-color: var(--primary-color);
     padding: 10px;
-    color: #aaa;
+    color: var(--secondary-color);
 }
 .news_info h6{
-    color: #fff3e8;
+    color: var(--secondary-color);
 }
 .new_cont{
     display: block;
     margin-bottom: 5px !important;
+    box-shadow: 2px 2px 4px var(--border-color-primary);
 }
 #tab{
     width: 100%;
-    background: #191919;
+    background: var(--accent-color-light);
     margin-top: 5px;
     padding: 2px;
 }
 #tab a{
     margin: 20px;
     text-decoration: none;
-    color: #fff3e8;
+    color:var(--secondary-color);
 }
 #stock_list{
     width: 100%;
@@ -163,15 +198,16 @@ body{
 #graph_view{
     height: 300px;
     padding:5px;
-    background: #000;
+    background: var(--primary-color);
 }
 .green-text{
-    color: #22ff00;
+    color: var(--green-text);
 }
 #indices_overview{
     height: 85vh;
-    background-color: #141414;
+    background-color: var(--primary-color);
     margin-right: 5px;
+    border: 1px solid var(--border-color-primary);
 }
 #main_list{
     position: relative;
@@ -190,15 +226,16 @@ body{
     padding-top: 30px;
 }
 .select_input{
-    width: 120px;
+    min-width: 100px;
+    max-width: 140px;
     margin: 2%;
-    background-color: #000 !important;
-    color: #fff !important;
+    background-color: var(--primary-color) !important;
+    color: var(--secondary-color) !important;
     cursor: pointer;
 }
 #filter_result{
     display: flex;
-    width: 400px;
+    width: 420px;
 }
 .navigation_btn{
     margin-right: 20px;
@@ -222,7 +259,7 @@ body{
     width: 95%;
 }
 #main_table_screener tr:nth-child(odd) {
-    background-color: #222;
+    background-color: var(--primary-color2);
     
 }
 #main_table_screener tr input{
@@ -232,15 +269,15 @@ body{
     position: absolute;
     width: 25%;
     height: 100%;
-    background-color: #161616;
-    top: 0%;
+    background-color: var(--primary-color);
+    border: 1px solid var(--border-color-primary);
+    top: 45px;
     right: 0%;
 }
 
 .criteria{
     padding-left: 25px;
     padding-top: 10px;
-    
 }
 
 #min_cri{
@@ -257,7 +294,7 @@ body{
     padding-left: 25px;
     padding-top: 2px;
     padding-bottom: 2px;
-    background-color: #222;
+    background-color: var(--primary-color2);
     margin: 2px;
     cursor: pointer;
 }
@@ -308,7 +345,28 @@ body{
     width: 90%;
     margin: 4%;
     padding-left: 20px;
-    background-color: #000;
-    color: #fff;
-    border: none !important;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--border-color-primary);
+}
+#console_page{
+    padding: 5%;
+    color: var(--console-color);
+    overflow-y: auto;
+    font-size:smaller;
+}
+#console_page number{
+    color: var(--secondary-color);
+}
+#console_page p{
+    position: absolute;
+    top: 60px;
+    color: var(--secondary-color);
+    text-align: center;
+    font-size: medium;
+}
+#criteria_switcher{
+    position: absolute;
+    top: 100px;
+    right: -1px;
 }

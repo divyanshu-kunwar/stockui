@@ -138,7 +138,6 @@ hr{
     padding:0.5% 1% 0.5% 0% !important;
     border-bottom: 1px solid #222222;
     filter: invert(100%);
-    
 }
 #draggable-area{
     -webkit-user-select: none;

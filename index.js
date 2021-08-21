@@ -10,6 +10,9 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    frame: false,
+    resizable:true,
+    transparent:true,
     
     autoHideMenuBar: true,
     webPreferences: {
@@ -53,6 +56,20 @@ app.on('window-all-closed', function () {
 let graphWindow;
 
 ipcMain.on('main:graph', event => {
+
+  if(graphWindow!=null){
+    try{
+    graphWindow.maximize();
+    graphWindow.focus();
+  }catch{
+    showGraphWindow();
+  }
+  }else{
+    showGraphWindow();
+}
+});
+
+function showGraphWindow(){
   graphWindow = new BrowserWindow({
     width: 1000, height: 600, frame:false,
     webPreferences: {
@@ -67,12 +84,23 @@ ipcMain.on('main:graph', event => {
   // graphWindow.on('closed', () => {
   //   graphWindow = null;
   // });
-});
+}
 let childWindow;
 ipcMain.on('main:indicatorDialog', event => {
+  if(childWindow!=null){
+    try{
+    childWindow.focus();
+  }catch{
+    showIndicatorWindow();
+  }
+  }else{
+    showIndicatorWindow();
+}
+})
 
+function showIndicatorWindow(){
   childWindow = new BrowserWindow({
-    // top:graphWindow, modal:true,
+    top:graphWindow, modal:true,
     width: 400 , 
     height: 600,
     frame:false,
@@ -84,7 +112,7 @@ ipcMain.on('main:indicatorDialog', event => {
     }
   });
   childWindow.loadURL("file://"+__dirname+"/pages/indicator.html");
-})
+}
 ipcMain.on("indicator",function(e,settings){
     graphWindow.webContents.send('indicator', settings);
 });
