@@ -140,16 +140,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   // connect to my sql database for company data
-  var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "vishal"
-  });
+  // var con = mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   password: "vishal"
+  // });
 
-  con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+  // con.connect(function (err) {
+  //   if (err) throw err;
+  //   console.log("Connected!");
+  // });
 
   minimize_btn = document.getElementById('minimize_btn');
   maximize_btn = document.getElementById('maximize_btn');
@@ -184,6 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
  var hiddenInd = document.getElementById("hiddenInd");
   ipcRenderer.on('indicator', function (evt,message) {
+  console.log(message);
   hiddenInd.innerHTML = JSON.stringify(message);
 });
 

@@ -99,19 +99,19 @@ function draw() {
         //price tick
         rect(width - 102, mouseY - 10, 60, 20);
         //date tick
-        rect(mouseX - 35, height - 40, 80, 20);
+        rect(mouseX - 35, parentHeight - 70, 80, 20);
         fill(background_color);
         //calculate value of current position
         var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
         //price
         text(ycurrent, width - 100, mouseY + 5)
         //date
-        text(date[selectedI], mouseX - 25, height - 25)
+        text(date[selectedI], mouseX - 25, parentHeight - 55)
         // dotted cross line according to mouse coordinates
         strokeWeight(0.4);
         canvas.drawingContext.setLineDash([5, 5]);
         line(0, mouseY, width - paddingX, mouseY);
-        line(mouseX, 0, mouseX, height - 50);
+        line(mouseX, 0, mouseX, parentHeight - 80);
         canvas.drawingContext.setLineDash([0, 0]);
         strokeWeight(1);
     }

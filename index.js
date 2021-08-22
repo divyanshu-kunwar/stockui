@@ -105,6 +105,7 @@ function showIndicatorWindow(){
     height: 600,
     frame:false,
     resizable: false,
+    transparent: true,
     webPreferences: {
       preload: path.join(__dirname, '/script/indicator.js'),
       nodeIntegration: true,

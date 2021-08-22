@@ -1,12 +1,15 @@
 body{
+    background: #ffffff90 !important;
     margin: 0%;
     left: 0%;
     top: 0%;
     padding: 0%;
     border: 0.5px solid #555;
+    backdrop-filter: blur(40px);
+    overflow-x: hidden;
 }
 #indicator_box{
-    background: #ffffff99; 
+    
 }
 #indicator_head{
     background: black;
