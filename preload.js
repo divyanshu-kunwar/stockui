@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-  document.getElementById("view-graph").addEventListener("click", event => {
+  document.getElementById("dashboard_btn").addEventListener("click", event => {
       ipcRenderer.send('main:graph');
   });
 
@@ -26,10 +26,10 @@ window.addEventListener('DOMContentLoaded', () => {
     var window_ = remote.getCurrentWindow();
     if (!window_.isMaximized()) {
       window_.maximize();
-      maximize_btn.setAttribute("src", "../icon/restore.svg");
+      maximize_btn.setAttribute("src", "icon/restore.svg");
     } else {
       window_.unmaximize();
-      maximize_btn.setAttribute("src", "../icon/maximize.svg");
+      maximize_btn.setAttribute("src", "icon/maximize.svg");
     }
   });
   close_btn.addEventListener('click', function (e) {

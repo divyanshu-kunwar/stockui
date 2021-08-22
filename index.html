@@ -16,30 +16,30 @@
 <body>
     
         <!-- top bar here  -->
-    <!-- <div class="row" id="topBar">
-        <div class="col-xs-6 col-md-8 col-lg-9">
-            <span id="companyName">
-                <img src="icon/logo_company.svg" alt="">
-            </span>
+        <div class="row" id="topbar">
+            <img id="themeBtn" src="icon/changeToDark.svg" alt="close btn" />
+            <div id="draggable-area" class="col-xs-5 col-md-7 col-lg-8">
+                <span id="companyName">Stock Market</span>
+            </div>
+            <div id="topOptions" class="col-xs-4 col-md-3 col-lg-2">
+            <img id="minimize_btn" src="icon/minimize.svg" alt="close btn" />
+            <img id="maximize_btn" src="icon/restore.svg" alt="close btn" />
+            <img id="close_btn" src="icon/close.svg" alt="close btn" />
+            </div>
         </div>
-        <div id="topOptions" class="col-xs-4 col-md-3 col-lg-2">
-        <img id="minimize_btn" src="icon/minimize.svg" alt="close btn" />
-        <img id="maximize_btn" src="icon/restore.svg" alt="close btn" />
-        <img id="close_btn" src="icon/close.svg" alt="close btn" />
-        </div>
-    </div> -->
 
         <!--Main Content and side bar container-->
-    <div id="main_side" class="row">
+        <div id="main_side" class="row">
         <!-- side bar here -->
         <div id="side_bar" >
             <div id="side_menu">
-                <img src="icon/home_s.svg" alt="home">
-                <img src="icon/screener_.svg" alt="home">
-                <img src="icon/news_.svg" alt="home">
-                <img src="icon/setting_.svg" alt="home">
-                <img src="icon/console_.svg" alt="home">
-                <img src="icon/download_.svg" alt="home">
+                <img id="home_btn" src="icon/home.svg" alt="home">
+                <img id="dashboard_btn" src="icon/open_dashboard.svg" alt="dashboard">
+                <img id="screener_btn" src="icon/screener.svg" alt="screener">
+                <img id="news_btn" src="icon/news.svg" alt="news">
+                <img id="setting_btn" src="icon/setting.svg" alt="setting">
+                <img id="console_btn" src="icon/console.svg" alt="console">
+                <img id="downloads_btn" src="icon/download.svg" alt="download">
             </div>
         </div>
 
@@ -47,7 +47,7 @@
         <div id="main_content">
 
             <!-- homepage goes here -->
-            <div id="home_page">
+            <div id="home_page" >
 
                 <!-- indices  -->
                 <div id="indices_higlights">
@@ -132,7 +132,8 @@
             </div>
 
             <!-- Screener page goes here -->
-            <div id="screener_page">
+            <div id="screener_page" style="display: none;">
+                <img src="icon/criteria_switcher.svg" id="criteria_switcher">
                     <div id="filter_result">
                         <img id="prev_btn" src="icon/prev_btn.svg" class="navigation_btn">
                         <img id="next_btn" src="icon/next_btn.svg" class="navigation_btn">
@@ -165,7 +166,7 @@
                                 <th>Market Cap</th>
                                 <th>Volume</th>
                                 <th>Pattern</th>
-                                <th><img src="icon/view_graph.svg"></th>
+                                <th><img src="icon/view_graph_.svg"></th>
                             </tr>
                             <tr>
                                 <td>
@@ -247,16 +248,19 @@
                         </div>
                     </div>
             </div>
-            <div id="news_page">
+            <div id="news_page" style="display: none;">
 
             </div>
-            <div id="settings_page">
+            <div id="settings_page" style="display: none;">
 
             </div>
-            <div id="console_page">
-
+            <div id="console_page" style="display: none;">
+                <p>
+                __________________________ CONSOLE LOGS 💻 __________________________<br>
+                </p>
+                
             </div>
-            <div id="download_page">
+            <div id="download_page" style="display: none;">
 
             </div>
 
