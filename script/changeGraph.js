@@ -183,9 +183,101 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
  var hiddenInd = document.getElementById("hiddenInd");
-  ipcRenderer.on('indicator', function (evt,message) {
-  console.log(message);
-  hiddenInd.innerHTML = JSON.stringify(message);
+  ipcRenderer.on('indicator', function (evt,message_r) {
+    let msg_received = message_r;
+  let pyshell = new PythonShell('graph/callIndicator.py');
+    indicator_id = msg_received.id;
+    no_of_controls = Object.keys(msg_received.controls).length;
+    column_arr = [] , period_arr = [] ;
+  for(var i=0 ; i<no_of_controls; i++){
+    hasNumInput = (msg_received.controls[i].numInput != null);
+    hasSelectInput = (msg_received.controls[i].selectInput != null);
+    if(hasNumInput) period_arr[period_arr.length]=msg_received.controls[i].numInput.value;
+    if(hasSelectInput) column_arr[column_arr.length]=msg_received.controls[i].selectedValue;
+  }
+  data_to_send = JSON.parse(document.getElementById("hiddenData").innerHTML);
+  console.log(data_to_send);
+
+  if(column_arr.length>0 && period_arr.length>0){
+    for(var i = 0; i < column_arr.length; i++){
+      column = column_arr[i] , period = period_arr[i] ; 
+      message_send = {indicator_id ,data_to_send , column , period};
+      pyshell.send(JSON.stringify(message_send));
+
+      pyshell.on('message', function (message) {
+        msg_received.data[i] = JSON.parse(message);
+        console.log(msg_received.data[i]);
+        document.getElementById("hiddenInd").innerHTML = JSON.stringify(msg_received);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        console.log('finished');
+      });
+
+    }
+    
+  }else if(column_arr.length>0){
+    for(var i = 0; i < column_arr.length; i++){
+      column = column_arr[i];
+      message_send = {indicator_id, data_to_send , column};
+      pyshell.send(JSON.stringify(message_send));
+      
+      pyshell.on('message', function (message) {
+        msg_received.data[i] = JSON.parse(message);
+        console.log(msg_received.data[i])
+        document.getElementById("hiddenInd").innerHTML = JSON.stringify(msg_received);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        console.log('finished');
+      });
+
+    }
+  }else if(period_arr.length>0){
+    for(var i = 0; i < period_arr.length; i++){
+      period = period_arr[i] ; 
+      message_send = {indicator_id, data_to_send , period};
+      pyshell.send(JSON.stringify(message_send));
+      
+      pyshell.on('message', function (message) {
+        msg_received.data[i] = JSON.parse(message);
+        console.log(msg_received.data[i])
+        document.getElementById("hiddenInd").innerHTML = JSON.stringify(msg_received);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        console.log('finished');
+      });
+
+    }
+  }else{
+      message_send = {indicator_id, data_to_send};
+      pyshell.send(JSON.stringify(message_send));
+      
+      pyshell.on('message', function (message) {
+        msg_received.data[i] = JSON.parse(message);
+        console.log(msg_received.data[i])
+        document.getElementById("hiddenInd").innerHTML = JSON.stringify(msg_received);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        console.log('finished');
+      });
+
+    
+  }
 });
 
 });

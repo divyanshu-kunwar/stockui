@@ -7,7 +7,6 @@ function draw_candle_heikinashi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new candle_cal(i, width, height);
-        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill(d.color);
         if (graph_type == 'hollowcandle') stroke(d.stroke);
@@ -34,7 +33,6 @@ function draw_line_area() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new line_area_cal(i, width, height);
-        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         stroke("#0044ff66");
         strokeWeight(1);
@@ -65,7 +63,6 @@ function drawbaseline() {
         // create a candle object and pass i , width and height for calculation
         d = new line_area_cal(i, width, height);
 
-        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
 
         if (d.y1 < yb && d.y2 < yb) {
@@ -159,7 +156,6 @@ function drawrenko() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new renko(i, width, height);
-        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill(d.color);
         stroke(d.color);
@@ -175,7 +171,6 @@ function drawkagi() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new kagi_cal(i, width, height);
-        indicatorPlot(i,width,height,d.x1,(d.widthX-10));
 
         strokeWeight(1);
 

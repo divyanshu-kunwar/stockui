@@ -6,17 +6,22 @@ import indicators
 
 # read incoming message from javascript i.e name of graph
 message_in = sys.stdin.readlines()
-indicator_name = json.loads(message_in[0])['indicatorName']
-data_all = json.loads(message_in[0])['data']
-df=pd.read_json(data_all)
+indicator_name = json.loads(message_in[0])['indicator_id']
+data_all = json.loads(message_in[0])['data_to_send']
+df=pd.DataFrame.from_dict(data_all)
 # df = df.loc[::-1].reset_index()
 # df = df.drop(columns=['index'])
 if(indicator_name=="atr"):
-    print("atr_selected")
+    period = json.loads(message_in[0])['period']
+    print(indicators.atr(df,period).to_json())
 elif(indicator_name=="dema"):
-    print("dema_selected")
+    period = json.loads(message_in[0])['period']
+    column = json.loads(message_in[0])['column']
+    print(indicators.dema(df,period,column).to_json())
 elif(indicator_name=="ema"):
-    print("ema_selected")
+    period = json.loads(message_in[0])['period']
+    column = json.loads(message_in[0])['column']
+    print(indicators.ema(df,period,column).to_json())
 elif(indicator_name=="er"):
     print("er_selected")
 elif(indicator_name=="evwma"):

@@ -9,7 +9,6 @@ function getMinOfArray(numArray) {
 setInterval(function () {
     if(document.getElementById("hiddenInd").innerHTML != "" 
     && document.getElementById("hiddenInd").innerHTML != indicatorRaw){
-        console.log(document.getElementById("hiddenInd").innerHTML);
     indicatorRaw = document.getElementById("hiddenInd").innerHTML;
     indicator = JSON.parse(indicatorRaw);
     indicator_list[indicator['number']] = indicator;
