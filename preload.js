@@ -9,10 +9,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-  document.getElementById("dashboard_btn").addEventListener("click", event => {
-      ipcRenderer.send('main:graph');
+  document.getElementById("home_btn").addEventListener("click", event => {
+    ipcRenderer.send('main:dashboard');
   });
+  document.getElementById("graph_btn").addEventListener("click", event => {
+    ipcRenderer.send('main:graph');
+  });
+  ipcRenderer.on("console_logs",function(e,message){
+      document.getElementById("hiddenLog").innerHTML = (message.toString());
+  })
 
+  hideBrowserView("screener_btn");
+  hideBrowserView("news_btn");
+  hideBrowserView("setting_btn");
+  hideBrowserView("console_btn");
+  hideBrowserView("downloads_btn");
+  function hideBrowserView(elementId) {
+    btn = document.getElementById(elementId);
+    btn.addEventListener("click", function (e) {
+      ipcRenderer.send('main:closeBrowserView');
+    });
+  }
 
   minimize_btn = document.getElementById('minimize_btn');
   maximize_btn = document.getElementById('maximize_btn');

@@ -204,7 +204,6 @@ function drawpnf() {
         drawScaleX(i);
         // create a candle object and pass i , width and height for calculation
         d = new renko(i, width, height);
-        indicatorPlot(i,width,height,d.x1,d.widthX);
         //set color of candles and position of rect and line on basis of calculation
         fill(background_color);
         stroke(d.color);

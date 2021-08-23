@@ -11,8 +11,7 @@ setInterval(function () {
     && document.getElementById("hiddenInd").innerHTML != indicatorRaw){
     indicatorRaw = document.getElementById("hiddenInd").innerHTML;
     indicator = JSON.parse(indicatorRaw);
-    indicator_list[indicator['number']] = indicator;
-    console.log(indicator_list);
+    console.log(indicator);
     }
     if (document.getElementById("hiddenData").innerHTML != data_ || document.getElementById("hiddenGraphType").innerHTML != graph_type) {
         dataloaded = false; data_on_graph = 60;

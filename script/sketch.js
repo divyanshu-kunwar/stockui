@@ -6,10 +6,9 @@ var high = [], color_ = [], stroke_ = [], volume = [], pnf_count = [];
 var min_low = 0, max_high = 0, min_vol = 0, max_vol = 0; translateX = 0, scaleValue = 1;
 var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
 var yb, xb, drawCount = 0;
-var indicatorRaw, indicator, indicator_list = [];
+var indicatorRaw, indicator;
 var background_color = "#fff";
 var text_color = "#000";
-var subPlot = 0.25;
 
 //get width and height of parents
 var parents = document.getElementById("graph_area");
@@ -18,7 +17,6 @@ var parentHeight = parents.getBoundingClientRect().height;
 function setup() {
     canvas = createCanvas(parentWidth, parentHeight - 30);
     yb = height / 2;
-    height = 0.75 * height;
 }
 
 // all drawing goes inside i.e the main graph plotting function
@@ -78,7 +76,7 @@ function draw() {
                 drawpnf();
                 break;
             default:
-                drawcandle();
+                draw_candle_heikinashi();
                 break;
         }
         pop()
@@ -122,10 +120,10 @@ function calcScales() {
     //get no of graph elements moved
     dataMoved = Math.round((translateX * data_on_graph) / 900);
     // get low price and high price value for scale
-    min_low = getMinOfArray(low.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
-    max_high = getMaxOfArray(high.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
-    min_vol = getMinOfArray(volume.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
-    max_vol = getMaxOfArray(volume.slice(data_length - data_on_graph - 5 - dataMoved, data_length - dataMoved));
+    min_low = getMinOfArray(low.slice(data_length - data_on_graph - 2 - dataMoved, data_length - dataMoved));
+    max_high = getMaxOfArray(high.slice(data_length - data_on_graph - 2 - dataMoved, data_length - dataMoved));
+    min_vol = getMinOfArray(volume.slice(data_length - data_on_graph - 2 - dataMoved, data_length - dataMoved));
+    max_vol = getMaxOfArray(volume.slice(data_length - data_on_graph - 2 - dataMoved, data_length - dataMoved));
 }
 
 // draw y grids 

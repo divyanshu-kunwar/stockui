@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    
+    <div id="hiddenLog" style="display: none;"></div>
         <!-- top bar here  -->
         <div class="row" id="topbar">
             <img id="themeBtn" src="icon/changeToDark.svg" alt="close btn" />
@@ -34,7 +34,7 @@
         <div id="side_bar" >
             <div id="side_menu">
                 <img id="home_btn" src="icon/home.svg" alt="home">
-                <img id="dashboard_btn" src="icon/open_dashboard.svg" alt="dashboard">
+                <img id="graph_btn" src="icon/GRAPH.svg" alt="dashboard">
                 <img id="screener_btn" src="icon/screener.svg" alt="screener">
                 <img id="news_btn" src="icon/news.svg" alt="news">
                 <img id="setting_btn" src="icon/setting.svg" alt="setting">
@@ -49,84 +49,6 @@
             <!-- homepage goes here -->
             <div id="home_page" >
 
-                <!-- indices  -->
-                <div id="indices_higlights">
-                    <div class="indice">
-                        <table>
-                            <tr >
-                                <td rowspan="2">
-                                    <img class="ind_arrow" src="icon/uparrow.svg" alt="up"/>
-                                </td>
-                                <td>
-                                <tr>
-                                    <td>
-                                        <span class="ind_name">
-                                        NSE </span><br>
-                                        28,874.89
-                                    </td>
-                                    <td class="ind_growth">
-                                        <span >
-                                        -0.032%     <br>
-                                        -9.24
-                                        </span>
-                                    </td>
-                                </tr>
-                            </td>
-                            </tr>
-                        </table>
-                        
-                    </div>                    
-                </div>
-
-                <!-- search box -->
-                <div id="search_box">
-                    <img id="search_icon" src="icon/SEARCH.svg" alt="search"/>
-                    <input id="search_input" type="text"
-                     placeholder="Search for stocks / indices"/>
-                </div>
-
-                <!-- market highlights and news -->
-                <div id="market_highlights" class="row">
-                    <div id="indices_overview" class="col-xs-6 col-md-6 col-lg-6">
-                        <div id="tab">
-                            <a href="#">Trending Indices</a>
-                            <a href="#">Trending Stocks</a>
-                            <a href="#">Top Gainer</a>
-                            <a href="#">Top Loosers</a>
-                        </div>
-                        <div id="graph_view">
-                            <main></main>
-                        </div>
-                        <div id="main_list">
-                                <table id="stock_list">
-                                    <tr>
-                                        <td>Nifty 50</td>
-                                        <td class="green-text">16364.40</td>
-                                        <td class="green-text">+82.15</td>
-                                        <td class="green-text">+0.50%</td>
-                                    </tr>
-                                </table>
-                        </div>
-                    </div>
-                    <div id="news_section" class="col">
-                    <div id="news_wrap">
-                        <table>
-                            <tr class="new_cont">
-                                <td class="news_image">
-                                    <img src="icon/news_img.jpg" alt="">
-                                </td>
-                                <td class="news_info">
-                                    <h6>2 Stocks that Fell Over 14% From Their
-                                         52-Week Highs But Could Be a Good Buy</h6>
-                                    <p>Experts say that there are a few stocks from this category,
-                                         though, which have the potential to get back up.
-                                </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    </div>
-                </div>
 
 
             </div>
@@ -248,16 +170,95 @@
                         </div>
                     </div>
             </div>
-            <div id="news_page" style="display: none;">
 
+            <div id="news_page" style="display: none;">
+                                                <!-- indices  -->
+                                                <div id="indices_higlights">
+                                                    <div class="indice">
+                                                        <table>
+                                                            <tr >
+                                                                <td rowspan="2">
+                                                                    <img class="ind_arrow" src="icon/uparrow.svg" alt="up"/>
+                                                                </td>
+                                                                <td>
+                                                                <tr>
+                                                                    <td>
+                                                                        <span class="ind_name">
+                                                                        NSE </span><br>
+                                                                        28,874.89
+                                                                    </td>
+                                                                    <td class="ind_growth">
+                                                                        <span >
+                                                                        -0.032%     <br>
+                                                                        -9.24
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </td>
+                                                            </tr>
+                                                        </table>
+                                                        
+                                                    </div>                    
+                                                </div>
+                                
+                                                <!-- search box -->
+                                                <div id="search_box">
+                                                    <img id="search_icon" src="icon/SEARCH.svg" alt="search"/>
+                                                    <input id="search_input" type="text"
+                                                     placeholder="Search for stocks / indices"/>
+                                                </div>
+                                
+                                                <!-- market highlights and news -->
+                                                <div id="market_highlights" class="row">
+                                                    <div id="indices_overview" class="col-xs-6 col-md-6 col-lg-6">
+                                                        <div id="tab">
+                                                            <a href="#">Trending Indices</a>
+                                                            <a href="#">Trending Stocks</a>
+                                                            <a href="#">Top Gainer</a>
+                                                            <a href="#">Top Loosers</a>
+                                                        </div>
+                                                        <div id="graph_view">
+                                                            <main></main>
+                                                        </div>
+                                                        <div id="main_list">
+                                                                <table id="stock_list">
+                                                                    <tr>
+                                                                        <td>Nifty 50</td>
+                                                                        <td class="green-text">16364.40</td>
+                                                                        <td class="green-text">+82.15</td>
+                                                                        <td class="green-text">+0.50%</td>
+                                                                    </tr>
+                                                                </table>
+                                                        </div>
+                                                    </div>
+                                                    <div id="news_section" class="col">
+                                                    <div id="news_wrap">
+                                                        <table>
+                                                            <tr class="new_cont">
+                                                                <td class="news_image">
+                                                                    <img src="icon/news_img.jpg" alt="">
+                                                                </td>
+                                                                <td class="news_info">
+                                                                    <h6>2 Stocks that Fell Over 14% From Their
+                                                                         52-Week Highs But Could Be a Good Buy</h6>
+                                                                    <p>Experts say that there are a few stocks from this category,
+                                                                         though, which have the potential to get back up.
+                                                                </p>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+                                                </div>
             </div>
+
             <div id="settings_page" style="display: none;">
 
             </div>
-            <div id="console_page" style="display: none;">
-                <p>
-                __________________________ CONSOLE LOGS 💻 __________________________<br>
-                </p>
+            <div class="overflow-auto" id="console_page" style="display: none;">
+            <p >  
+                __________________________ CONSOLE LOGS 💻 __________________________<br> 
+            </p>
                 
             </div>
             <div id="download_page" style="display: none;">

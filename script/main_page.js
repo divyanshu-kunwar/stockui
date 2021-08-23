@@ -115,6 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.backgroundColor = "#020204";
   }
   var prev_con_length = 0;
+  var prevLogs = ""
   console.stdlog = console.log.bind(console);
   console.logs = [];
   console.log = function () {
@@ -133,6 +134,9 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       prev_con_length = console.logs.length;
     }
-
+    if(document.getElementById("hiddenLog").innerHTML != prevLogs){
+      prevLogs = document.getElementById("hiddenLog").innerHTML;
+      console.log(prevLogs);
+    }
   },300);
 });

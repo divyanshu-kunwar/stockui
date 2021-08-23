@@ -350,9 +350,10 @@ body{
     border: 1px solid var(--border-color-primary);
 }
 #console_page{
-    padding: 5%;
+    display: block;
+    margin: 5%;
     color: var(--console-color);
-    overflow-y: auto;
+    height: 75%;
     font-size:smaller;
 }
 #console_page number{
@@ -360,7 +361,10 @@ body{
 }
 #console_page p{
     position: absolute;
-    top: 60px;
+    width: 100%;
+    padding: 10px;
+    top: 46px;
+    left: 80px;
     color: var(--secondary-color);
     text-align: center;
     font-size: medium;

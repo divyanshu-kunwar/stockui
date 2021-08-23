@@ -1,13 +1,13 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const {app, BrowserWindow ,ipcMain , nativeTheme } = require('electron')
+const {BrowserView, app, BrowserWindow ,ipcMain , nativeTheme } = require('electron')
 const path = require('path')
 
-
+let mainWindow;
 function createWindow () {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     frame: false,
@@ -25,7 +25,7 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
   mainWindow.maximize();
-  nativeTheme.shouldUseDarkColors
+  showGraphWindow();
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
@@ -56,35 +56,37 @@ app.on('window-all-closed', function () {
 let graphWindow;
 
 ipcMain.on('main:graph', event => {
-
-  if(graphWindow!=null){
-    try{
-    graphWindow.maximize();
-    graphWindow.focus();
-  }catch{
-    showGraphWindow();
-  }
-  }else{
-    showGraphWindow();
-}
+  mainWindow.addBrowserView(graphWindow);
+    graphWindow.webContents.send("graph:open");
+});
+ipcMain.on('main:dashboard', event => {
+  mainWindow.addBrowserView(graphWindow);
+  graphWindow.webContents.send("dashboard:open");
 });
 
 function showGraphWindow(){
-  graphWindow = new BrowserWindow({
-    width: 1000, height: 600, frame:false,
+   graphWindow = new BrowserView({
     webPreferences: {
       preload: path.join(__dirname, '/script/changeGraph.js'),
       nodeIntegration: true,
       enableRemoteModule: true
     }
   });
-  graphWindow.loadURL("file://"+__dirname+"/pages/graph.html");
-  //graphWindow.webContents.openDevTools();
-  graphWindow.maximize()
-  // graphWindow.on('closed', () => {
-  //   graphWindow = null;
-  // });
+  mainWindow.setBrowserView(graphWindow);
+  width_ = mainWindow.getBounds().width;
+  height_ = mainWindow.getBounds().height;
+  graphWindow.setBounds({ x: 82, y: 50,
+     width: width_-82, height: height_-50 });
+  // graphWindow.setAutoResize({width:true, height: true});
+  graphWindow.webContents.loadURL("file://"+__dirname+"/pages/graph.html");
+  
 }
+
+ipcMain.on("main:closeBrowserView", ()=>{
+  try{
+    mainWindow.removeBrowserView(graphWindow);
+  }catch{}
+});
 let childWindow;
 ipcMain.on('main:indicatorDialog', event => {
   if(childWindow!=null){
@@ -96,6 +98,10 @@ ipcMain.on('main:indicatorDialog', event => {
   }else{
     showIndicatorWindow();
 }
+})
+
+ipcMain.on("console_log",function(e,message){
+  mainWindow.webContents.send("console_logs",message);
 })
 
 function showIndicatorWindow(){

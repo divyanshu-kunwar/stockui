@@ -19,7 +19,7 @@
     <div id="hiddenInd"></div>
 
         <!-- top bar here  -->
-        <div class="row" id="topBar">
+        <div class="row" id="topBar" style="display:none;">
             <img id="themeBtn" src="../icon/changeToDark.svg" alt="close btn" />
             <div id="draggable-area" class="col-xs-5 col-md-7 col-lg-8">
                 <span id="companyName">Chart - TCS </span>
@@ -67,7 +67,7 @@
             </div>
 
             <!--Right side list-->
-            <div class="col-md-9 col-lg-9">
+            <div id="graph_" class="col-md-9 col-lg-9" >
 
                 <!-- graph all menu -->
                 <div id="graph_menu">
@@ -150,13 +150,15 @@
                     <Main></Main>
                 </div>
             </div>
+            <div id="dashboard_" class="col-md-9 col-lg-9" style="display: none;">
+               <center> -------------- DASHBOARD ---------------</center>
+            </div>
 
         </div>
         <script src="../script/sketch.js"></script>
         <script src="../script/plot_graph.js"></script>
         <script src="../script/plot_indicator.js"></script>
         <script src="../script/receive_data.js"></script>
-        <script src="../script/stats_calc.js"></script>
         <script src="../script/jquery.min.js"></script>
 </body>
 
