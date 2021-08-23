@@ -18,148 +18,227 @@
     <div id="hiddenGraphType"></div>
     <div id="hiddenInd"></div>
 
-        <!-- top bar here  -->
-        <div class="row" id="topBar" style="display:none;">
-            <img id="themeBtn" src="../icon/changeToDark.svg" alt="close btn" />
-            <div id="draggable-area" class="col-xs-5 col-md-7 col-lg-8">
-                <span id="companyName">Chart - TCS </span>
-            </div>
-            <div id="topOptions" class="col-xs-4 col-md-3 col-lg-2">
+    <!-- top bar here  -->
+    <div class="row" id="topBar" style="display:none;">
+        <img id="themeBtn" src="../icon/changeToDark.svg" alt="close btn" />
+        <div id="draggable-area" class="col-xs-5 col-md-7 col-lg-8">
+            <span id="companyName">Chart - TCS </span>
+        </div>
+        <div id="topOptions" class="col-xs-4 col-md-3 col-lg-2">
             <img id="minimize_btn" src="../icon/minimize.svg" alt="close btn" />
             <img id="maximize_btn" src="../icon/restore.svg" alt="close btn" />
             <img id="close_btn" src="../icon/close.svg" alt="close btn" />
-            </div>
         </div>
+    </div>
 
-        <div class="row">
-            <!-- left side list -->
-            <div class="col-md-3 col-lg-3">
+    <div class="row" id="parent">
+        <!-- left side list -->
+        <div id="left_side" class="col-md-3 col-lg-3">
 
-                <!-- search bar here -->
-                <div id="search_box">
-                    <img id="search_btn" src="../icon/SEARCH.svg" alt="search" />
-                    <input id="search_input" type="text" placeholder="search for stocks / indices" />
-                    <img id="filter_btn" src="../icon/FILTER_.svg" alt="search" />
-                </div>
-
-                <!-- table list here -->
-                <div id="company_list">
-                    <table>
-                        <tr>
-                            <th>Stock / Index</th>
-                            <th>%D</th>
-                            <th>LTP</th>
-                        </tr>
-                    </table>
-                </div>
-                <div id="search_list">
-                    <table id="search_result">
-                        <tr>
-                            <td>>Reliance</td>
-                            <td>full name</td>
-                            <td>NSE</td>
-                            <td class="show_graph">graph</td>
-                            <td class="add_company">add</td>
-                        </tr>
-                    </table>
-                </div>
-
+            <!-- search bar here -->
+            <div id="search_box">
+                <img id="search_btn" src="../icon/SEARCH.svg" alt="search" />
+                <input id="search_input" type="text" placeholder="search for stocks / indices" />
+                <img id="filter_btn" src="../icon/FILTER_.svg" alt="search" />
             </div>
 
-            <!--Right side list-->
-            <div id="graph_" class="col-md-9 col-lg-9" >
-
-                <!-- graph all menu -->
-                <div id="graph_menu">
-                    <div id="selected_company"><b>ACC</b></div>
-
-                    <!-- interval change  -->
-                    <div class="dropDown">
-                        <img id="intervalchange" src="../icon/1d_.svg" alt="interval">
-                        <div id="dropIntervalType" class="drop_container">
-                            <a href="#">
-                                <img src="../icon/1h.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img src="../icon/2h.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img src="../icon/3h.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img src="../icon/1d.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img src="../icon/1w.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img src="../icon/1m.svg" type="text/svg"></img>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- graph change -->
-                    <div class="dropDown">
-                        <img id="graphchange" src="../icon/candle_.svg" alt="graph type">
-                        <div id="dropGraphType" class="drop_container">
-                            <a href="#">
-                                <img id="barsBtn" src="../icon/bars.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="candleBtn" src="../icon/candle.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="hollowcandleBtn" src="../icon/hollowcandle.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="heikinashiBtn" src="../icon/heikinashi.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="lineBtn" src="../icon/line.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="areaBtn" src="../icon/area.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="baselineBtn" src="../icon/baseline.svg" type="text/svg"></img>
-                            </a>
-                            <hr color="#eaeaea">
-                            <a href="#">
-                                <img id="renkoBtn" src="../icon/renko.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="linebreakBtn" src="../icon/linebreak.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="kagiBtn" src="../icon/kagi.svg" type="text/svg"></img>
-                            </a>
-                            <a href="#">
-                                <img id="pnfBtn" src="../icon/pnf.svg" type="text/svg"></img>
-                            </a>
-                        </div>
-                    </div>
-
-                    <img id="compare" src="../icon/compare.svg" alt="compare">
-                    <img id="indicator" src="../icon/indicator.svg" alt="indicators">
-                    <img id="templates" src="../icon/template.svg" alt="templates">
-                    <img id="layoutchange" src="../icon/layout1.svg" alt="layout">
-                    <img id="screenshot" src="../icon/screenshot.svg" alt="interval">
-                </div>
-
-                <div id="graph_area">
-                    <Main></Main>
-                </div>
+            <!-- table list here -->
+            <div id="company_list">
+                <table>
+                    <tr>
+                        <th>Stock / Index</th>
+                        <th>%D</th>
+                        <th>LTP</th>
+                    </tr>
+                </table>
             </div>
-            <div id="dashboard_" class="col-md-9 col-lg-9" style="display: none;">
-               <center> -------------- DASHBOARD ---------------</center>
+            <div id="search_list">
+                <table id="search_result">
+                    <tr>
+                        <td>>Reliance</td>
+                        <td>full name</td>
+                        <td>NSE</td>
+                        <td class="show_graph">graph</td>
+                        <td class="add_company">add</td>
+                    </tr>
+                </table>
             </div>
 
         </div>
-        <script src="../script/sketch.js"></script>
-        <script src="../script/plot_graph.js"></script>
-        <script src="../script/plot_indicator.js"></script>
-        <script src="../script/receive_data.js"></script>
-        <script src="../script/jquery.min.js"></script>
+
+        <!--Right side list-->
+        <div id="graph_" class="col-md-9 col-lg-9" style="display: none;">
+
+            <!-- graph all menu -->
+            <div id="graph_menu">
+                <div id="selected_company"><b>ACC</b></div>
+
+                <!-- interval change  -->
+                <div class="dropDown">
+                    <img id="intervalchange" src="../icon/1d_.svg" alt="interval">
+                    <div id="dropIntervalType" class="drop_container">
+                        <a href="#">
+                            <img src="../icon/1h.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img src="../icon/2h.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img src="../icon/3h.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img src="../icon/1d.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img src="../icon/1w.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img src="../icon/1m.svg" type="text/svg"></img>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- graph change -->
+                <div class="dropDown">
+                    <img id="graphchange" src="../icon/candle_.svg" alt="graph type">
+                    <div id="dropGraphType" class="drop_container">
+                        <a href="#">
+                            <img id="barsBtn" src="../icon/bars.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="candleBtn" src="../icon/candle.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="hollowcandleBtn" src="../icon/hollowcandle.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="heikinashiBtn" src="../icon/heikinashi.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="lineBtn" src="../icon/line.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="areaBtn" src="../icon/area.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="baselineBtn" src="../icon/baseline.svg" type="text/svg"></img>
+                        </a>
+                        <hr color="#eaeaea">
+                        <a href="#">
+                            <img id="renkoBtn" src="../icon/renko.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="linebreakBtn" src="../icon/linebreak.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="kagiBtn" src="../icon/kagi.svg" type="text/svg"></img>
+                        </a>
+                        <a href="#">
+                            <img id="pnfBtn" src="../icon/pnf.svg" type="text/svg"></img>
+                        </a>
+                    </div>
+                </div>
+
+                <img id="compare" src="../icon/compare.svg" alt="compare">
+                <img id="indicator" src="../icon/indicator.svg" alt="indicators">
+                <img id="templates" src="../icon/template.svg" alt="templates">
+                <img id="layoutchange" src="../icon/layout1.svg" alt="layout">
+                <img id="screenshot" src="../icon/screenshot.svg" alt="interval">
+            </div>
+
+            <div id="graph_area">
+                <Main></Main>
+            </div>
+        </div>
+        <div id="dashboard_" class="col-md-9 col-lg-9">
+            <div id="dash_top">
+                <div id="nav_links">
+                    <a class="a_selected">Portofolio</a>
+                    <a>Transaction History</a>
+                </div>
+                <div id="user_top">
+                    <img id="noti_icon" src="../icon/notification_active.svg">
+                    <span>Divyanshu Kunwar</span>
+                    <img id="avatar_img" src="../icon/profile.jpg">
+                </div>
+            </div>
+            <div id="portofolio_main">
+            <div class="row">
+                <div class="card_graph column-60" id="graph_stats"></div>
+                <div class="card_graph column-40">
+                    <img id="coin_img" src="../icon/coin.png">
+                    <div class="row">
+                        <div class="column-33">
+                            <span>Earned</span>
+                            <span class="big">5000</span>
+                            <span class="small">coins</span>
+                        </div>
+                        <div class="column-33">
+                            <span>Invested</span>
+                            <span class="big">2430</span>
+                            <span class="small">Coins</span>
+                        </div>
+                        <div class="column-33">
+                            <span>Balance</span>
+                            <span class="big">2570</span>
+                            <span class="small">Coins</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column-33">
+                            <span>Loss / Profit</span>
+                            <span class="big loss-color">-50</span>
+                            <span class="small">Coins</span>
+                        </div>
+                        <div class="column-33">
+                            <span>%Loss / Profit</span>
+                            <span class="big loss-color">-10 %</span>
+                            <span class="small">Coins</span>
+                        </div>
+                        <div class="column-33">
+                            <span>Rewards</span>
+                            <span class="big">5000</span>
+                            <span class="small">Coins</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="fixTableHead my-custom-scrollbar">
+                <table id="Portofolio_table">
+                    <thead>
+                <tr>
+                    <th>Sr.</th><th>Transaction Date</th><th>name</th><th>Price</th>
+                    <th>LTP</th><th>P/L</th><th>%P/L</th><th>  </th><th>  </th>
+                </tr></thead>
+                <tbody>
+                <tr>
+                    <td>1.</td><td>12-Aug-2002</td><td>Reliance</td><td>2234.00</td>
+                    <td>2236.00</td><td>2.00</td><td>+0.01%</td>
+                    <td><img class="action_btn2"  src="../icon/buy_btn.svg" ></td>
+                    <td><img class="action_btn2"  src="../icon/sell_btn.svg"></td>
+                </tr>
+                <tr>
+                    <td>1.</td><td>12-Aug-2002</td><td>RELINFRA</td><td>2234.00</td>
+                    <td>2236.00</td><td>2.00</td><td>+0.01%</td>
+                    <td><img class="action_btn2"  src="../icon/buy_btn.svg" ></td>
+                    <td><img class="action_btn2"  src="../icon/sell_btn.svg"></td>
+                </tr>
+            </tbody>
+                </table>
+
+            </div>
+            </div>
+            <div id="transaction_main"></div>
+        </div>
+
+    </div>
+    <script src="../script/sketch.js"></script>
+    <script src="../script/plot_graph.js"></script>
+    <script src="../script/plot_indicator.js"></script>
+    <script src="../script/receive_data.js"></script>
+    <script src="../script/jquery.min.js"></script>
+    <script src="../script/sketch2.js"></script>
 </body>
 
 </html>

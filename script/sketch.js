@@ -259,6 +259,7 @@ window.addEventListener("wheel", function (e) {
 });
 
 var themeButton = document.getElementById("themeBtn");
+
 var nightMode = false;
 themeButton.addEventListener("click", function (e) {
     if (!nightMode) {
@@ -328,3 +329,4 @@ function toDark(){
 
       document.body.style.backgroundColor = "#020204";
 }
+// themeButton.click();
