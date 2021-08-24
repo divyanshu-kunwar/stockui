@@ -1,3 +1,4 @@
+
 // initialized variable
 var canvas, paddingY = 100, paddingX = 100;
 var data, data_ = "", dataloaded = false, graph_type = "candle";
@@ -23,18 +24,21 @@ function setup() {
 function draw() {
     //when data is loaded start drawing graph
     if (dataloaded) {
+        calcIfSubPlot();
         background(background_color);
-
         stroke(text_color);
         //only horizontal grid 
         drawGridY();
+
         strokeWeight(0);
         fill(background_color);
         //background rectangle
         rect(8, 10, 380, 90);
         strokeWeight(1);
+
         //calculate scale value i.e minimum and maximum value and moved value of data
         calcScales();
+        
         //update the type of graph
         push()
         // move  data to left or right 
@@ -77,13 +81,19 @@ function draw() {
             default:
                 draw_candle_heikinashi();
                 break;
+        // draw Indicator
+        
         }
+        drawIndicator();
         pop()
 
         stroke(text_color);
         //horizontal x line
-        line(0, parentHeight - 80, width, parentHeight - 80);
-        line(0, height - 50, width, height - 50);
+        line(0, parentHeight - 80, width-paddingX, parentHeight - 80);
+
+        line(0, height - 50, width-paddingX, height - 50);
+
+
 
         //draw vertical value and ticks on x-axis
         drawScaleY()
@@ -94,6 +104,7 @@ function draw() {
         //ticks for selected position on graph as date on x-axis and price on y
         fill(text_color);
         //price tick
+        if(mouseY<height-paddingY/2)
         rect(width - 102, mouseY - 10, 60, 20);
         //date tick
         rect(mouseX - 35, parentHeight - 70, 80, 20);
@@ -101,6 +112,7 @@ function draw() {
         //calculate value of current position
         var ycurrent = map(mouseY, height - paddingY, paddingY / 2, min_low, max_high).toFixed(2);
         //price
+        if(mouseY<height-paddingY/2)
         text(ycurrent, width - 100, mouseY + 5)
         //date
         text(date[selectedI], mouseX - 25, parentHeight - 55)
@@ -183,7 +195,7 @@ function drawScaleY() {
     stroke(background_color);
     fill(background_color);
     // vertical fixed rectangle right to y-axis
-    rect(width - 100, 0, 100, parentHeight - 50);
+    rect(width - 100, 0, 100, height - 50);
     stroke(text_color);
     fill(text_color);
     for (var i = 0; i < 9; i++) {

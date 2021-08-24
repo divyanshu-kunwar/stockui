@@ -219,7 +219,7 @@ window.addEventListener('DOMContentLoaded', () => {
         pyshell.send(JSON.stringify(message_send));
 
         pyshell.on('message', function (message) {
-          msg_received.data[i] = JSON.parse(message);
+          msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
           indicator_list[msg_received.number] = msg_received;
           hiddenInd.innerHTML = JSON.stringify(indicator_list);
         });
@@ -240,7 +240,7 @@ window.addEventListener('DOMContentLoaded', () => {
         pyshell.send(JSON.stringify(message_send));
 
         pyshell.on('message', function (message) {
-          msg_received.data[i] = JSON.parse(message);
+          msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
           indicator_list[msg_received.number] = msg_received;
           hiddenInd.innerHTML = JSON.stringify(indicator_list);
         });
@@ -260,7 +260,7 @@ window.addEventListener('DOMContentLoaded', () => {
         pyshell.send(JSON.stringify(message_send));
 
         pyshell.on('message', function (message) {
-          msg_received.data[i] = JSON.parse(message);
+          msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
           indicator_list[msg_received.number] = msg_received;
           hiddenInd.innerHTML = JSON.stringify(indicator_list);
         });
@@ -278,7 +278,7 @@ window.addEventListener('DOMContentLoaded', () => {
       pyshell.send(JSON.stringify(message_send));
 
       pyshell.on('message', function (message) {
-        msg_received.data[i] = JSON.parse(message);
+        msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
         indicator_list[msg_received.number] = msg_received;
         hiddenInd.innerHTML = JSON.stringify(indicator_list);
       });

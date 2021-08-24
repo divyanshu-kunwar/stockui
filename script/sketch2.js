@@ -1,3 +1,4 @@
+window.addEventListener('DOMContentLoaded', () => {
 par_width = document.getElementById("graph_stats").getBoundingClientRect().width;
 par_height = document.getElementById("graph_stats").getBoundingClientRect().height;
 var s = function( p ) { // p could be any variable name
@@ -17,3 +18,4 @@ var s = function( p ) { // p could be any variable name
     };
   };
 var myp5 = new p5(s, 'graph_stats');
+});
