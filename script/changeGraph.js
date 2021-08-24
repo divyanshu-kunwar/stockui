@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function change_graph() {
     if (prevGraph == graphName && (prevCompany == companyName)) {
     }
-    else if ((prevGraph == "candle" || prevGraph == "bars" || prevGraph == "line"
+    else if ( (companyName==prevcompanyName) && (prevGraph == "candle" || prevGraph == "bars" || prevGraph == "line"
      || prevGraph == "area" || prevGraph == "baseline")
         && (graphName == "candle" || graphName == "bars" || graphName == "line" 
         || graphName == "area" || graphName == "baseline")&&(prevCompany == companyName)) {
@@ -171,7 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   function change_company(company) {
-    // console.log(company);
+    console.log(company);
     companyName = company;
     change_graph();
   }
@@ -327,6 +327,7 @@ window.addEventListener('DOMContentLoaded', () => {
     console.logs.push(Array.from(arguments));
     console.stdlog.apply(console, arguments);
   }
+  /*
   setInterval(() =>{
     if(console.logs.length>prev_con_length){
       for(var i=prev_con_length; i<console.logs.length; i++){
@@ -337,6 +338,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
   },300);
+  */
 
 
 });

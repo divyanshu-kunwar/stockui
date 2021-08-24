@@ -14,7 +14,6 @@ company_name = json.loads(message_in[0])['companyName']
 engine = sqlalchemy.create_engine('mysql+pymysql://root:vishal@127.0.0.1:3306/bse')
 
 df = pd.read_sql("select Date as date,open,high,low,close,volume FROM bse."+company_name+" order by date asc", engine)
-print(df.to_json())
 #df=pd.read_csv("graph/acc.csv")
 #df = df.loc[::-1].reset_index()
 #df = df.drop(columns=['index'])

@@ -80,7 +80,7 @@ function showGraphWindow(){
   mainWindow.setBrowserView(graphWindow);
   // graphWindow.setAutoResize({width:true, height: true});
   graphWindow.webContents.loadURL("file://"+__dirname+"/pages/graph.html");
-  graphWindow.webContents.openDevTools()
+  // graphWindow.webContents.openDevTools();
   
 }
 
