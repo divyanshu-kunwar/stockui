@@ -23,8 +23,6 @@ function setup() {
 function draw() {
     //when data is loaded start drawing graph
     if (dataloaded) {
-        //calculate scale value i.e minimum and maximum value and moved value of data
-        calcScales();
         background(background_color);
 
         stroke(text_color);
@@ -35,7 +33,8 @@ function draw() {
         //background rectangle
         rect(8, 10, 380, 90);
         strokeWeight(1);
-
+        //calculate scale value i.e minimum and maximum value and moved value of data
+        calcScales();
         //update the type of graph
         push()
         // move  data to left or right 
@@ -118,7 +117,8 @@ function draw() {
 //change min and maximum value of scales
 function calcScales() {
     //get no of graph elements moved
-    dataMoved = Math.round((translateX * data_on_graph) / 900);
+    
+    dataMoved = Math.round(map(translateX,0,width-paddingX,0,data_on_graph));
     // get low price and high price value for scale
     min_low = getMinOfArray(low.slice(data_length - data_on_graph - 2 - dataMoved, data_length - dataMoved));
     max_high = getMaxOfArray(high.slice(data_length - data_on_graph - 2 - dataMoved, data_length - dataMoved));

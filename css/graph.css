@@ -277,6 +277,7 @@ hr{
     margin-left: 40px;
     opacity: 0.8;
     cursor: pointer;
+    color: #555;
 }
 #nav_links a:hover {
     color : #007bff !important;
@@ -361,3 +362,14 @@ tr:hover .action_btn2{
       padding-bottom: 4px;
     background: #ddd;
   }
+
+#Transaction_table tr:nth-child(odd) {
+    background-color: #ffffffaa;
+}
+#Transaction_table thead th{
+    position: -webkit-sticky sticky;
+    top: 0%;
+}
+#transaction_main .fixTableHead{
+    height: 85% !important;
+}

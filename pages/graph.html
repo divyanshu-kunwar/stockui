@@ -67,7 +67,7 @@
         </div>
 
         <!--Right side list-->
-        <div id="graph_" class="col-md-9 col-lg-9" style="display: none;">
+        <div id="graph_" class="col-md-9 col-lg-9" style="display: block;">
 
             <!-- graph all menu -->
             <div id="graph_menu">
@@ -150,11 +150,11 @@
                 <Main></Main>
             </div>
         </div>
-        <div id="dashboard_" class="col-md-9 col-lg-9">
+        <div id="dashboard_" class="col-md-9 col-lg-9" style="display: none;">
             <div id="dash_top">
                 <div id="nav_links">
-                    <a class="a_selected">Portofolio</a>
-                    <a>Transaction History</a>
+                    <a id="portofolio_link" style="color: #007bff;">Portofolio</a>
+                    <a id="transaction_link">Transaction History</a>
                 </div>
                 <div id="user_top">
                     <img id="noti_icon" src="../icon/notification_active.svg">
@@ -162,7 +162,7 @@
                     <img id="avatar_img" src="../icon/profile.jpg">
                 </div>
             </div>
-            <div id="portofolio_main">
+            <div id="portofolio_main" style="display: block;">
             <div class="row">
                 <div class="card_graph column-60" id="graph_stats"></div>
                 <div class="card_graph column-40">
@@ -229,7 +229,24 @@
 
             </div>
             </div>
-            <div id="transaction_main"></div>
+            <div id="transaction_main" style="display: none;">
+                <div class="fixTableHead my-custom-scrollbar">
+                    <table id="transaction_table">
+                        <thead>
+                    <tr>
+                        <th>Sr.</th><th>Transaction Date</th><th>name</th><th>Amount</th>
+                        <th>Transaction Information</th><th>Cr/Deb</th><th>Balance</th>
+                    </tr></thead>
+                    <tbody>
+                    <tr>
+                        <td>1.</td><td>12-Aug-2002</td><td>Reliance</td><td>2234.00</td>
+                        <td>Invested</td><td>Debited</td><td>2340.00</td>
+                    </tr>
+                </tbody>
+                </table>
+    
+                </div>
+            </div>
         </div>
 
     </div>

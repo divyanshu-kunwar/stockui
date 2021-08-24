@@ -6,7 +6,8 @@ const { ipcRenderer } = require('electron');
 
 window.addEventListener('DOMContentLoaded', () => {
   var indicator_list = {}
-  var companyName = "acc1";
+  var companyName = "reliance";
+  var prevCompany = "";
   var prevGraph = "";
   var graphName = "candle";
   setGraph("barsBtn", "bars");
@@ -34,12 +35,12 @@ window.addEventListener('DOMContentLoaded', () => {
   change_graph();
 
   function change_graph() {
-    if (prevGraph == graphName) {
+    if (prevGraph == graphName && (prevCompany == companyName)) {
     }
     else if ((prevGraph == "candle" || prevGraph == "bars" || prevGraph == "line"
      || prevGraph == "area" || prevGraph == "baseline")
         && (graphName == "candle" || graphName == "bars" || graphName == "line" 
-        || graphName == "area" || graphName == "baseline")) {
+        || graphName == "area" || graphName == "baseline")&&(prevCompany == companyName)) {
       document.getElementById("hiddenGraphType").innerHTML = graphName;
     } else {
       let pyshell = new PythonShell('graph/callData.py');
@@ -62,6 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
     prevGraph = graphName;
+    prevCompany = companyName;
   }
 
   btn = document.getElementById("intervalchange");
@@ -152,16 +154,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   // connect to my sql database for company data
-  // var con = mysql.createConnection({
-  //   host: "localhost",
-  //   user: "root",
-  //   password: "vishal"
-  // });
+  var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "vishal"
+  });
 
-  // con.connect(function (err) {
-  //   if (err) throw err;
-  //   console.log("Connected!");
-  // });
+  con.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
 
   minimize_btn = document.getElementById('minimize_btn');
   maximize_btn = document.getElementById('maximize_btn');
@@ -305,7 +307,18 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById("dashboard_").style.display = "block";
   document.getElementById("graph_").style.display = "none";
 
-
+  document.getElementById("portofolio_link").addEventListener("click",function(e){
+      document.getElementById("transaction_main").style.display = "none";
+      document.getElementById("portofolio_main").style.display = "block";
+      document.getElementById("portofolio_link").style.color = "#007bff"
+      document.getElementById("transaction_link").style.color = "#555"
+  });
+  document.getElementById("transaction_link").addEventListener("click",function(e){
+    document.getElementById("transaction_main").style.display = "block";
+    document.getElementById("portofolio_main").style.display = "none";
+    document.getElementById("portofolio_link").style.color = "#555"
+    document.getElementById("transaction_link").style.color = "#007bff"
+  });
 
   var prev_con_length = 0;
   console.stdlog = console.log.bind(console);

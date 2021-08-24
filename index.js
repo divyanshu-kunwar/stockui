@@ -72,13 +72,15 @@ function showGraphWindow(){
       enableRemoteModule: true
     }
   });
-  mainWindow.setBrowserView(graphWindow);
+  
   width_ = mainWindow.getBounds().width;
   height_ = mainWindow.getBounds().height;
   graphWindow.setBounds({ x: 82, y: 50,
      width: width_-82, height: height_-50 });
-  graphWindow.setAutoResize({width:true, height: true});
+  mainWindow.setBrowserView(graphWindow);
+  // graphWindow.setAutoResize({width:true, height: true});
   graphWindow.webContents.loadURL("file://"+__dirname+"/pages/graph.html");
+  graphWindow.webContents.openDevTools()
   
 }
 
