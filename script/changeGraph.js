@@ -6,7 +6,8 @@ const { ipcRenderer } = require('electron');
 
 window.addEventListener('DOMContentLoaded', () => {
   var indicator_list = {}
-  var companyName = "acc1";
+  var companyName = "accltd";
+  var prevcompanyName = ""
   var prevGraph = "";
   var graphName = "candle";
   setGraph("barsBtn", "bars");
@@ -34,9 +35,9 @@ window.addEventListener('DOMContentLoaded', () => {
   change_graph();
 
   function change_graph() {
-    if (prevGraph == graphName) {
+    if (prevGraph == graphName && (companyName==prevcompanyName)) {
     }
-    else if ((prevGraph == "candle" || prevGraph == "bars" || prevGraph == "line"
+    else if ( (companyName==prevcompanyName) && (prevGraph == "candle" || prevGraph == "bars" || prevGraph == "line"
      || prevGraph == "area" || prevGraph == "baseline")
         && (graphName == "candle" || graphName == "bars" || graphName == "line" 
         || graphName == "area" || graphName == "baseline")) {
@@ -62,6 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
     prevGraph = graphName;
+    prevcompanyName = companyName;
   }
 
   btn = document.getElementById("intervalchange");
@@ -152,16 +154,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   // connect to my sql database for company data
-  // var con = mysql.createConnection({
-  //   host: "localhost",
-  //   user: "root",
-  //   password: "vishal"
-  // });
+  var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "vishal"
+  });
 
-  // con.connect(function (err) {
-  //   if (err) throw err;
-  //   console.log("Connected!");
-  // });
+  con.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
 
   minimize_btn = document.getElementById('minimize_btn');
   maximize_btn = document.getElementById('maximize_btn');
@@ -169,7 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   function change_company(company) {
-    // console.log(company);
+    console.log(company);
     companyName = company;
     change_graph();
   }
@@ -314,6 +316,7 @@ window.addEventListener('DOMContentLoaded', () => {
     console.logs.push(Array.from(arguments));
     console.stdlog.apply(console, arguments);
   }
+  /*
   setInterval(() =>{
     if(console.logs.length>prev_con_length){
       for(var i=prev_con_length; i<console.logs.length; i++){
@@ -324,6 +327,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
   },300);
+  */
 
 
 });

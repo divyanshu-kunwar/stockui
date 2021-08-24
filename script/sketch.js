@@ -4,7 +4,7 @@ var data, data_ = "", dataloaded = false, graph_type = "candle";
 var date = [], open_ = [], close_ = [], low = [], height_ = [];
 var high = [], color_ = [], stroke_ = [], volume = [], pnf_count = [];
 var min_low = 0, max_high = 0, min_vol = 0, max_vol = 0; translateX = 0, scaleValue = 1;
-var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 60;
+var data_length = 0, selectedI = 0, dataMoved = 0, data_on_graph = 30;
 var yb, xb, drawCount = 0;
 var indicatorRaw, indicator;
 var background_color = "#fff";
