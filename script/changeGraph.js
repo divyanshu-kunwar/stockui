@@ -367,5 +367,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
   },300);
 
-  
+
 });

@@ -342,3 +342,25 @@ function toDark(){
       document.body.style.backgroundColor = "#020204";
 }
 // themeButton.click();
+
+document.getElementById('buy_btn').addEventListener('click',function(e){
+    document.getElementById('BS_con').style.display='block'
+    document.getElementById("buy_sell_text").innerHTML = "buy";
+    
+  });
+  document.getElementById('sell_btn').addEventListener('click',function(e){
+    document.getElementById('BS_con').style.display='block'
+    document.getElementById("buy_sell_text").innerHTML = "sell";
+    
+  });
+
+  document.getElementById('BS_con_cancel').addEventListener('click',function(e){
+    document.getElementById('BS_con').style.display='none'
+    
+  });
+
+  document.getElementById('BS_con_close').addEventListener('click',function(e){
+    document.getElementById('BS_con').style.display='none'
+    
+  });
+ 
