@@ -67,7 +67,7 @@
         </div>
 
         <!--Right side list-->
-        <div id="graph_" class="col-md-9 col-lg-9" style="display: block;">
+        <div id="graph_" class="col-md-9 col-lg-9" style="display:none;">
 
             <!-- graph all menu -->
             <div id="graph_menu">
@@ -150,7 +150,7 @@
                 <Main></Main>
             </div>
         </div>
-        <div id="dashboard_" class="col-md-9 col-lg-9" style="display: none;">
+        <div id="dashboard_" class="col-md-9 col-lg-9" style="display: block;">
             <div id="dash_top">
                 <div id="nav_links">
                     <a id="portofolio_link" style="color: #007bff;">Portofolio</a>
@@ -248,7 +248,14 @@
                 </div>
             </div>
         </div>
-
+        <div id='BS_con'>
+            <div class='BS_con_head'>
+                <img src="../icon/close.svg" alt="">
+            </div>
+            <h4>Do you really want to buy ?</h4>
+            <button id='ok' class='btn btn-lg btn-outline-dark'>ok</button>
+            <button id = 'cancel' class='btn btn-lg btn-outline-danger'>cancel</button>
+        </div>
     </div>
     <script src="../script/sketch.js"></script>
     <script src="../script/plot_graph.js"></script>
