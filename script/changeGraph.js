@@ -6,6 +6,8 @@ const { ipcRenderer } = require('electron');
 
 window.addEventListener('DOMContentLoaded', () => {
   var indicator_list = {}
+  var exchangeName = "BSE"
+  var prevExchange = ""
   var companyName = "reliance";
   var prevCompany = "";
   var prevGraph = "";
@@ -35,16 +37,16 @@ window.addEventListener('DOMContentLoaded', () => {
   change_graph();
 
   function change_graph() {
-    if (prevGraph == graphName && (prevCompany == companyName)) {
+    if (prevGraph == graphName && (prevCompany == companyName) && (prevExchange== exchangeName)) {
     }
     else if ((prevGraph == "candle" || prevGraph == "bars" || prevGraph == "line"
      || prevGraph == "area" || prevGraph == "baseline")
         && (graphName == "candle" || graphName == "bars" || graphName == "line" 
-        || graphName == "area" || graphName == "baseline")&&(prevCompany == companyName)) {
+        || graphName == "area" || graphName == "baseline")&&(prevCompany == companyName) && (prevExchange== exchangeName)) {
       document.getElementById("hiddenGraphType").innerHTML = graphName;
     } else {
       let pyshell = new PythonShell('graph/callData.py');
-      var message_send = { graphName, companyName };
+      var message_send = { graphName, companyName , exchangeName };
       // send name of the graph
       pyshell.send(JSON.stringify(message_send));
 
@@ -64,6 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     prevGraph = graphName;
     prevCompany = companyName;
+    prevExchange = exchangeName;
   }
 
   btn = document.getElementById("intervalchange");
@@ -130,24 +133,13 @@ window.addEventListener('DOMContentLoaded', () => {
             } catch { }
           }
           table_for_search.innerHTML = search_row;
-          for (var j = 0; j < 5; j++) {
-            if (document.getElementById("companyBSE" + j.toString()) != null) {
-              let company_res = document.getElementById("companyBSE" + j.toString());
-              console.log(company_res);
-              console.log(j);
-
-              company_res.addEventListener("click", function (e) {
-                change_company(company_res.innerHTML);
-              })
-            }
-          }
         });
         con.query(queryNSE, function (err, result) {
           if (err) throw err;
           var search_row = ""
           for (var i = 0; i < 5; i++) {
             try {
-              search_row += "<tr class='companyName' ><td id='companyNSE" + i.toString() + "'>" + result[i]['stock'] + "</td>"
+              search_row += "<tr class='companyName' ><td id='companyNSE" + (i).toString() + "'>" + result[i]['stock'] + "</td>"
                 + "<td class='action_btn'>"
                 + "<img src='../icon/buy_btn.svg' />"
                 + "<img src='../icon/sell_btn.svg' />"
@@ -160,12 +152,21 @@ window.addEventListener('DOMContentLoaded', () => {
           table_for_search.innerHTML += search_row;
           for (var j = 0; j < 5; j++) {
             if (document.getElementById("companyBSE" + j.toString()) != null) {
+              let company_res = document.getElementById("companyBSE" + j.toString());
+              console.log(company_res);
+              console.log(j);
+
+              company_res.addEventListener("click", function (e) {
+                change_company(company_res.innerHTML,"bse");
+              })
+            }
+            if (document.getElementById("companyNSE" + (j).toString()) != null) {
               let company_res = document.getElementById("companyNSE" + j.toString());
               console.log(company_res);
               console.log(j);
 
               company_res.addEventListener("click", function (e) {
-                change_company(company_res.innerHTML);
+                change_company(company_res.innerHTML,"nse");
               })
             }
           }
@@ -199,9 +200,11 @@ window.addEventListener('DOMContentLoaded', () => {
   close_btn = document.getElementById('close_btn');
 
 
-  function change_company(company) {
+  function change_company(company , exchange) {
+    document.getElementById("selected_company").innerHTML = company;
     // console.log(company);
     companyName = company;
+    exchangeName = exchange;
     change_graph();
   }
 
@@ -242,66 +245,11 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log(data_to_send);
 
     if (column_arr.length > 0 && period_arr.length > 0) {
-      for (var i = 0; i < column_arr.length; i++) {
-        column = column_arr[i], period = period_arr[i];
-        message_send = { indicator_id, data_to_send, column, period };
-        pyshell.send(JSON.stringify(message_send));
-
-        pyshell.on('message', function (message) {
-          msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
-          indicator_list[msg_received.number] = msg_received;
-          hiddenInd.innerHTML = JSON.stringify(indicator_list);
-        });
-        pyshell.end(function (err) {
-          if (err) {
-            console.log(err)
-            throw err;
-          };
-          console.log('finished');
-        });
-
-      }
-
+      send_data(0);
     } else if (column_arr.length > 0) {
-      for (var i = 0; i < column_arr.length; i++) {
-        column = column_arr[i];
-        message_send = { indicator_id, data_to_send, column };
-        pyshell.send(JSON.stringify(message_send));
-
-        pyshell.on('message', function (message) {
-          msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
-          indicator_list[msg_received.number] = msg_received;
-          hiddenInd.innerHTML = JSON.stringify(indicator_list);
-        });
-        pyshell.end(function (err) {
-          if (err) {
-            console.log(err)
-            throw err;
-          };
-          console.log('finished');
-        });
-
-      }
+        send2_data(0);
     } else if (period_arr.length > 0) {
-      for (var i = 0; i < period_arr.length; i++) {
-        period = period_arr[i];
-        message_send = { indicator_id, data_to_send, period };
-        pyshell.send(JSON.stringify(message_send));
-
-        pyshell.on('message', function (message) {
-          msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
-          indicator_list[msg_received.number] = msg_received;
-          hiddenInd.innerHTML = JSON.stringify(indicator_list);
-        });
-        pyshell.end(function (err) {
-          if (err) {
-            console.log(err)
-            throw err;
-          };
-          console.log('finished');
-        });
-
-      }
+        send3_data(0);
     } else {
       message_send = { indicator_id, data_to_send };
       pyshell.send(JSON.stringify(message_send));
@@ -319,7 +267,72 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('finished');
       });
 
+    }
 
+    function send_data(i){
+      column = column_arr[i], period = period_arr[i];
+      message_send = { indicator_id, data_to_send, column, period };
+      pyshell.send(JSON.stringify(message_send));
+
+      pyshell.on('message', function (message) {
+        msg_received.data[i] = JSON.parse(message);
+        indicator_list[msg_received.number] = msg_received;
+        hiddenInd.innerHTML = JSON.stringify(indicator_list);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        if (i < column_arr.length){
+            send_data(i+1);
+        }
+        console.log('finished');
+      });
+    }
+
+    function send2_data(i){
+      column = column_arr[i]
+      message_send = { indicator_id, data_to_send, column};
+      pyshell.send(JSON.stringify(message_send));
+
+      pyshell.on('message', function (message) {
+        msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
+        indicator_list[msg_received.number] = msg_received;
+        hiddenInd.innerHTML = JSON.stringify(indicator_list);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        if (i < column_arr.length){
+            send2_data(i+1)
+        }
+        console.log('finished');
+      });
+    }
+
+    function send3_data(i){
+      period = period_arr[i];
+      message_send = { indicator_id, data_to_send, period };
+      pyshell.send(JSON.stringify(message_send));
+
+      pyshell.on('message', function (message) {
+        msg_received.data[Object.keys(msg_received.data).length] = JSON.parse(message);
+        indicator_list[msg_received.number] = msg_received;
+        hiddenInd.innerHTML = JSON.stringify(indicator_list);
+      });
+      pyshell.end(function (err) {
+        if (err) {
+          console.log(err)
+          throw err;
+        };
+        if (i < column_arr.length){
+            send3_data(i+1)
+        }
+        console.log('finished');
+      });
     }
   });
 
@@ -356,6 +369,7 @@ window.addEventListener('DOMContentLoaded', () => {
     console.logs.push(Array.from(arguments));
     console.stdlog.apply(console, arguments);
   }
+  /*
   setInterval(() =>{
     if(console.logs.length>prev_con_length){
       for(var i=prev_con_length; i<console.logs.length; i++){
@@ -367,5 +381,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   },300);
 
-
+*/
 });
+

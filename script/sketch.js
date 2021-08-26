@@ -358,9 +358,4 @@ document.getElementById('buy_btn').addEventListener('click',function(e){
     document.getElementById('BS_con').style.display='none'
     
   });
-
-  document.getElementById('BS_con_close').addEventListener('click',function(e){
-    document.getElementById('BS_con').style.display='none'
-    
-  });
  

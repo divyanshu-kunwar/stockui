@@ -10,10 +10,11 @@ import mysql.connector
 message_in = sys.stdin.readlines()
 graph_type = json.loads(message_in[0])['graphName']
 company_name = json.loads(message_in[0])['companyName']
+exchange_name = json.loads(message_in[0])['exchangeName']
 
 engine = sqlalchemy.create_engine('mysql+pymysql://root:vishal@127.0.0.1:3306/bse')
 
-df = pd.read_sql("select Date as date,open,high,low,close,volume FROM bse."+company_name+" order by date asc", engine)
+df = pd.read_sql("select Date as date,open,high,low,close,volume FROM "+exchange_name+"."+company_name+" order by date asc", engine)
 print(df.to_json())
 #df=pd.read_csv("graph/acc.csv")
 #df = df.loc[::-1].reset_index()

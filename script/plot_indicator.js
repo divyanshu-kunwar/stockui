@@ -1,14 +1,14 @@
 function drawIndicator(){
     if(indicator!=null){
     if(indicator.hasOwnProperty(0)){             //atr
-        atr = new subplotly('atr' , indicator[0].data, 'line');
+        atr = new subplotly('atr' , indicator[0].data, 'line', indicator[0].controls[1].color1.value);
         
     }
     if(indicator.hasOwnProperty(1)){             //dema
-        dema = new plotly('dema' , indicator[1].data, 'line');
+        dema = new plotly('dema' , indicator[1].data, 'line',indicator[1].controls[2].color1.value);
     }
     if(indicator.hasOwnProperty(2)){             //ema
-        ema = new plotly('ema', indicator[2].data, 'line')
+        ema = new plotly('ema', indicator[2].data, 'line', indicator[2].controls[2].color1.value)
     }
 }
 }
@@ -18,7 +18,7 @@ function drawIndicatorScaleY(){
     
 }
 class plotly{
-    constructor(indName, indData, shapeType){
+    constructor(indName, indData, shapeType, color){
         this.indName = indName;
         this.indData = indData;
         this.shapeType = shapeType;
@@ -26,18 +26,20 @@ class plotly{
         this.x2 = 0;
         this.y1 = 0;
         this.y2 = 0;
+        this.color = color;
         this.drawPlotly();
 
     }
     drawPlotly(){
         if(this.shapeType == "line"){ 
             let no_of_plotly = Object.keys(this.indData).length;
+            console.log(no_of_plotly);
             for(var j=0; j < no_of_plotly; j++){
                 for (var i = (data_length - data_on_graph - dataMoved); i < data_length - dataMoved; i++) {
                     this.calculatePlotly(i , j);
-                    console.log("values:",this.x1,this.y1,this.x2,this.y2)
+                    // console.log("values:",this.x1,this.y1,this.x2,this.y2)
                     strokeWeight(1);
-                    stroke(0);
+                    stroke(this.color);
                     line (this.x1,this.y1,this.x2,this.y2);
                 }
             }
@@ -52,7 +54,7 @@ class plotly{
 
 }
 class subplotly{
-    constructor(indName, indData, shapeType){
+    constructor(indName, indData, shapeType, color){
         this.indName = indName;
         this.indData = indData;
         this.shapeType = shapeType;
@@ -62,6 +64,7 @@ class subplotly{
         this.y2 = 0;
         this.min_ind = 0;
         this.max_ind = 0;
+        this.color = color;
         this.drawSubPlotly();
 
     }
@@ -74,7 +77,7 @@ class subplotly{
                     console.log("values:",this.x1,this.y1,this.x2,this.y2);
                     console.log("min / max", this.min_ind ," ", this.max_ind);
                     strokeWeight(1);
-                    stroke(0);
+                    stroke(this.color);
                     line (this.x1,this.y1,this.x2,this.y2);
                 }
             }
@@ -117,10 +120,12 @@ class subplotly{
         fill(0);
         for(var i =0; i<4; i++){
             strokeWeight(1);
-            line(width - 100 , maxTick + i*(minTick-maxTick)/4 , width - 120 , maxTick+ i*(minTick-maxTick)/4);
+            //ticks on y-axis
+            line(width - 90 , maxTick + i*(minTick-maxTick)/4 , width - 100 , maxTick+ i*(minTick-maxTick)/4);
             strokeWeight(0);
+            // value on y-axis
             text((this.min_ind + i*(this.max_ind-this.min_ind)/4).toFixed(2) ,
-             width- 80 , maxTick+5 + i*(minTick-maxTick)/4);
+             width- 90 , maxTick+5 + i*(minTick-maxTick)/4);
         }
         pop();     
     }
