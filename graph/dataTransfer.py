@@ -76,28 +76,6 @@ class Data:
             self.df['open'][i]=round((self.df['open'][i-1]+self.df['close'][i-1])/2,2)
         self.df['low']=self.df[['open','close','low']].min(axis=1)
         self.df['high']=self.df[['open','close','high']].max(axis=1)
-        # self.df['ha_open'] = 0.0
-        # self.df['ha_high'] = 0.0
-        # self.df['ha_low'] = 0.0
-        # self.df['ha_close'] = 0.0
-        
-        # for i in range(0,self.x):
-        #     if(i==0):
-        #         self.df['ha_open'][i] = self.df['open'][i]
-        #         self.df['ha_close'][i] = self.df['close'][i]
-        #         self.df['ha_low'][i]  = self.df['low'][i]
-        #         self.df['ha_high'][i] = self.df['high'][i]
-        #     else:
-        #         self.df['ha_open'][i] = (self.df['ha_open'][i-1] + self.df['ha_close'][i-1])/2
-        #         self.df['ha_close'][i] = (self.df['close'][i] + self.df['open'][i] + self.df['high'][i] + self.df['low'][i])/4
-        #         self.df['ha_high'][i]  = max(self.df['close'][i] , self.df['open'][i] , self.df['high'][i])
-        #         self.df['ha_low'][i] = min(self.df['close'][i] , self.df['open'][i] , self.df['low'][i])
-
-        # self.df = self.df.drop(columns=['open','close','low','high'])
-        # self.df = self.df.rename(columns={'ha_open':'open',
-        #                     'ha_high':'high',
-        #                     'ha_low':'low',
-        #                     'ha_close':'close'})
 
         self.df['color'] = 'r'
         self.color()
