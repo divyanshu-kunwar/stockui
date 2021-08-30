@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
 
+  // button for toggle drop down menu
   var btn = document.getElementById("min_cri");
   var btn_ = document.getElementById("criteria_switcher");
   var btn1 = document.getElementById("indicator_drop_btn");
@@ -7,20 +8,21 @@ window.addEventListener('DOMContentLoaded', () => {
   var btn3 = document.getElementById("price_drop_btn");
   var btn4 = document.getElementById("volume_drop_btn");
 
-
+  // drop down list 
   var item_list = document.getElementById("criteria");
   var item_list1 = document.getElementById("ind_items");
   var item_list2 = document.getElementById("pattern_items");
   var item_list3 = document.getElementById("price_items");
   var item_list4 = document.getElementById("vol_items");
 
-
+  // call the function to add drop down on click of buttons
   toggleDropDown(btn, item_list);
   toggleDropDown(btn_, item_list);
   toggleDropDown(btn1, item_list1);
   toggleDropDown(btn2, item_list2);
   toggleDropDown(btn3, item_list3);
   toggleDropDown(btn4, item_list4);
+
   // toogle drop down menu by passing btn id and drop down id
   function toggleDropDown(btn, elementToCollapse) {
     btn.addEventListener("click", function (e) {
@@ -34,6 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  // all the main ui sections (views) of software
   page1 = document.getElementById("home_page");
   page2 = document.getElementById("screener_page");
   page3 = document.getElementById("news_page");
@@ -41,6 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
   page5 = document.getElementById("console_page");
   page6 = document.getElementById("download_page");
 
+  // button to navigate between these pages
   nav1 = document.getElementById("home_btn");
   nav2 = document.getElementById("screener_btn");
   nav3 = document.getElementById("news_btn");
@@ -48,6 +52,7 @@ window.addEventListener('DOMContentLoaded', () => {
   nav5 = document.getElementById("console_btn");
   nav6 = document.getElementById("downloads_btn");
 
+  // call function to navigate between these section 
   navigatePages(nav1, page1);
   navigatePages(nav2, page2);
   navigatePages(nav3, page3);
@@ -55,6 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
   navigatePages(nav5, page5);
   navigatePages(nav6, page6);
 
+  // function to show / hide these sections in accordance with which button is clicked
   function navigatePages(button, page) {
     button.addEventListener("click", function (e) {
       page1.style.display = "none";
@@ -66,9 +72,12 @@ window.addEventListener('DOMContentLoaded', () => {
       page.style.display = "block";
     })
   }
+
+  // setting the dark and light colors on button click
   var r = document.querySelector(':root');
   var themeButton = document.getElementById("themeBtn");
   var nightMode = false;
+
   themeButton.addEventListener("click", function (e) {
     if (!nightMode) {
       toDark();
@@ -114,17 +123,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
     document.body.style.backgroundColor = "#020204";
   }
+
+// write all the console input to console_page will be removed later on after development
   var prev_con_length = 0;
   var prevLogs = ""
   console.stdlog = console.log.bind(console);
   console.logs = [];
+
   console.log = function () {
     console.logs.push(Array.from(arguments));
     console.stdlog.apply(console, arguments);
   }
+
+  
   setInterval(() =>{
     if(console.logs.length>prev_con_length){
       for(var i=prev_con_length; i<console.logs.length; i++){
+        // write with dates and number
         date_ = new Date();
         date_ = date_.toLocaleTimeString()
         document.getElementById("console_page").innerHTML =
@@ -134,6 +149,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       prev_con_length = console.logs.length;
     }
+
+    // check if something is changed
     if(document.getElementById("hiddenLog").innerHTML != prevLogs){
       prevLogs = document.getElementById("hiddenLog").innerHTML;
       console.log(prevLogs);

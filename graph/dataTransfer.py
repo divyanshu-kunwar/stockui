@@ -10,7 +10,7 @@ class Data:
         self.x = len(self.df)
         self.cal_data()
     
-    
+    # cal data according to the name of the graph
     def cal_data(self):
         if self.graphtype=='bars':
             self.color()
@@ -38,7 +38,7 @@ class Data:
         self.send_data()
         
     
-
+    # a graph similar to candle stick graph but have different color
     def hollowcandle(self):
 
         self.df['color']='r'
@@ -69,7 +69,7 @@ class Data:
                     self.df['color'][i]='#ff6960'  #red
                     self.df['stroke'][i]='#ff6960'  #red
         
-                
+    # a graph similar to candlestick but uses different strategy for data calculation            
     def heikinashi(self):
         self.df['close']=round((self.df['open']+self.df['high']+self.df['low']+self.df['close'])/4,2)
         for i in range(1,len(self.df)):
@@ -103,6 +103,7 @@ class Data:
     def send_data(self):
         print(self.df.to_json())
 
+    # decides color if open > close it's green else red
     def color(self):
         self.df['color'] = 'r'
        

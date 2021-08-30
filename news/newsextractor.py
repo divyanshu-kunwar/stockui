@@ -1,0 +1,1 @@
+# Logic for scrapping or getting financial news from web

@@ -1,5 +1,7 @@
 import atrlib
 import pandas as pd
+
+# module for calculation of data for renko graph
 def renko(df):
     d , l , h ,lbo ,lbc,vol=[],[],[],[],[],[]
     brick_size = atrlib.brick_size(df)

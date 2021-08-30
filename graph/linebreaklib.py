@@ -1,4 +1,6 @@
 import pandas as pd
+
+# module for calculation of data for linebreak graph
 def linebreak(df):
     d  ,lbo ,lbc, vol , low , high  = [],[],[],[],[],[]
     for i in range(0,3):

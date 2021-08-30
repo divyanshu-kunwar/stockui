@@ -1,5 +1,9 @@
 import pandas as pd
 
+'''
+Calculates atr i.e Average True Range
+later can be replaced as ATR is already there.
+''' 
 def atr(df):
     ar = []
     for i in range(0,len(df)):

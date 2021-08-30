@@ -2,6 +2,7 @@ import pandas as pd
 import atrlib
 import numpy as np 
   
+# module for calculation of data for pnf graph
 def pnf(df):
     pnf_brick = atrlib.brick_size(df)
     d , o ,  c, pnf_open , pnf_close, color,vol,pnf_count = [],[],[],[],[],[],[],[]

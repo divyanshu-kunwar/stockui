@@ -1,22 +1,26 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="../css/indicator.css"/>
+    <link rel="stylesheet" href="../css/indicator.css" />
     <link rel="stylesheet" href="../css/bootstrap.min.css">
 
 </head>
+
 <body>
+
+    <!-- window with a list of all the available indicator and options for those indicator -->
     <div id='indicator_box'>
         <div id='indicator_head'>
             <div id="draggable-area">Indicator</div>
             <img id="close_indictor" src="../icon/close.svg" alt="close btn" />
         </div>
         <div>
-            
+
         </div>
         <div id='ind_search' style="display: block;">
 
@@ -27,19 +31,27 @@
 
         </div>
         <div id="indicator_scroll" style="display: block;">
-        <div id='selected_indicator'>
-            <table id='selected_ind_table'>
-            </table>
+            <div id='selected_indicator'>
+                <table id='selected_ind_table'>
+                </table>
+            </div>
         </div>
     </div>
-        </div>
+
+    <!-- settings box appears after setting icon is clicked by any of the indicator -->
     <div id="indicator_settings" style="display: none;">
-            <div id="label_and_button">
-                <img id="back_btn" src="../icon/backarrow.svg" alt="back"/>
-                <span id="indicator_settings_name"> Volume </span>
-            </div>
-            <div id="form_setting">
-    </div>  
-</div>
+
+        <!-- back button and label for indicator whose setting is opened -->
+        <div id="label_and_button">
+            <img id="back_btn" src="../icon/backarrow.svg" alt="back" />
+            <span id="indicator_settings_name"> Volume </span>
+        </div>
+
+        <!-- here goes apply and cancel button -->
+        <div id="form_setting">
+        </div>
+        
+    </div>
 </body>
+
 </html>

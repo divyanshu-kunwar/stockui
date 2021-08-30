@@ -9,8 +9,10 @@ message_in = sys.stdin.readlines()
 indicator_name = json.loads(message_in[0])['indicator_id']
 data_all = json.loads(message_in[0])['data_to_send']
 df=pd.DataFrame.from_dict(data_all)
-# df = df.loc[::-1].reset_index()
-# df = df.drop(columns=['index'])
+
+
+# call indicator according to the name received and arguements received
+
 if(indicator_name=="atr"):
     period = json.loads(message_in[0])['period']
     print(indicators.atr(df,period).to_json())

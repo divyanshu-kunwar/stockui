@@ -2,7 +2,7 @@ import pandas as pd
 import atrlib
 import numpy as np
 
-
+# module for calculation of data for kagi graph
 def kagi(df):
     kagi_break = atrlib.brick_size(df)
     d , o ,  c, ko , kc, color,vol = [],[],[],[],[],[],[]

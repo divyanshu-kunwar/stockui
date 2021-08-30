@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph</title>
-
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/graph.css">
     <script src="../script/p5.min.js"></script>
@@ -14,11 +13,15 @@
 </head>
 
 <body>
+
+    <!-- Some hidden elements for transferring data
+         between changeGraph.js and receieve_data.js-->
     <div id="hiddenData"></div>
     <div id="hiddenGraphType"></div>
     <div id="hiddenInd"></div>
 
-    <!-- top bar here  -->
+    <!-- top bar here. To be removed lateron as 
+        it opens up as a view and no more need topbar -->
     <div class="row" id="topBar" style="display:none;">
         <img id="themeBtn" src="../icon/changeToDark.svg" alt="close btn" />
         <div id="draggable-area" class="col-xs-5 col-md-7 col-lg-8">
@@ -31,6 +34,7 @@
         </div>
     </div>
 
+
     <div class="row" id="parent">
         <!-- left side list -->
         <div id="left_side" class="col-md-3 col-lg-3">
@@ -42,7 +46,7 @@
                 <img id="filter_btn" src="../icon/FILTER_.svg" alt="search" />
             </div>
 
-            <!-- table list here -->
+            <!-- table favourites list here -->
             <div id="company_list">
                 <table>
                     <tr>
@@ -52,15 +56,10 @@
                     </tr>
                 </table>
             </div>
+
+            <!-- table when stock is searched-->
             <div id="search_list">
                 <table id="search_result">
-                    <tr>
-                        <td>>Reliance</td>
-                        <td>full name</td>
-                        <td>NSE</td>
-                        <td class="show_graph">graph</td>
-                        <td class="add_company">add</td>
-                    </tr>
                 </table>
             </div>
 
@@ -139,6 +138,8 @@
                     </div>
                 </div>
 
+                <!-- Menu for graphs i.e compare , indicator etc. 
+                    more script and ui element including drop downs to be added-->
                 <img id="compare" src="../icon/compare.svg" alt="compare">
                 <img id="indicator" src="../icon/indicator.svg" alt="indicators">
                 <img id="templates" src="../icon/template.svg" alt="templates">
@@ -146,11 +147,16 @@
                 <img id="screenshot" src="../icon/screenshot.svg" alt="interval">
             </div>
 
+            <!-- Graph Area All the graphs is plotted here using p5.js script in sketch.js-->
             <div id="graph_area">
                 <Main></Main>
             </div>
         </div>
+
+        <!-- DashBoard including portfolio and transaction history-->
         <div id="dashboard_" class="col-md-9 col-lg-9" style="display: none;">
+            
+            <!-- Top menu with user name notification icon and navigation-->
             <div id="dash_top">
                 <div id="nav_links">
                     <a id="portofolio_link" style="color: #007bff;">Portofolio</a>
@@ -162,11 +168,17 @@
                     <img id="avatar_img" src="../icon/profile.jpg">
                 </div>
             </div>
+
+            <!-- users portofolio -->
             <div id="portofolio_main" style="display: block;">
             <div class="row">
+                <!-- A graph to be plotted here for showing user coin stats -->
                 <div class="card_graph column-60" id="graph_stats"></div>
+                
+                <!-- right side card showing coin earned loss and profit -->
                 <div class="card_graph column-40">
                     <img id="coin_img" src="../icon/coin.png">
+                    
                     <div class="row">
                         <div class="column-33">
                             <span>Earned</span>
@@ -204,6 +216,8 @@
 
                 </div>
             </div>
+
+            <!-- table for bought stocks with fixed head and scrollable body -->
             <div class="fixTableHead my-custom-scrollbar">
                 <table id="Portofolio_table">
                     <thead>
@@ -229,7 +243,11 @@
 
             </div>
             </div>
+
+            <!-- div for transaction history -->
             <div id="transaction_main" style="display: none;">
+
+                <!-- table for transaction history with fixed head and scrollable body -->
                 <div class="fixTableHead my-custom-scrollbar">
                     <table id="transaction_table">
                         <thead>
@@ -248,6 +266,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Buy or sell confirmation modal box  -->
         <div id='BS_con' style="display: none;">
             <div class='BS_con_head '>
                 <h3>
@@ -262,7 +282,11 @@
             <button id='BS_con_ok' class='btn btn-lg btn-outline-dark'>ok</button>
             <button id = 'BS_con_cancel' class='btn btn-lg btn-outline-danger'>cancel</button>
         </div>
+
     </div>
+
+    <!-- all the script for graph plot and data receiving -->
+
     <script src="../script/sketch.js"></script>
     <script src="../script/plot_graph.js"></script>
     <script src="../script/plot_indicator.js"></script>
