@@ -127,7 +127,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 + "<td class='action_btn'>"
                 + "<img src='../icon/buy_btn.svg' />"
                 + "<img src='../icon/sell_btn.svg' />"
-                + "<img src='../icon/add_btn.svg' />"
+                + "<img id='addFavComBSE"+ i.toString() +"' src='../icon/add_btn.svg' />"
                 + "</td>"
                 + "<td class='exchange_'>BSE</td>"
                 + "<td class='view_g'><img src='../icon/graph_fav.svg' /></td></tr>"
@@ -144,7 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 + "<td class='action_btn'>"
                 + "<img src='../icon/buy_btn.svg' />"
                 + "<img src='../icon/sell_btn.svg' />"
-                + "<img src='../icon/add_btn.svg' />"
+                + "<img id='addFavComNSE"+ i.toString() +"' src='../icon/add_btn.svg' />"
                 + "</td>"
                 + "<td class='exchange_'>NSE</td>"
                 + "<td class='view_g'><img src='../icon/graph_fav.svg' /></td></tr>"
@@ -154,21 +154,34 @@ window.addEventListener('DOMContentLoaded', () => {
           for (var j = 0; j < 5; j++) {
             if (document.getElementById("companyBSE" + j.toString()) != null) {
               let company_res = document.getElementById("companyBSE" + j.toString());
+              let company_add = document.getElementById("addFavComBSE" + j.toString())
               console.log(company_res);
               console.log(j);
 
               company_res.addEventListener("click", function (e) {
                 change_company(company_res.innerHTML,"bse");
               })
+
+              // add event listener on add button
+              company_add.addEventListener("click",()=>{
+                add_list(company_res.innerHTML,"bse")
+              })
             }
             if (document.getElementById("companyNSE" + (j).toString()) != null) {
               let company_res = document.getElementById("companyNSE" + j.toString());
+              let company_add = document.getElementById("addFavComNSE" + j.toString())
               console.log(company_res);
               console.log(j);
 
               company_res.addEventListener("click", function (e) {
                 change_company(company_res.innerHTML,"nse");
               })
+
+              // add event listener on add button
+              company_add.addEventListener("click",()=>{
+                add_list(company_res.innerHTML,"nse")
+              })
+
             }
           }
         });
@@ -383,5 +396,25 @@ window.addEventListener('DOMContentLoaded', () => {
   },300);
 
 */
+
+// require file system for read and write
+const fs = require('fs')
+
+var favList = {
+    0:{Company_name:"Reliance" , Company_exchange:"bse"},
+}
+
+function add_list(comp_name , comp_exchange){
+favList[ Object.keys(favList).length ] = {Company_name:comp_name, Company_exchange:comp_exchange};
+fs.writeFile('./user_settings/fav_list.json', JSON.stringify(favList), err => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    //file written successfully
+  })
+}
+
+
 });
 
