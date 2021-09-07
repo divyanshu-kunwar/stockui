@@ -412,6 +412,26 @@ fs.writeFile('./user_settings/fav_list.json', JSON.stringify(favList), err => {
       return
     }
     //file written successfully
+    read_list();
+  })
+}
+read_list()
+function read_list(){
+  fs.readFile("./user_settings/fav_list.json",(err,data)=>{
+    if (err) {
+      console.error(err)
+      return
+    }
+    favList = JSON.parse(data);
+    console.log(favList);
+    html_table_data = "";
+    for(i = 0 ; i< (Object.keys(favList)).length; i++){
+        comp_name = favList[i]['Company_name'];
+        comp_exchange = favList[i]['Company_exchange'];
+        html_table_data += "<tr><td>"+ comp_name +"</td><td>"
+        + comp_exchange +"</td></tr>";
+    }
+    document.getElementById("company_list_table").innerHTML = html_table_data;
   })
 }
 
