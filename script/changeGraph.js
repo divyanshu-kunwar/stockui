@@ -3,6 +3,7 @@ const electron = require('electron');
 const remote = electron.remote;
 const mysql = require('mysql');
 const { ipcRenderer } = require('electron');
+require('./updateFavList.js')
 
 window.addEventListener('DOMContentLoaded', () => {
   var indicator_list = {}
