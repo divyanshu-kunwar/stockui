@@ -1,11 +1,14 @@
+//import all the required libraries
 const { PythonShell } = require('python-shell');
 const electron = require('electron');
 const remote = electron.remote;
 const mysql = require('mysql');
 const { ipcRenderer } = require('electron');
-require('./updateFavList.js')
 
+//when html dom is loaded
 window.addEventListener('DOMContentLoaded', () => {
+  
+  //declare all the required variables
   var indicator_list = {}
   var exchangeName = "BSE"
   var prevExchange = ""
@@ -13,6 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
   var prevCompany = "";
   var prevGraph = "";
   var graphName = "candle";
+
+  // set click listener on all button
   setGraph("barsBtn", "bars");
   setGraph("candleBtn", "candle");
   setGraph("hollowcandleBtn", "hollowcandle");
@@ -25,18 +30,27 @@ window.addEventListener('DOMContentLoaded', () => {
   setGraph("kagiBtn", "kagi");
   setGraph("pnfBtn", "pnf");
 
+  //function to set graph i.e add event listener
   function setGraph(elementName, graph) {
+    
     var graphSrc = graph + "_.svg";
     document.getElementById(elementName).addEventListener("click", function (e) {
+
+      //hide the drop down for graph type
       document.getElementById("dropGraphType").style.display = "none";
+
+      //on selection of any of the graph type the src of graph drop down button changes
       document.getElementById("graphchange").setAttribute("src", "../icon/" + graphSrc);
       graphName = graph;
       change_graph();
     });
   }
 
+  //call the function once to load the graph
   change_graph();
 
+
+  // change the graph , if data need to be changed call the python shell to fetch the data
   function change_graph() {
     if (prevGraph == graphName && (prevCompany == companyName) && (prevExchange== exchangeName)) {
     }
@@ -70,11 +84,13 @@ window.addEventListener('DOMContentLoaded', () => {
     prevExchange = exchangeName;
   }
 
+  //drop down var for various different button like graph type , interval type  , indicator type
   btn = document.getElementById("intervalchange");
   btn2 = document.getElementById("graphchange");
   btn3 = document.getElementById("indicator");
   btn4 = document.getElementById("close_indictor");
 
+  //drop down div for various different  graph type , interval type  , indicator type
   elementToCollapse = document.getElementById("dropIntervalType");
   elementToCollapse2 = document.getElementById("dropGraphType");
   elementToCollapse3 = document.getElementById("indicator_box");
@@ -113,14 +129,19 @@ window.addEventListener('DOMContentLoaded', () => {
     var input_text = "";
     search_list.style.display = "block";
     company_list.style.display = "none";
+
+    //after every 100ms check if there is change in data in search box
     setInterval(function (e) {
       if (search_box.value != input_text) {
         input_text = search_box.value;
+        // query nse and bse table for the companies
         var queryBSE = "SELECT Table_name as stock from information_schema.tables where (table_schema = 'bse') and (table_name Like '%" + input_text + "%');"
         var queryNSE = "SELECT Table_name as stock from information_schema.tables where (table_schema = 'nse') and (table_name Like '%" + input_text + "%');"
+        //query data from bse
         con.query(queryBSE, function (err, result) {
           if (err) throw err;
           var search_row = ""
+          // get 5 name from the list and append it to search_row variable with html formatting
           for (var i = 0; i < 5; i++) {
             try {
               search_row += "<tr class='companyName' ><td id='companyBSE" + i.toString() + "'>" + result[i]['stock'] + "</td>"
@@ -135,9 +156,11 @@ window.addEventListener('DOMContentLoaded', () => {
           }
           table_for_search.innerHTML = search_row;
         });
+        //query data from NSE
         con.query(queryNSE, function (err, result) {
           if (err) throw err;
           var search_row = ""
+           // get 5 name from the list and append it to search_row variable with html formatting
           for (var i = 0; i < 5; i++) {
             try {
               search_row += "<tr class='companyName' ><td id='companyNSE" + (i).toString() + "'>" + result[i]['stock'] + "</td>"
@@ -150,6 +173,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 + "<td class='view_g'><img src='../icon/graph_fav.svg' /></td></tr>"
             } catch { }
           }
+          //append all to the html table
           table_for_search.innerHTML += search_row;
           for (var j = 0; j < 5; j++) {
             if (document.getElementById("companyBSE" + j.toString()) != null) {
@@ -158,6 +182,7 @@ window.addEventListener('DOMContentLoaded', () => {
               console.log(company_res);
               console.log(j);
 
+              //on click change company and it's graph
               company_res.addEventListener("click", function (e) {
                 change_company(company_res.innerHTML,"bse");
               })
@@ -173,6 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
               console.log(company_res);
               console.log(j);
 
+              //on click change company and it's graph
               company_res.addEventListener("click", function (e) {
                 change_company(company_res.innerHTML,"nse");
               })
@@ -189,6 +215,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 100);
   }, true);
 
+  //on focus is removed from searh box hide the search list and show fav list
   search_box.addEventListener("blur", function (e) {
     if (search_box.value == "") {
       search_list.style.display = "none";
@@ -209,10 +236,6 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log("Connected!");
   });
 
-  minimize_btn = document.getElementById('minimize_btn');
-  maximize_btn = document.getElementById('maximize_btn');
-  close_btn = document.getElementById('close_btn');
-
 
   function change_company(company , exchange) {
     document.getElementById("selected_company").innerHTML = company;
@@ -222,26 +245,7 @@ window.addEventListener('DOMContentLoaded', () => {
     change_graph();
   }
 
-
-  minimize_btn.addEventListener('click', function (e) {
-    var window_ = remote.getCurrentWindow();
-    window_.minimize();
-  });
-  maximize_btn.addEventListener('click', function (e) {
-    var window_ = remote.getCurrentWindow();
-    if (!window_.isMaximized()) {
-      window_.maximize();
-      maximize_btn.setAttribute("src", "../icon/restore.svg");
-    } else {
-      window_.unmaximize();
-      maximize_btn.setAttribute("src", "../icon/maximize.svg");
-    }
-  });
-  close_btn.addEventListener('click', function (e) {
-    var window_ = remote.getCurrentWindow();
-    window_.close();
-  });
-
+  // create a list for indicator from the data received using the ipcRender
   var hiddenInd = document.getElementById("hiddenInd");
   ipcRenderer.on('indicator', function (evt, message_r) {
     let msg_received = message_r;
@@ -255,6 +259,8 @@ window.addEventListener('DOMContentLoaded', () => {
       if (hasNumInput) period_arr[period_arr.length] = msg_received.controls[i].numInput.value;
       if (hasSelectInput) column_arr[column_arr.length] = msg_received.controls[i].selectedValue;
     }
+
+    //send and receive data 
     data_to_send = JSON.parse(document.getElementById("hiddenData").innerHTML);
     console.log(data_to_send);
 
@@ -283,16 +289,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    //sends data and receieve data from python and pass the parameters like column , period etc.
     function send_data(i){
       column = column_arr[i], period = period_arr[i];
       message_send = { indicator_id, data_to_send, column, period };
       pyshell.send(JSON.stringify(message_send));
-
+      // on receiving message add the message to json
       pyshell.on('message', function (message) {
         msg_received.data[i] = JSON.parse(message);
         indicator_list[msg_received.number] = msg_received;
         hiddenInd.innerHTML = JSON.stringify(indicator_list);
       });
+      //if the cell is end or has error
       pyshell.end(function (err) {
         if (err) {
           console.log(err)
@@ -350,6 +358,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  //switch between dashboard and graph
   ipcRenderer.on('dashboard:open',function(evt){
     console.log("opening dashboard");
     document.getElementById("dashboard_").style.display = "block";
@@ -363,6 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById("dashboard_").style.display = "block";
   document.getElementById("graph_").style.display = "none";
 
+  //link on page
   document.getElementById("portofolio_link").addEventListener("click",function(e){
       document.getElementById("transaction_main").style.display = "none";
       document.getElementById("portofolio_main").style.display = "block";
