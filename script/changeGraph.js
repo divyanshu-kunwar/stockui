@@ -225,16 +225,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   // connect to my sql database for company data
-  var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "vishal"
-  });
+  // var con = mysql.createConnection({
+  //   host: "localhost",
+  //   user: "root",
+  //   password: "vishal"
+  // });
 
-  con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+  // con.connect(function (err) {
+  //   if (err) throw err;
+  //   console.log("Connected!");
+  // });
 
 
   function change_company(company , exchange) {
